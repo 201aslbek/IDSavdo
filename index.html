@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDSavdo</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+</head>
+<body>
+
+<!-- HOME PAGE -->
+<div class="page active" id="homePage">
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper" id="bannerContainer">
+            </div>
+    </div>
+    <div id="products" class="products"></div>
+    <p style="font-size:50px;"> </p>
+</div>
+
+
+  <!-- PRODUCTS -->
+  <div id="products" class="products"></div>
+  
+
+</div>
+
+
+<!-- SEARCH PAGE -->
+<div class="page" id="searchPage">
+
+  <h2>Kategoriyalar</h2>
+
+  <input class="search" placeholder="Akkaunt qidirish...">
+
+  <select id="searchCategory" onchange="filterByCategory()">
+    <option value="">Barcha kategoriyalar</option>
+    <option value="Telegram premium">Telegram premium</option>
+    <option value="Telegram Starslar">Telegram Starslar</option>
+    <option value="Telegram akkauntlar">Telegram akkauntlar</option>
+    <option value="Telegram kanal va guruxlar">Telegram kanal va guruxlar</option>
+    <option value="Telegram botlar">Telegram botlar</option>
+    <option value="Email akkauntlar">Email akkauntlar</option>
+    <option value="Pubg akkauntlar">Pubg akkauntlar</option>
+    <option value="Instagram akkauntlar">Instagram akkauntlar</option>
+    <option value="Youtube akkauntlar">Youtube akkauntlar</option>
+    <option value="Tiktok akkauntlar">Tiktok akkauntlar</option>
+    <option value="Facebook akkauntlar">Facebook akkauntlar</option>
+    <option value="Telefon raqamlar">Telefon raqamlar</option>
+    <option value="Boshqa akkauntlar">Boshqa akkauntlar</option>
+  </select>
+
+  <div id="searchResults" class="products"></div>
+
+</div>
+
+
+<!-- SELL PAGE -->
+<div class="page" id="sellPage">
+
+  <h2>📢 Elon Joylash</h2>
+ <button class="custom-btn" onclick="openModal()">Elon Joylash</button>
+
+<div id="sellModal" class="modal">
+    <div class="modal-content full-screen">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        
+        <div class="step active" id="step1">
+    <h2>E'lonning rasmini qo'shing</h2>
+    <p>1 dan 5 gacha rasm qo'shish mumkin.</p>
+    
+    <div class="image-upload-container">
+        <div id="imageList" class="image-list"></div>
+        
+        <div class="upload-box" id="addMoreBox" onclick="document.getElementById('productFile').click()">
+            <span>+</span>
+            <input type="file" id="productFile" hidden accept="image/*" onchange="handleMultipleImages(this)">
+        </div>
+    </div>
+    
+    <button class="next-btn" onclick="nextStep(2)">Davom ettirish</button>
+</div>
+
+
+        <div class="step" id="step2">
+            <h2>E'lon sarlavhasini kiriting</h2>
+            <input type="text" id="productName" placeholder="Sarlavha" maxlength="50">
+            <button class="next-btn" onclick="nextStep(3)">Davom ettirish</button>
+        </div>
+
+        <div class="step" id="step3">
+            <h2>Kategoriyalar</h2>
+            <div class="category-list">
+                <div onclick="selectCat('Telegram')">Telegram</div>
+                <div onclick="selectCat('Instagram')">Instagram</div>
+                <div onclick="selectCat('YouTube')">YouTube</div>
+                <div onclick="selectCat('TikTok')">TikTok</div>
+                <div onclick="selectCat('PUBG')">PUBG</div>
+                <div onclick="selectCat('Free Fire')">Free Fire</div>
+                <div onclick="selectCat('Boshqa o\'yinlar')">Boshqa o'yinlar</div>
+                <div onclick="selectCat('Steam')">Steam</div>
+                <div onclick="selectCat('Email')">Email</div>
+                <div onclick="selectCat('Premium')">Premium</div>
+                <div onclick="selectCat('Boshqa')">Boshqa</div>
+            </div>
+            <input type="hidden" id="selectedCategory">
+        </div>
+
+        <div class="step" id="step4">
+            <h2>Bitim shartlari</h2>
+            <div class="price-container">
+                <select id="currency">
+                    <option value="so'm">so'm</option>
+                    <option value="$">$ (Dollar)</option>
+                </select>
+                <input type="number" id="productPrice" placeholder="0" inputmode="decimal">
+            </div>
+            <button class="next-btn" onclick="nextStep(5)">Davom ettirish</button>
+        </div>
+
+        <div class="step" id="step5">
+            <h2>Tavsif qo'shing</h2>
+            <textarea id="productDesc" placeholder="Mahsulot haqida batafsil..." maxlength="1000"></textarea>
+            <button class="next-btn" onclick="nextStep(6)">Davom ettirish</button>
+        </div>
+
+        <div class="step" id="step6">
+    <h2>Aloqa uchun profil ma'lumotlari</h2>
+    <input type="text" id="contactName" placeholder="Ismingiz">
+    
+    <div class="contact-options">
+        <p>Siz bilan bog'lanishning afzal usuli</p>
+        
+        <div class="contact-item">
+            <span>Telefon orqali</span>
+            <input type="radio" name="contactType" value="phone" checked onchange="toggleContactInput()">
+        </div>
+        
+        <div class="contact-item">
+            <span>Telegram orqali</span>
+            <input type="radio" name="contactType" value="telegram" onchange="toggleContactInput()">
+        </div>
+    </div>
+
+    <input type="number" id="contactValue" placeholder="+998 90 123 45 67">
+     <button id="submitBtn" style="width: 100%; padding: 15px; background: #b5007d; color: white; border: none; border-radius: 10px;">
+    E'lon berish
+</button>
+
+
+
+</div>
+        </div>
+    </div> <h1> </h1>
+    <button class="custom-btn" onclick="openBannerModal()">Banner qo'shish</button>
+
+<div id="bannerModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeBannerModal()">&times;</span>
+        <h2>Banner joylash</h2>
+        
+        <div id="bannerPreview" style="margin-bottom: 15px; background: #f0f0f0; height: 150px; border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+            <p style="color: #888;">Rasm ko'rinishi</p>
+        </div>
+        
+        <input type="file" id="bannerFile" accept="image/*" onchange="previewBanner(this)" style="margin-bottom: 15px;">
+        
+        <label>Banner havolasi (ixtiyoriy):</label>
+        <input type="text" id="bannerLink" placeholder="https://t.me/kanal_nomi" 
+               style="width: 100%; padding: 12px; margin-top: 5px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 20px;">
+        
+        <button class="finish-btn" onclick="saveBanner()" style="width: 100%;">Joylash</button>
+    </div>
+</div>
+
+
+</div>
+
+</div>
+
+  </div>
+
+
+
+    <h1> </h1>
+</div>
+
+</div>
+
+
+<!-- LIKED PAGE -->
+<div class="page" id="likedPage">
+ <h2> Tez kunda!</h2>
+  <div id="likedProducts" class="products"></div>
+
+</div>
+
+
+<!-- PROFILE PAGE -->
+<div id="profilePage" class="page" style="display: none;">
+    <div class="profile-header">
+        <div class="avatar-container">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-info">
+            <h2 id="displayUsername">Username</h2>
+            <p>Id: <span id="displayUserId">000000</span></p>
+        </div>
+    </div>
+
+    <div class="profile-menu">
+       <button onclick="showMyAds()" class="menu-btn">Mening Elonlarim</button>
+        <button onclick="showMyBanners()" class="menu-btn">Mening Bannerlarim</button>
+          <button onclick="alert('Tez kunda...')" class="menu-btn">Mening Reklamalarim</button>
+        <button onclick="openTab('favoritesPage')" class="menu-btn">Sevimlilar</button>
+        <button onclick="shareBot()" class="menu-btn">Do'stlarga Ulashish</button>
+       
+        <div id="myContentList" style="display:none; position:fixed; top:0; left:0; width:310px; height:100; background:white; z-index:10001; padding:20px; overflow-y:100;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:2px solid #b5007d; padding-bottom:10px;">
+        <h2 id="listTitle" style="margin:0; font-size:20px; color:#b5007d;">Ro'yxat</h2>
+        <button onclick="closeMyContent()" style="background:#eee; border:none; width:35px; height:35px; border-radius:50%; font-size:20px;">&times;</button>
+    </div>
+    
+    <div id="listItems"></div>
+</div>
+
+        
+        <button onclick="alert('Coming soon...')" class="menu-btn">Sozlamalar</button>
+        <a href="https://t.me/aslbek201" target="_blank" class="menu-btn support-btn">Support</a>
+    </div>
+
+    <div id="myContentList" class="my-content-list" style="display:none;">
+        <div class="list-header">
+            <h3 id="listTitle">Ro'yxat</h3>
+            <button onclick="closeMyContent()" class="close-list">&times;</button>
+        </div>
+        <div id="listItems"></div>
+    </div>
+</div>
+
+
+
+<!-- PRODUCT DETAIL PAGE -->
+<div class="page" id="productDetailPage">
+
+  <button class="back-btn" onclick="closeProductDetail()">← Orqaga</button>
+
+  <img id="detailImage" class="detail-image">
+
+  <h2 id="detailName"></h2>
+
+  <p id="detailCategory"></p>
+
+  <p id="detailDesc"></p>
+
+  <button id="buyBtn">Sotib olish</button>
+
+</div>
+
+
+<!-- TAB BAR -->
+<div class="tabbar">
+
+  <button class="tab-btn active" onclick="playClick();openTab('homePage', this)">
+    <img src="https://cdn-icons-png.flaticon.com/512/6997/6997164.png" style="width:28px;height:28px;">
+  </button>
+
+  <button class="tab-btn" onclick="playClick();openTab('searchPage', this)">
+    <img src="https://cdn-icons-png.flaticon.com/512/3626/3626504.png" style="width:26px;height:26px;">
+  </button>
+
+  <button class="tab-btn" onclick="playClick();openTab('sellPage', this)">
+    <img src="https://cdn-icons-png.flaticon.com/512/10613/10613702.png" style="width:55px;height:55px;">
+  </button>
+
+  <button class="tab-btn" onclick="playClick();openTab('likedPage', this)">
+    <img src="https://cdn-icons-png.flaticon.com/512/1077/1077086.png" style="width:24px;height:24px;">
+  </button>
+
+  <button class="tab-btn" onclick="playClick();openTab('profilePage', this)">
+    <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" style="width:24px;height:24px;">
+  </button>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>

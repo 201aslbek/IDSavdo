@@ -1,0 +1,565 @@
+body{
+margin:0;
+font-family:sans-serif;
+background:#F5F5F5;
+}
+
+/* Pages */
+
+.page{
+padding:10px;
+display:none;
+}
+
+.page.active{
+display:block;
+}
+
+/* Products */
+
+.products{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.product-card{
+background:white;
+border-radius:15px;
+padding:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+cursor:pointer;
+position:relative;
+}
+
+.product-card img{
+width:100%;
+border-radius:10px;
+object-fit:cover;
+aspect-ratio:3/4;
+}
+
+/* Product Detail */
+
+.detail-image{
+width:100%;
+aspect-ratio:3/4;
+object-fit:cover;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+/* Tab bar */
+
+.tabbar{
+display:flex;
+justify-content:space-around;
+padding:10px 0;
+background:rgba(0,0,139,0.2);
+backdrop-filter:blur(3px);
+position:fixed;
+bottom:0;
+width:100%;
+border-radius:25px 25px 0 0;
+}
+
+.tabbar.hidden{
+display:none;
+}
+
+.tab-btn{
+width:45px;
+height:45px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:none;
+border:none;
+transition:0.25s;
+}
+
+.tab-btn.active{
+background:rgba(255,255,255,0.35);
+backdrop-filter:blur(10px);
+box-shadow:0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* Back button */
+
+.back-btn{
+margin:10px 0;
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:#ccc;
+cursor:pointer;
+}
+
+/* Buy button */
+
+#buyBtn{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#2AABEE;
+color:white;
+font-weight:600;
+margin-top:15px;
+font-size:18px;
+}
+
+/* Sell form */
+
+.sell-form{
+display:flex;
+flex-direction:column;
+gap:10px;
+padding:15px;
+}
+
+.sell-form input,
+.sell-form textarea{
+padding:10px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+.sell-form button{
+padding:12px;
+border:none;
+border-radius:12px;
+background:#2AABEE;
+color:white;
+font-weight:600;
+}
+
+/* Banner */
+
+Boʻsh
+
+
+/* Profile */
+
+.profile-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#FFFFFF;
+padding:20px;
+border-radius:20px;
+margin:10px 0;
+}
+
+.profile-header img{
+width:70px;
+height:70px;
+border-radius:50%;
+object-fit:cover;
+}
+
+/* Product Detail Page */
+
+#productDetail{
+padding:15px;
+background:#F5F5F5;
+min-height:100vh;
+}
+
+#productDetail img{
+width:100%;
+aspect-ratio:3/4;
+border-radius:12px;
+object-fit:cover;
+}
+
+#productDetail button{
+padding:12px;
+background:#2AABEE;
+color:white;
+border:none;
+border-radius:12px;
+width:100%;
+font-weight:600;
+margin-top:10px;
+}
+.my-products{
+margin-top:20px;
+}
+
+#myProducts{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.my-product-card{
+background:white;
+border-radius:12px;
+padding:8px;
+box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+.my-product-card img{
+width:100%;
+aspect-ratio:3/4;
+object-fit:cover;
+border-radius:10px;
+}
+
+.delete-btn{
+background:red;
+color:white;
+border:none;
+border-radius:8px;
+padding:6px;
+margin-top:5px;
+width:100%;
+}
+.myAdsBtn{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#2AABEE;
+color:white;
+font-weight:600;
+margin-top:10px;
+}
+
+#myProducts{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:15px;
+}
+
+.my-product-card{
+background:white;
+padding:8px;
+border-radius:12px;
+box-shadow:0 3px 8px rgba(0,0,0,0.1);
+}
+
+.my-product-card img{
+width:100%;
+aspect-ratio:3/4;
+object-fit:cover;
+border-radius:10px;
+}
+
+.edit-btn{
+background:#2AABEE;
+color:white;
+border:none;
+padding:6px;
+border-radius:8px;
+width:48%;
+}
+
+.delete-btn{
+background:red;
+color:white;
+border:none;
+padding:6px;
+border-radius:8px;
+width:48%;
+}
+
+.btn-group{
+display:flex;
+justify-content:space-between;
+margin-top:5px;
+}
+.swiper { width: 100%; height: 200px; margin-bottom: 20px; }
+.swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+/* style.css ga qo'shing */
+#myProducts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.my-product-card {
+    width: 45%; /* Ikkita ustun bo'lishi uchun */
+}
+/* Rasmga o'xshash tugma stili */
+.custom-btn {
+  background-color: #7000FF; /* Binafsha rang */
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Modal oynasining yashirin holati */
+.modal {
+  display: none; 
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+/* Modal ichi */
+.modal-content {
+  background: white;
+  margin: 20% auto;
+  padding: 20px;
+  width: 80%;
+  border-radius: 20px;
+}
+.step { display: none; flex-direction: column; gap: 20px; }
+.step.active { display: flex; }
+
+.next-btn {
+    background: #c20078; /* Rasmdagi to'q pushti/magenta rang */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: auto;
+}
+
+.upload-box {
+    width: 100%;
+    height: 200px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: #aaa;
+    border: 2px dashed #ccc;
+}
+
+.category-list div {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    font-size: 18px;
+}
+
+.price-container {
+    display: flex;
+    background: #f0f0f0;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+#productPrice {
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    width: 100%;
+    outline: none;
+}
+.contact-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f0f0f0;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+#contactValue {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.finish {
+    background: #c20078 !important; /* To'q pushti */
+    margin-top: 20px;
+}
+.image-upload-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.preview-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.preview-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.remove-img {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.upload-box {
+    width: 80px;
+    height: 80px;
+    background: #f0f0f0;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+}
+/* Banner preview oynasi uchun */
+#bannerPreview {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+#bannerPreview img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Rasm to'liq ko'rinishi uchun */
+    border-radius: 20px;
+}
+
+.full-screen {
+    height: 100vh;
+    width: 100vw;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+.profile-header {
+    background: linear-gradient(135deg, #1e00ff, #ff00ea);
+    padding: 30px 20px;
+    border-radius: 0 0 25px 25px;
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.avatar-container { font-size: 60px; margin-right: 15px; }
+.user-info h2 { margin: 0; font-size: 22px; }
+.user-info p { margin: 5px 0 0; opacity: 0.8; }
+
+.profile-menu {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.menu-btn {
+    background: #b5007d;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
+
+.menu-btn:active { transform: scale(0.98); }
+
+.my-content-list {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: white;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #b5007d;
+    margin-bottom: 20px;
+}
+
+.close-list { font-size: 30px; border: none; background: none; color: #b5007d; }
+#products {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Ikki qatorli bo'lishi uchun */
+    gap: 15px; /* Kartalar orasidagi masofa */
+    padding: 10px;
+}
+
+.product-card {
+    background: #fff;
+    border-radius:18px;
+    padding: 8px; /* Ichki bo'shliqni kamaytirdik */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-image-container {
+    height: 120px; /* Rasmni kichraytirdik */
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.product-name {
+    font-size: 15px; /* Nomini kichraytirdik */
+    margin: 5px 0;
+    font-weight: bold;
+    height: 36px; /* Matn ko'p bo'lsa ham kartani cho'zib yubormasligi uchun */
+    overflow: hidden;
+}
+
+.product-price {
+    font-size: 25px; /* Narxni kichraytirdik */
+    margin: 5px 0;
+}
+
+.post-date {
+    font-size: 12px; /* Sanani kichraytirdik */
+    color: #888;
+}
+
+.category-badge {
+    font-size: 12px;
+    padding: 2px 6px;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
