@@ -739,3 +739,639 @@ async function finishPosting() {
         alert("E'lon muvaffaqiyatli serverga yuklandi!");
     }
 }
+function showProducts() {
+    const container = document.getElementById("products");
+    if (!container) return;
+
+    // LocalStorage-dan ma'lumotni olish
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+    if (products.length === 0) {
+        container.innerHTML = "<p style='text-align:center; padding:20px;'>Hali e'lonlar yo'q</p>";
+        return;
+    }
+
+    container.innerHTML = products.map((p) => {
+        // Rasm borligini tekshirish
+        const mainImg = (p.images && p.images.length > 0) ? p.images[0] : (p.image || 'placeholder.jpg');
+        
+        return `
+        <div class="product-card" onclick="openAdDetail(${p.id})">
+            <div class="card-image-container" style="position:relative;">
+                <img src="${mainImg}" style="width:100%; height:150px; object-fit:cover; border-radius:10px 10px 0 0;">
+                <button class="fav-btn" onclick="event.stopPropagation(); toggleLike(${p.id})" 
+                        style="position:absolute; top:8px; right:8px; background:white; border:none; border-radius:50%; width:30px; height:30px; cursor:pointer;">
+                    <i class="far fa-heart"></i>
+                </button>
+            </div>
+            <div class="card-body" style="padding:10px;">
+                <div class="product-name" style="font-size:14px; font-weight:bold; height:40px; overflow:hidden;">${p.name}</div>
+                <div class="product-price" style="color:#b5007d; font-weight:800; margin-top:5px;">${p.price}</div>
+                <div class="post-date" style="font-size:10px; color:gray; margin-top:5px;">${p.date || 'Bugun'}</div>
+            </div>
+        </div>
+        `;
+    }).join("");
+}
+function openAdDetail(id) {
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+    const ad = products.find(p => p.id == id);
+    if (!ad) return alert("E'lon topilmadi!");
+
+    // 1. Home sahifasini yashirish, Detail sahifasini ko'rsatish
+    document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+    const detailPage = document.getElementById('detailPage');
+    if(detailPage) detailPage.style.display = "block";
+
+    // 2. Ma'lumotlarni joylashtirish (Har birini borligini tekshirib)
+    if(document.getElementById('d-title')) document.getElementById('d-title').innerText = ad.name;
+    if(document.getElementById('d-price')) document.getElementById('d-price').innerText = ad.price;
+    if(document.getElementById('d-desc')) document.getElementById('d-desc').innerText = ad.desc || "Tavsif yo'q";
+    if(document.getElementById('d-id')) document.getElementById('d-id').innerText = "ID: " + ad.id;
+
+    // 3. Rasmlarni chiqarish
+    const imgContainer = document.getElementById('d-images');
+    if(imgContainer) {
+        imgContainer.innerHTML = ad.images.map(img => `
+            <div class="swiper-slide"><img src="${img}" style="width:100%; border-radius:15px;"></div>
+        `).join('');
+        
+        // Swiperni yangilash
+        if(typeof Swiper !== 'undefined') {
+            new Swiper(".detailSwiper", { pagination: { el: ".swiper-pagination" } });
+        }
+    }
+}
+function openAdDetail(id) {
+    // 1. Ma'lumotni qidiramiz
+    const ad = products.find(p => p.id == id);
+    if (!ad) {
+        alert("Xato: E'lon topilmadi!");
+        return;
+    }
+
+    try {
+        // 2. Sahifani ko'rsatish
+        document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+        const detailPage = document.getElementById('detailPage');
+        if (detailPage) detailPage.style.display = "block";
+
+        // 3. Matnlarni to'ldirish (Agar ID bo'lsa)
+        const updateText = (elId, text) => {
+            const el = document.getElementById(elId);
+            if (el) el.innerText = text;
+        };
+
+        updateText('d-title', ad.name);
+        updateText('d-price', ad.price);
+        updateText('d-date', ad.date || "21 February 2026");
+        updateText('d-desc', ad.desc || "Tavsif kiritilmagan.");
+        updateText('d-cat', "Quyitoifalar: " + (ad.category || "Velosipedlar"));
+        updateText('d-username', ad.sellerName || "user");
+        updateText('d-id', "id:" + ad.id);
+        updateText('d-views', ad.views || "100");
+
+        // 4. Rasmlarni yuklash (Swiper uchun)
+        const imgBox = document.getElementById('d-images');
+        if (imgBox) {
+            const allImages = ad.images && ad.images.length > 0 ? ad.images : [ad.image];
+            imgBox.innerHTML = allImages.map(img => `
+                <div class="swiper-slide">
+                    <img src="${img}" style="width:100%; height:300px; object-fit:cover;">
+                </div>
+            `).join('');
+
+            // Swiperni ishga tushirish (agar 1 tadan ko'p bo'lsa)
+            new Swiper(".detailSwiper", {
+                pagination: { el: ".swiper-pagination" },
+                loop: allImages.length > 1
+            });
+        }
+
+        // 5. Sotib olish tugmasi
+        const btn = document.getElementById('contact-link');
+        if (btn) {
+            if (ad.contactType === 'phone') {
+                btn.href = `tel:${ad.contact}`;
+                btn.innerText = "Qo'ng'iroq qilish";
+            } else {
+                btn.href = `https://t.me/${ad.contact.replace('@', '')}`;
+                btn.innerText = "Telegramda yozish";
+            }
+        }
+        
+    } catch (err) {
+        console.error("Xatolik yuz berdi:", err);
+        alert("Sahifani yuklashda xato!");
+    }
+}
+
+// Orqaga qaytish funksiyasi
+function closeAdDetail() {
+    document.getElementById('detailPage').style.display = "none";
+    document.getElementById('home').style.display = "block"; // Bosh sahifa IDsi
+}
+function showProducts() {
+    const container = document.getElementById("products");
+    if (!container) return;
+
+    container.innerHTML = products.map((p) => `
+        <div class="product-card" onclick="openAdDetail(${p.id})" style="background:#fff; border-radius:8px; overflow:hidden; position:relative; border:1px solid #eee;">
+            <img src="${p.image}" style="width:100px; height:100px;">
+            <div style="position:absolute; top:8px; right:8px; background:rgba(255,255,255,0.8); border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; color:#002f34;">
+                <i class="far fa-heart"></i>
+            </div>
+            <div style="padding:10px;">
+                <div style="font-size:14px; font-weight:500; height:36px; overflow:hidden; line-height:1.3; color:#002f34;">${p.name}</div>
+                <div style="font-size:16px; font-weight:bold; margin:5px 0; color:#002f34;">${p.price}</div>
+                <div style="font-size:11px; color:#7f9799;">${p.date || 'Bugun'}</div>
+            </div>
+        </div>
+    `).join("");
+}
+function finishPosting() {
+    const priceValue = document.getElementById('productPrice').value;
+    const currencyValue = document.getElementById('currency').value; // Masalan: "so'm" yoki "$"
+
+    if (!priceValue) return alert("Narxni kiriting!");
+
+    // Narxni formatlash (masalan: "500 000 so'm")
+    const formattedPrice = Number(priceValue).toLocaleString('ru-RU') + " " + currencyValue;
+
+    const newAd = {
+        // ... boshqa ma'lumotlar
+        price: formattedPrice, // Endi narx "500 000 so'm" ko'rinishida saqlanadi
+    };
+
+    // Saqlash logikasi...
+}
+function formatCurrency(amount, type) {
+    let formatted = new Intl.NumberFormat('sr-RS').format(amount).replace(/,/g, ' ');
+    return type === '$' ? `$ ${formatted}` : `${formatted} so'm`;
+}
+
+// Ishlatish:
+// console.log(formatCurrency(450000, 'so'm')); // "450 000 so'm"
+// Qidiruv sahifasini ochish
+function openSearchPage() {
+    document.getElementById('searchPage').style.display = 'block';
+    document.getElementById('fullSearchInput').focus(); // Avtomatik klaviaturani chiqarish
+}
+
+// Qidiruv sahifasini yopish
+function closeSearchPage() {
+    document.getElementById('searchPage').style.display = 'none';
+    document.getElementById('fullSearchInput').value = ''; // Qidiruvni tozalash
+    document.getElementById('searchResults').innerHTML = ''; 
+}
+
+// Qidiruv funksiyasi (endilikda natijalarni searchResults diviga yozadi)
+function liveSearch() {
+    const query = document.getElementById('fullSearchInput').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById("searchResults");
+    
+    if (!query) {
+        resultsContainer.innerHTML = "";
+        return;
+    }
+
+    const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+
+    resultsContainer.innerHTML = filtered.map(p => `
+        <div onclick="openAdDetail(${p.id}); closeSearchPage();" style="background:#fff; margin-bottom:10px; padding:10px; border-radius:10px; display:flex; align-items:center;">
+            <img src="${p.image}" style="width:50px; height:50px; object-fit:cover; border-radius:5px; margin-right:10px;">
+            <div>
+                <div style="font-weight:bold;">${p.name}</div>
+                <div style="color:#002f34;">${p.price}</div>
+            </div>
+        </div>
+    `).join("");
+}
+function liveSearch() {
+    const query = document.getElementById('fullSearchInput').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById("searchResults");
+    
+    // Grid klassini qo'shish
+    resultsContainer.className = "product-grid"; 
+    
+    if (!query) {
+        resultsContainer.innerHTML = "";
+        return;
+    }
+
+    const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+
+    if (filtered.length === 0) {
+        resultsContainer.innerHTML = "<p style='grid-column: 1 / -1; text-align:center; padding:20px;'>Hech narsa topilmadi</p>";
+        return;
+    }
+
+    resultsContainer.innerHTML = filtered.map(p => `
+        <div class="product-card" onclick="openAdDetail(${p.id}); closeSearchPage();" style="background:#fff; border-radius:10px; overflow:hidden; border:1px solid #eee;">
+            <img src="${p.image}" style="width:100%; height:140px; object-fit:cover;">
+            <div style="padding:10px;">
+                <div style="font-size:14px; font-weight:bold; height:36px; overflow:hidden;">${p.name}</div>
+                <div style="color:#002f34; font-weight:bold; margin-top:5px;">${p.price}</div>
+            </div>
+        </div>
+    `).join("");
+}
+function renderPremiumAds() {
+    const container = document.getElementById("premiumContainer");
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+    
+    // Faqat premium deb belgilangan e'lonlarni olish
+    const premiumAds = products.filter(p => p.isPremium);
+
+    if (premiumAds.length === 0) {
+        document.querySelector('.premium-section').style.display = 'none';
+        return;
+    }
+
+    container.innerHTML = premiumAds.map(p => `
+        <div class="swiper-slide premium-card" onclick="openAdDetail(${p.id})">
+            <img src="${p.image}" style="width:100%; height:120px; object-fit:cover;">
+            <div style="padding:8px;">
+                <div style="font-size:12px; font-weight:bold;">${p.name}</div>
+                <div style="color:#7f52ff; font-weight:bold;">${p.price}</div>
+            </div>
+        </div>
+    `).join("");
+
+    // Swiper-ni ishga tushirish (agar hali ishga tushmagan bo'lsa)
+    new Swiper(".premiumSwiper", {
+        slidesPerView: 2.2, // Bir qatorda 2 ta e'lon va keyingisining yarmi ko'rinadi
+        spaceBetween: 10
+    });
+}
+function postAd() {
+    // Inputlardan ma'lumotlarni olish
+    const name = document.getElementById('productName').value;
+    const price = document.getElementById('productPrice').value;
+    const desc = document.getElementById('productDesc').value;
+    const isPremium = document.getElementById('isPremiumCheck').checked; // Checkbox holati
+
+    if (!name || !price) return alert("Iltimos, maydonlarni to'ldiring!");
+
+    // E'lon obyektini yaratish
+    const newAd = {
+        id: Date.now(),
+        name: name,
+        price: price + " so'm",
+        desc: desc,
+        isPremium: isPremium, // Mana shu joyi eng muhimi
+        date: new Date().toLocaleDateString(),
+        image: "https://via.placeholder.com/150" // Rasm yuklash funksiyasi bo'lsa uni oling
+    };
+
+    // LocalStorage-ga saqlash
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+    products.push(newAd);
+    localStorage.setItem("products", JSON.stringify(products));
+
+    alert(isPremium ? "Premium e'loningiz muvaffaqiyatli joylandi!" : "E'loningiz joylandi!");
+    
+    // Bosh sahifaga qaytish
+    location.reload(); 
+}
+function showProducts() {
+    const container = document.getElementById("products");
+    if (!container) return;
+
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+    // FAQAT premium bo'lmaganlarni chiqaramiz
+    const regularAds = products.filter(p => !p.isPremium);
+
+    if (regularAds.length === 0) {
+        container.innerHTML = "<p style='text-align:center;'>Hozircha oddiy e'lonlar yo'q</p>";
+        return;
+    }
+
+    container.innerHTML = regularAds.map((p) => `
+        <div class="product-card" onclick="openAdDetail(${p.id})">
+            <img src="${p.image}">
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">${p.price}</div>
+        </div>
+    `).join("");
+}
+const categories = [
+    "Telegram premium", "Telegram Starslar", "Telegram akkauntlar", 
+    "Telegram kanal va guruxlar", "Telegram botlar", "Email akkauntlar",
+    "Pubg akkauntlar", "Instagram akkauntlar", "Youtube akkauntlar",
+    "Tiktok akkauntlar", "Facebook akkauntlar", "Telefon raqamlar", "Boshqa akkauntlar"
+];
+
+// Sahifani ochish
+function openSearchPage() {
+    document.getElementById('searchPage').style.display = 'block';
+    document.getElementById('fullSearchInput').focus();
+    loadCategories(); // Kategoriyalarni yuklash
+}
+
+// Sahifani yopish
+function closeSearchPage() {
+    document.getElementById('searchPage').style.display = 'none';
+}
+
+// Kategoriyalarni chiqarish
+function loadCategories() {
+    const list = document.getElementById("categoriesList");
+    list.innerHTML = categories.map(cat => `
+        <div onclick="filterByCategory('${cat}')" style="padding:15px; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; cursor:pointer; align-items:center;">
+            <span style="font-size: 15px;">${cat}</span>
+            <span style="color:#ccc;">›</span>
+        </div>
+    `).join("");
+}
+
+// Qidiruv funksiyasi
+function performSearch() {
+    const query = document.getElementById('fullSearchInput').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById("searchResults");
+    const catList = document.getElementById("categoryListContainer");
+    
+    if (!query) {
+        resultsContainer.innerHTML = "";
+        catList.style.display = "block";
+        return;
+    }
+
+    catList.style.display = "none";
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+    const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+
+    resultsContainer.innerHTML = filtered.length > 0 
+        ? filtered.map(p => `
+            <div class="product-card" onclick="openAdDetail(${p.id}); closeSearchPage();" style="border:1px solid #eee; border-radius:10px; overflow:hidden;">
+                <img src="${p.image}" style="width:100%; height:0px; object-fit:cover;">
+                <div style="padding:8px;">
+                    <div style="font-weight:bold; font-size:13px;">${p.name}</div>
+                    <div style="color:#7f52ff; font-weight:bold; font-size:14px;">${p.price}</div>
+                </div>
+            </div>
+        `).join("")
+        : "<p style='text-align:center; color:gray;'>Natija topilmadi</p>";
+}
+
+// Kategoriyani bosganda
+function filterByCategory(cat) {
+    document.getElementById('fullSearchInput').value = cat;
+    performSearch();
+}
+let startY = 0;
+let pullDelta = 0;
+let isRefreshing = false;
+
+const container = document.getElementById('ptr-container');
+const circle = container.querySelector('.ptr-circle');
+const icon = container.querySelector('svg');
+
+// 1. E'LONLARNI YANGILASH (Lentani qayta chizish)
+function updateAdFeed() {
+    const feedContainer = document.getElementById('ads-feed'); // E'lonlar turgan DIV ID-si
+    if (!feedContainer) return;
+
+    // LocalStorage-dan e'lonlarni olish
+    const storedAds = JSON.parse(localStorage.getItem('myAds')) || [];
+    
+    // Lentani tozalash va qayta chizish
+    feedContainer.innerHTML = ''; 
+
+    if (storedAds.length === 0) {
+        feedContainer.innerHTML = '<p style="text-align:center; padding:20px;">Hozircha e\'lonlar yo\'q</p>';
+        return;
+    }
+
+    storedAds.reverse().forEach(ad => { // Yangilari tepada chiqishi uchun reverse()
+        const adCard = `
+            <div class="ad-card" style="margin-bottom: 15px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0 0 8px 0; color: #333;">${ad.title}</h3>
+                <p style="font-size: 14px; color: #666; margin-bottom: 10px;">${ad.description || 'Tavsif yozilmagan'}</p>
+                <div style="font-weight: bold; color: #700;">${ad.price} so'm</div>
+                <div style="font-size: 11px; color: #999; margin-top: 5px;">Virtual mahsulot</div>
+            </div>
+        `;
+        feedContainer.innerHTML += adCard;
+    });
+    console.log("Lenta yangilandi!");
+}
+
+// 2. REFRESH HARAKATLARI
+window.addEventListener('touchstart', (e) => {
+    const homePage = document.getElementById('home');
+    const isHome = homePage && homePage.style.display !== 'none';
+
+    if (isHome && window.scrollY <= 0 && !isRefreshing) {
+        startY = e.touches[0].pageY;
+        container.style.transition = 'none';
+    } else {
+        startY = 0;
+    }
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+    if (startY === 0 || isRefreshing) return;
+
+    const currentY = e.touches[0].pageY;
+    pullDelta = currentY - startY;
+
+    if (pullDelta > 10 && window.scrollY <= 0) {
+        const y = Math.min(pullDelta * 0.4, 90);
+        container.style.transform = `translateY(${y}px)`;
+        icon.style.transform = `rotate(${pullDelta * 2}deg)`;
+        
+        if (e.cancelable) e.preventDefault();
+    }
+}, { passive: false });
+
+window.addEventListener('touchend', () => {
+    if (startY === 0 || isRefreshing) return;
+
+    container.style.transition = 'transform 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.28)';
+
+    if (pullDelta > 80) {
+        isRefreshing = true;
+        circle.classList.add('ptr-spinning');
+        container.style.transform = `translateY(80px)`;
+
+        // REFRESH QILISH: Sayt o'chmaydi, faqat lenta yangilanadi
+        setTimeout(() => {
+            updateAdFeed(); // Ma'lumotlarni bazadan qayta o'qish
+            
+            // Indikatorni yashirish
+            container.style.transform = `translateY(0)`;
+            setTimeout(() => {
+                circle.classList.remove('ptr-spinning');
+                isRefreshing = false;
+                pullDelta = 0;
+            }, 300);
+        }, 1200);
+    } else {
+        container.style.transform = `translateY(0)`;
+        pullDelta = 0;
+    }
+    startY = 0;
+});
+
+// Sahifa birinchi marta yuklanganda ham e'lonlarni ko'rsatish
+document.addEventListener('DOMContentLoaded', updateAdFeed);
+function searchAds() {
+    // 1. Qidiruv so'zini olish
+    const query = document.getElementById('main-search-input').value.toLowerCase();
+    
+    // 2. LocalStorage'dan hamma e'lonlarni olish
+    const allAds = JSON.parse(localStorage.getItem('myAds')) || [];
+    
+    // 3. Filtrlash (Sarlavha yoki tavsif bo'yicha)
+    const filteredAds = allAds.filter(ad => {
+        return ad.title.toLowerCase().includes(query) || 
+               (ad.description && ad.description.toLowerCase().includes(query));
+    });
+
+    // 4. Natijani ekranga chiqarish (Lentani yangilash)
+    displaySearchResults(filteredAds);
+}
+
+// Qidiruv natijalarini render qilish funksiyasi
+function displaySearchResults(results) {
+    const feed = document.getElementById('ads-feed'); // E'lonlar konteyneri
+    if (!feed) return;
+
+    if (results.length === 0) {
+        feed.innerHTML = '<p style="text-align:center; padding:50px; color:#666;">Hech narsa topilmadi...</p>';
+        return;
+    }
+
+    feed.innerHTML = results.reverse().map(ad => `
+        <div class="ad-card" style="margin-bottom: 15px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <h3 style="margin: 0 0 8px 0;">${ad.title}</h3>
+            <p style="font-size: 14px; color: #666;">${ad.description || ''}</p>
+            <div style="font-weight: bold; color: #007bff; margin-top: 10px;">${ad.price} so'm</div>
+        </div>
+    `).join('');
+}
+// 1. Enter tugmasi bosilganini tekshirish
+function handleKeyPress(event) {
+    if (event.key === "Enter") {
+        searchAds(); // Enter bosilganda qidiruvni boshlaydi
+    }
+}
+
+// 2. Qidiruv funksiyasi
+function searchAds() {
+    const query = document.getElementById('main-search-input').value.toLowerCase();
+    const allAds = JSON.parse(localStorage.getItem('myAds')) || [];
+
+    // Qidiruv so'zi bo'yicha filtrlash
+    const filteredAds = allAds.filter(ad => {
+        return ad.title.toLowerCase().includes(query) || 
+               (ad.description && ad.description.toLowerCase().includes(query));
+    });
+
+    // Natijani ekranga chiqarish
+    displaySearchResults(filteredAds);
+}
+
+// 3. Ekranga chiqaruvchi (Render) funksiya
+function displaySearchResults(results) {
+    const feed = document.getElementById('ads-feed');
+    if (!feed) return;
+
+    if (results.length === 0) {
+        feed.innerHTML = '<p style="text-align:center; padding:50px; color:#666;">Hech narsa topilmadi...</p>';
+        return;
+    }
+
+    feed.innerHTML = results.reverse().map(ad => `
+        <div class="ad-card" style="margin-bottom: 15px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <h3 style="margin: 0 0 8px 0;">${ad.title}</h3>
+            <p style="font-size: 14px; color: #666;">${ad.description || 'Tavsif yo\'q'}</p>
+            <div style="font-weight: bold; color: #007bff; margin-top: 10px;">${ad.price} so'm</div>
+        </div>
+    `).join('');
+}
+// 1. Qidiruv oynasini ochish
+function openSearch() {
+    document.getElementById('search-overlay').style.display = 'flex';
+    document.getElementById('live-search-input').focus(); // Avtomatik klaviaturani ochadi
+}
+
+// 2. Qidiruv oynasini yopish
+function closeSearch() {
+    document.getElementById('search-overlay').style.display = 'none';
+}
+
+// 3. Matnni tozalash
+function clearSearch() {
+    document.getElementById('live-search-input').value = '';
+    liveSearch(); // Natijalarni ham tozalaydi
+}
+
+// 4. JONLI QIDIRUV (Har bir harf bosilganda ishlaydi)
+function liveSearch() {
+    const input = document.getElementById('live-search-input');
+    const query = input.value.toLowerCase();
+    const resultsContainer = document.getElementById('search-results-list');
+    
+    // Matn bo'sh bo'lsa natijalarni o'chirish
+    if (query.length === 0) {
+        resultsContainer.innerHTML = '';
+        return;
+    }
+
+    // LocalStorage-dan e'lonlarni olish
+    const ads = JSON.parse(localStorage.getItem('myAds')) || [];
+
+    // Filtrlash (a -> barcha a qatnashganlar, as -> as qatnashganlar)
+    const filtered = ads.filter(ad => 
+        ad.title.toLowerCase().includes(query) || 
+        (ad.description && ad.description.toLowerCase().includes(query))
+    );
+
+    // Natijalarni chiqarish
+    resultsContainer.innerHTML = filtered.map(ad => `
+        <div class="search-result-item">
+            <h4 style="margin:0; color:#000;">${ad.title}</h4>
+            <p style="margin:5px 0; font-size:13px; color:#444;">${ad.description || ''}</p>
+            <b style="color:#007bff;">${ad.price} so'm</b>
+        </div>
+    `).join('');
+
+    // Agar hech narsa topilmasa
+    if (filtered.length === 0) {
+        resultsContainer.innerHTML = '<p style="text-align:center; color:#888;">Hech narsa topilmadi</p>';
+    }
+}
+// AGAR SIZDA BOSHQA NOM BO'LSA, 'myAds' NI O'SHA NOMGA O'ZGARTIRING
+const ads = JSON.parse(localStorage.getItem('myAds')) || []; 
+const filtered = ads.filter(ad => 
+    (ad.sarlavha && ad.sarlavha.toLowerCase().includes(query)) || // 'title' o'rniga 'sarlavha'
+    (ad.tavsif && ad.tavsif.toLowerCase().includes(query))        // 'description' o'rniga 'tavsif'
+);
+function liveSearch() {
+    const query = document.getElementById('live-search-input').value.toLowerCase();
+    const ads = JSON.parse(localStorage.getItem('myAds')) || [];
+    
+    console.log("Qidirilmoqda:", query);
+    console.log("Bazadagi e'lonlar:", ads);
+
+    const filtered = ads.filter(ad => {
+        const titleMatch = ad.title ? ad.title.toLowerCase().includes(query) : false;
+        const descMatch = ad.description ? ad.description.toLowerCase().includes(query) : false;
+        return titleMatch || descMatch;
+    });
+
+    console.log("Topilganlar soni:", filtered.length);
+    // ... qolgan render kodi
+}
+// Render funksiyasi ichida
+feed.innerHTML += `
+    <div class="ad-card">
+        <img src="${ad.image}" alt="${ad.title}"> <div class="ad-info" style="padding: 10px;">
+            <h3 style="margin: 0; font-size: 16px;">${ad.title}</h3>
+            <div style="font-weight: bold; font-size: 18px; margin-top: 5px;">${ad.price}</div>
+        </div>
+    </div>
+`;
