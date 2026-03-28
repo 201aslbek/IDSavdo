@@ -10,53 +10,141 @@
 
 </head>
 <body>
+  
 
 <!-- HOME PAGE -->
 <div class="page active" id="homePage">
+  
+    <div id="ptr-container">
+    <div class="ptr-circle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 4v6h-6"></path>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+    </div>
+</div>
+<div id="pull-to-refresh">
+    <div class="refresh-circle">
+        <i class="fas fa-redo-alt"></i> </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<div id="search-trigger" onclick="openSearch()">
+    <i class="fas fa-search"></i>
+    <span>Qidirish...</span>
+</div>
+
+<div id="search-overlay" class="search-modal">
+    <div class="search-header">
+        <i class="fas fa-arrow-left" onclick="closeSearch()"></i>
+        <input type="text" id="live-search-input" placeholder="Qidiring..." oninput="liveSearch()">
+        <i class="fas fa-times" onclick="clearSearch()"></i>
+    </div>
+    <div id="search-results-list" class="results-container">
+        </div>
+</div>
+
     <div class="swiper mySwiper">
         <div class="swiper-wrapper" id="bannerContainer">
+          <style>aspect-ratio: "</style>
             </div>
     </div>
+ 
+<div class="recommend-divider">
+    <div class="divider-line"></div>
+    <span class="divider-text">Tavsiya etamiz</span>
+    <div class="divider-line"></div>
+</div>
+
     <div id="products" class="products"></div>
     <p style="font-size:50px;"> </p>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<style>
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 ta ustun */
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .swiper { width: 100%; height: 150px; }
+  
+  .like-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+  }
+  .card-img { height: 100px; width: 100px; border-radius: 18px;}
+  .card-info { padding: 8px; }
+  .card-title { font-size: 14px; color: #333; height: 40px; overflow: hidden; }
+  .card-price { font-weight: bold; font-size: 16px; margin: 5px 0; }
+  .card-date { font-size: 11px; color: gray; }
+</style>
+
+<div class="products-grid" id="home-grid">
+  
+  </div>
+
 </div>
 
 
   <!-- PRODUCTS -->
   <div id="products" class="products"></div>
+  <div id="detailPage" class="page" style="display:none; background: #fff; min-height: 100vh;border-radius:20px;">
+    <div class="swiper detailSwiper" style="height: 300px; position: relative;"><button onclick="location.reload()" style="border-radius:20px; font-size:15px;">❮ Back</button></button>
+
+        <div class="swiper-wrapper" id="d-images"></div>
+        <div class="swiper-pagination"></div>
+        <div id="d-like" style="position: absolute; top: 15px; right: 15px; z-index: 10; font-size: 24px; color: #00f2ff;">
+            <i class="far fa-heart"></i>
+        </div>
+        
+    </div>
+
+    <div style="padding: 15px;">
+        <p id="d-date" style="color: gray; font-size: 13px; margin-bottom: 5px;"></p>
+        <h2 id="d-title" style="font-weight: bold; font-size: 18px; margin: 0;"></h2>
+        <h1 id="d-price" style="font-size: 22px; font-weight: 800; margin: 10px 0;"></h1>
+        <div id="d-cat" style="color: #002f34; background: #ebf1f3; display: inline-block; padding: 5px 10px; border-radius: 4px; font-size: 13px;"></div>
+
+        <h3 style="margin-top: 20px; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 5px;">TAVSIF</h3>
+        <p id="d-desc" style="line-height: 1.5; color: #333;"></p>
+
+        <h3 style="margin-top: 20px; font-size: 16px;">FOYDALANUVCHI</h3>
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+            <div style="width: 45px; height: 45px; border-radius: 50%; background: #ced4d6; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-user" style="color: #fff;"></i>
+            </div>
+            <b id="d-username" style="font-size: 18px;">user</b>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; justify-content: space-between; color: #7f9799; font-size: 12px;">
+            <span id="d-id">id: 1</span>
+            <span id="d-views">100</span>
+        </div>
+
+        <a id="contact-link" href="#" style="display: block; text-decoration: none; background: #002f34; color: #fff; text-align: center; padding: 15px; border-radius: 8px; font-weight: bold; margin-top: 20px; margin-bottom: 80px;">Sotib olish</a>
+    </div>
+</div>
+
   
 
 </div>
-
-
-<!-- SEARCH PAGE -->
-<div class="page" id="searchPage">
-
-  <h2>Kategoriyalar</h2>
-
-  <input class="search" placeholder="Akkaunt qidirish...">
-
-  <select id="searchCategory" onchange="filterByCategory()">
-    <option value="">Barcha kategoriyalar</option>
-    <option value="Telegram premium">Telegram premium</option>
-    <option value="Telegram Starslar">Telegram Starslar</option>
-    <option value="Telegram akkauntlar">Telegram akkauntlar</option>
-    <option value="Telegram kanal va guruxlar">Telegram kanal va guruxlar</option>
-    <option value="Telegram botlar">Telegram botlar</option>
-    <option value="Email akkauntlar">Email akkauntlar</option>
-    <option value="Pubg akkauntlar">Pubg akkauntlar</option>
-    <option value="Instagram akkauntlar">Instagram akkauntlar</option>
-    <option value="Youtube akkauntlar">Youtube akkauntlar</option>
-    <option value="Tiktok akkauntlar">Tiktok akkauntlar</option>
-    <option value="Facebook akkauntlar">Facebook akkauntlar</option>
-    <option value="Telefon raqamlar">Telefon raqamlar</option>
-    <option value="Boshqa akkauntlar">Boshqa akkauntlar</option>
-  </select>
-
-  <div id="searchResults" class="products"></div>
-
-</div>
-
 
 <!-- SELL PAGE -->
 <div class="page" id="sellPage">
@@ -98,9 +186,9 @@
                 <div onclick="selectCat('Instagram')">Instagram</div>
                 <div onclick="selectCat('YouTube')">YouTube</div>
                 <div onclick="selectCat('TikTok')">TikTok</div>
-                <div onclick="selectCat('PUBG')">PUBG</div>
-                <div onclick="selectCat('Free Fire')">Free Fire</div>
-                <div onclick="selectCat('Boshqa o\'yinlar')">Boshqa o'yinlar</div>
+                <div onclick="selectCat('Game')">Oʻyin akkauntlar</div>
+                <div onclick="selectCat('Usernamelar')">Usernamelar</div>
+                <div onclick="selectCat('Numbers')">Telefon Raqamlar</div>
                 <div onclick="selectCat('Steam')">Steam</div>
                 <div onclick="selectCat('Email')">Email</div>
                 <div onclick="selectCat('Premium')">Premium</div>
@@ -126,7 +214,7 @@
             <textarea id="productDesc" placeholder="Mahsulot haqida batafsil..." maxlength="1000"></textarea>
             <button class="next-btn" onclick="nextStep(6)">Davom ettirish</button>
         </div>
-
+        
         <div class="step" id="step6">
     <h2>Aloqa uchun profil ma'lumotlari</h2>
     <input type="text" id="contactName" placeholder="Ismingiz">
@@ -146,9 +234,19 @@
     </div>
 
     <input type="number" id="contactValue" placeholder="+998 90 123 45 67">
+    <div class="premium-option-box" style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 10px; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+        <div style="font-weight: bold; color: #7f52ff;">🌟 Premium e'lon</div>
+        <div style="font-size: 12px; color: #7f9799;">E'loningiz ro'yxatning eng yuqorisida chiqadi</div>
+    </div>
+    <input type="checkbox" id="isPremiumCheck" style="width: 20px; height: 20px;">
+</div>
+
      <button id="submitBtn" style="width: 100%; padding: 15px; background: #b5007d; color: white; border: none; border-radius: 10px;">
     E'lon berish
 </button>
+<h1>  </h1>
+<h1> </h1>
 
 
 
@@ -230,8 +328,10 @@
         
         <button onclick="alert('Coming soon...')" class="menu-btn">Sozlamalar</button>
         <a href="https://t.me/aslbek201" target="_blank" class="menu-btn support-btn">Support</a>
+        <h1>  </h1>
+        <h1>  </h1>
     </div>
-
+ 
     <div id="myContentList" class="my-content-list" style="display:none;">
         <div class="list-header">
             <h3 id="listTitle">Ro'yxat</h3>
@@ -262,24 +362,17 @@
 
 
 <!-- TAB BAR -->
-<div class="tabbar">
+<div class="footer-tab-bar">
 
   <button class="tab-btn active" onclick="playClick();openTab('homePage', this)">
     <img src="https://cdn-icons-png.flaticon.com/512/6997/6997164.png" style="width:28px;height:28px;">
-  </button>
-
-  <button class="tab-btn" onclick="playClick();openTab('searchPage', this)">
-    <img src="https://cdn-icons-png.flaticon.com/512/3626/3626504.png" style="width:26px;height:26px;">
   </button>
 
   <button class="tab-btn" onclick="playClick();openTab('sellPage', this)">
     <img src="https://cdn-icons-png.flaticon.com/512/10613/10613702.png" style="width:55px;height:55px;">
   </button>
 
-  <button class="tab-btn" onclick="playClick();openTab('likedPage', this)">
-    <img src="https://cdn-icons-png.flaticon.com/512/1077/1077086.png" style="width:24px;height:24px;">
-  </button>
-
+  
   <button class="tab-btn" onclick="playClick();openTab('profilePage', this)">
     <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" style="width:24px;height:24px;">
   </button>
