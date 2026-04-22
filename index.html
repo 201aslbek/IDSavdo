@@ -2,88 +2,599 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ID Savdo - Texnik ishlar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IDSavdo</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        /* Asosiy fon va dizayn */
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: rgba(0, 0, 139, 0.1);
+            color: #333;
+            overflow-x: hidden;
+            padding-bottom: 70px; /* Tab bar uchun joy */
+        }
+
+        /* Loading Screen */
+        #splash {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f172a;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #0b1d47; /* To'q ko'k fon */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            
-            color: red; /* Och ko'k matn rangi */
-            text-align: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
         }
+        .logo-text {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+        .logo-text .id { color: #ffffff; }
+        .logo-text .savdo { color: #0066ff; }
 
-        .container {
-            max-width: 400px;
-            padding: 20px;
+        /* Liquid Glass Tab Bar */
+        .tab-bar {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            height: 65px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
         }
-
-        /* Logo qismi */
-        .logo {
-            font-size: 3rem;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 30px;
-        }
-        .logo span {
-            color: #007bff; /* 'Savdo' so'zi uchun ko'k rang */
-        }
-
-        /* Matnlar */
-        h1 {
-            font-size: 1.8rem;
-            line-height: 1.4;
-            margin-bottom: 40px;
-        }
-
-        /* Click Here tugmasi */
-        .btn {
-            display: inline-block;
-            background-color: #38b6ff; /* Tugma rangi */
-            color: white;
-            padding: 15px 40px;
-            font-size: 1.5rem;
-            font-weight: bold;
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #64748b;
+            font-size: 12px;
             text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.2s, background-color 0.2s;
-            text-transform: uppercase;
+        }
+        .tab-item.active { color: #0066ff; }
+        .tab-item i { font-size: 24px; margin-bottom: 2px; }
+
+        /* Pages */
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0 20px 0;
+        }
+        .header-logo { font-size: 24px; font-weight: 800; background: #0f172a; padding: 5px 10px; border-radius: 8px;}
+        .header-logo .id { color: #ffffff; }
+        .header-logo .savdo { color: #0066ff; }
+
+        /* Fake Search Bar */
+        .fake-search {
+            background: #fff;
+            padding: 12px 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            color: #94a3b8;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            margin-bottom: 20px;
+        }
+        .fake-search i { margin-right: 10px; }
+
+        /* Banners */
+        .banner-container {
+            width: 100%;
+            height: 150px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 25px;
+            background: #e2e8f0;
+        }
+        .banner-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s ease-in-out;
+            scroll-snap-type: x mandatory;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+        .banner-track::-webkit-scrollbar { display: none; }
+        .banner-slide {
+            min-width: 100%;
+            height: 100%;
+            scroll-snap-align: start;
+            background-size: cover;
+            background-position: center;
+            background-color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
         }
 
-        /* Tugma bosilganda yoki ustiga borganda effekt */
-        .btn:hover {
-            background-color: #0099ff;
-            transform: scale(1.05);
-        }
+        /* Titles */
+        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #1e293b; }
 
-        .btn:active {
-            transform: scale(0.95);
+        /* Ad Grid */
+        .ad-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
+        .ad-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+            position: relative;
+        }
+        .ad-img-slider {
+            width: 100%;
+            aspect-ratio: 3/4;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+        .ad-img-slider::-webkit-scrollbar { display: none; }
+        .ad-img-slider img {
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            scroll-snap-align: start;
+            background: #f1f5f9;
+        }
+        .ad-info { padding: 10px; }
+        .ad-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ad-price { font-size: 15px; font-weight: 700; color: #0066ff; margin-bottom: 5px; }
+        .ad-date { font-size: 11px; color: #94a3b8; }
+
+        /* Search Page */
+        .real-search { width: 100%; padding: 12px 15px; border-radius: 12px; border: none; outline: none; margin-bottom: 20px; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .tag { padding: 8px 12px; background: #fff; border-radius: 8px; font-size: 13px; font-weight: 600; color: #334155; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .katalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .katalog-card { height: 80px; border-radius: 12px; background: linear-gradient(45deg, #3b82f6, #8b5cf6); color: white; padding: 10px; font-weight: 600; display: flex; flex-direction: column; justify-content: space-between; }
+
+        /* Sell Page Form */
+        .form-step { display: none; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .form-step.active { display: block; }
+        .form-input, .form-select { width: 100%; padding: 15px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 15px; font-size: 16px; outline: none; }
+        .form-input:focus { border-color: #0066ff; }
+        .btn-primary { width: 100%; padding: 15px; background: #0066ff; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; margin-top: 10px; }
+        
+        .img-upload-box { border: 2px dashed #cbd5e1; padding: 30px; text-align: center; border-radius: 12px; margin-bottom: 15px; position: relative; }
+        .img-upload-box input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; }
+        .preview-imgs { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; }
+        .preview-imgs img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; }
+
+        /* Detail Modal */
+        #detail-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px;}
+        .modal-header { padding: 15px; display: flex; align-items: center; border-bottom: 1px solid #f1f5f9; }
+        .modal-header i { font-size: 28px; margin-right: 15px; }
+        .detail-img-slider { width: 100%; aspect-ratio: 3/4; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
+        .detail-img-slider img { min-width: 100%; height: 100%; object-fit: cover; scroll-snap-align: start; }
+        .detail-body { padding: 20px; }
+        .detail-desc { color: #64748b; font-size: 14px; margin: 15px 0; line-height: 1.5; }
+        .buy-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="logo">ID<span>Savdo</span></div>
-
-        <h2>
-            Hozirda Botda<br>
-            Tuzatish Ishlari<br>
-            Ketyabdi!<br>
-            
-        </h2>
- <h1>  </h1>
-        <a href="https://t.me/idsavdo" class="btn" target="_blank">CLICK HERE</a>
+    <div id="splash">
+        <div class="logo-text"><span class="id">ID</span><span class="savdo">Savdo</span></div>
     </div>
 
+    <div id="app" style="display: none;">
+
+        <div id="home" class="page active">
+            <div class="header">
+                <div class="header-logo"><span class="id">ID</span><span class="savdo">Savdo</span></div>
+            </div>
+            
+            <div class="fake-search" onclick="switchTab('search')">
+                <i class="material-icons">search</i> E'lonlarni qidirish...
+            </div>
+
+            <div class="banner-container">
+                <div class="banner-track" id="bannerTrack">
+                    </div>
+            </div>
+
+            <div class="section-title">Tavsiya qilamiz</div>
+            <div class="ad-grid" id="homeAdsGrid">
+                </div>
+        </div>
+
+        <div id="search" class="page">
+            <input type="text" id="searchInput" class="real-search" placeholder="Qidirish..." oninput="handleSearch()">
+            
+            <div class="section-title">#Trendda</div>
+            <div class="tags-container">
+                <div class="tag" onclick="filterCategory('Oyin akkauntlar')">PUBG akkauntlar</div>
+                <div class="tag" onclick="filterCategory('Ijtimoiy tarmoq akkauntlar')">Instagram akkauntlar</div>
+                <div class="tag" onclick="filterCategory('Oyin akkauntlar')">eFootball akkauntlar</div>
+                <div class="tag" onclick="filterCategory('Oyin akkauntlar')">Boshqa oyinlar</div>
+            </div>
+
+            <div class="section-title">#Kataloglar</div>
+            <div class="katalog-grid">
+                <div class="katalog-card" style="background: linear-gradient(45deg, #f43f5e, #fb923c);" onclick="filterCategory('Oyin akkauntlar')">O'yin akkauntlar</div>
+                <div class="katalog-card" style="background: linear-gradient(45deg, #8b5cf6, #3b82f6);" onclick="filterCategory('Ijtimoiy tarmoq akkauntlar')">Ijtimoiy tarmoqlar</div>
+                <div class="katalog-card" style="background: linear-gradient(45deg, #10b981, #3b82f6);" onclick="filterCategory('Premium akkauntlar')">Premium akkauntlar</div>
+                <div class="katalog-card" style="background: linear-gradient(45deg, #f59e0b, #ef4444);" onclick="filterCategory('Telefon raqamlar')">Telefon raqamlar</div>
+                <div class="katalog-card" style="background: linear-gradient(45deg, #6366f1, #ec4899);" onclick="filterCategory('Premium usernamelar')">Premium usernamelar</div>
+                <div class="katalog-card" style="background: linear-gradient(45deg, #64748b, #475569);" onclick="filterCategory('Boshqa toifa')">Boshqa toifa</div>
+            </div>
+
+            <div id="searchResults" class="ad-grid" style="margin-top: 20px;"></div>
+        </div>
+
+        <div id="sell" class="page">
+            <div class="section-title" style="text-align:center; margin-bottom: 20px;">E'lon joylash</div>
+            
+            <div class="form-step active" id="step1">
+                <h3>1. Rasmlar qo'shish</h3>
+                <p style="font-size: 12px; color: gray; margin-bottom: 15px;">Maksimal 5 ta rasm (3:4 format tavsiya etiladi)</p>
+                <div class="img-upload-box">
+                    <i class="material-icons" style="font-size: 40px; color: #94a3b8;">add_photo_alternate</i>
+                    <p>Rasmlarni tanlang</p>
+                    <input type="file" id="adImages" multiple accept="image/*" onchange="previewImages(event)">
+                </div>
+                <div class="preview-imgs" id="imagePreviewContainer"></div>
+                <button class="btn-primary" onclick="nextStep(2)">Keyingi qadam</button>
+            </div>
+
+            <div class="form-step" id="step2">
+                <h3>2. Asosiy ma'lumotlar</h3>
+                <input type="text" id="adTitle" class="form-input" placeholder="E'lon nomi" style="margin-top: 15px;">
+                <textarea id="adDesc" class="form-input" placeholder="Batafsil tavsif" rows="4"></textarea>
+                <button class="btn-primary" onclick="nextStep(3)">Keyingi qadam</button>
+            </div>
+
+            <div class="form-step" id="step3">
+                <h3>3. Toifa va Narx</h3>
+                <select id="adCategory" class="form-select" style="margin-top: 15px;">
+                    <option value="Boshqa toifa">Toifani tanlang...</option>
+                    <option value="Oyin akkauntlar">O'yin akkauntlar</option>
+                    <option value="Ijtimoiy tarmoq akkauntlar">Ijtimoiy tarmoq akkauntlar</option>
+                    <option value="Premium akkauntlar">Premium akkauntlar</option>
+                    <option value="Telefon raqamlar">Telefon raqamlar</option>
+                    <option value="Premium usernamelar">Premium usernamelar</option>
+                    <option value="Boshqa toifa">Boshqa toifa</option>
+                </select>
+                <input type="number" id="adPrice" class="form-input" placeholder="Narxi (so'm)">
+                <button class="btn-primary" onclick="nextStep(4)">Keyingi qadam</button>
+            </div>
+
+            <div class="form-step" id="step4">
+                <h3>4. Bog'lanish</h3>
+                <p style="font-size: 12px; color: gray; margin-top: 10px;">Faqat Telegram username kiriting (kamida 4ta harf/raqam)</p>
+                <input type="text" id="adContact" class="form-input" value="@" oninput="formatUsername(this)" style="margin-top: 5px;">
+                <button class="btn-primary" onclick="submitAd()" style="background: #10b981;">E'lonni joylash</button>
+            </div>
+        </div>
+
+        <div id="ads" class="page"><div class="section-title">Mening e'lonlarim</div><p>Hali e'lonlaringiz yo'q.</p></div>
+        <div id="profile" class="page"><div class="section-title">Profil</div><p>Tez orada...</p></div>
+
+        <nav class="tab-bar">
+            <div class="tab-item active" onclick="switchTab('home')"><i class="material-icons">home</i>Asosiy</div>
+            <div class="tab-item" onclick="switchTab('search')"><i class="material-icons">search</i>Qidiruv</div>
+            <div class="tab-item" onclick="switchTab('sell')"><i class="material-icons">add_circle_outline</i>Sotish</div>
+            <div class="tab-item" onclick="switchTab('ads')"><i class="material-icons">campaign</i>E'lonlar</div>
+            <div class="tab-item" onclick="switchTab('profile')"><i class="material-icons">person_outline</i>Profil</div>
+        </nav>
+    </div>
+
+    <div id="detail-modal">
+        <div class="modal-header" onclick="closeDetail()">
+            <i class="material-icons">arrow_back</i> Orqaga
+        </div>
+        <div class="detail-img-slider" id="detailSlider"></div>
+        <div class="detail-body">
+            <h2 id="detailTitle" style="font-size: 22px; margin-bottom: 5px;"></h2>
+            <div id="detailPrice" style="font-size: 20px; font-weight: bold; color: #0066ff;"></div>
+            <div class="detail-desc" id="detailDesc"></div>
+            <div id="detailDate" style="font-size: 12px; color: #94a3b8; margin-top: 10px;"></div>
+        </div>
+        <div class="buy-btn-container">
+            <a id="detailBuyBtn" target="_blank" style="display: block; text-align: center; text-decoration: none; width: 100%; padding: 15px; background: #0066ff; color: white; border-radius: 12px; font-size: 16px; font-weight: bold;">Sotib olish</a>
+        </div>
+    </div>
+
+    <script>
+        // --- INITS VA MA'LUMOTLAR ---
+        let currentTempImages = [];
+        let adsList = JSON.parse(localStorage.getItem('idSavdoAds')) || [];
+
+        // Splash ekran logikasi
+        setTimeout(() => {
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                renderHome();
+            }, 500);
+        }, 2000);
+
+        // Tablarni almashtirish
+        function switchTab(tabId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if(tabId === 'home') renderHome();
+            if(tabId === 'search') {
+                document.getElementById('searchInput').value = '';
+                document.getElementById('searchResults').innerHTML = '';
+            }
+            if(tabId === 'sell') resetForm();
+        }
+
+        // Banners
+        const banners = [
+            "https://via.placeholder.com/600x300/3b82f6/ffffff?text=PUBG+Akkauntlar+Arzon+Narxda",
+            "https://via.placeholder.com/600x300/8b5cf6/ffffff?text=Instagram+Aktiv+Profillar",
+            "https://via.placeholder.com/600x300/10b981/ffffff?text=Telegram+Premium+Aksiya"
+        ];
+        
+        function renderHome() {
+            // Bannerlar
+            const track = document.getElementById('bannerTrack');
+            track.innerHTML = banners.map(b => `<div class="banner-slide" style="background-image: url('${b}')"></div>`).join('');
+            
+            // Auto scroll banner
+            let bannerIndex = 0;
+            setInterval(() => {
+                if(!document.getElementById('home').classList.contains('active')) return;
+                bannerIndex = (bannerIndex + 1) % banners.length;
+                track.scrollTo({ left: track.offsetWidth * bannerIndex, behavior: 'smooth' });
+            }, 3000);
+
+            // Elonlar
+            renderAdGrid(adsList.reverse(), 'homeAdsGrid');
+            adsList.reverse(); // Asl tartibga qaytarish
+        }
+
+        // Elonlarni chizish
+        function renderAdGrid(ads, containerId) {
+            const container = document.getElementById(containerId);
+            if(ads.length === 0) {
+                container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: #94a3b8; padding: 20px;">Hozircha e'lonlar yo'q</p>`;
+                return;
+            }
+
+            container.innerHTML = ads.map((ad, index) => {
+                const imagesHtml = ad.images.map(img => `<img src="${img}">`).join('');
+                return `
+                    <div class="ad-card" onclick="openDetail('${ad.id}')">
+                        <div class="ad-img-slider">${imagesHtml || '<img src="https://via.placeholder.com/300x400?text=Rasm+yoq">'}</div>
+                        <div class="ad-info">
+                            <div class="ad-title">${ad.title}</div>
+                            <div class="ad-price">${formatNumber(ad.price)} so'm</div>
+                            <div class="ad-date">${ad.date}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        // --- QIDIRUV LOGIKASI ---
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if(query.length === 0) {
+                resultsDiv.innerHTML = '';
+                return;
+            }
+
+            // 1. A bilan boshlanganlar 2. Qolgan ichida qatnashganlar
+            let startsWith = adsList.filter(ad => ad.title.toLowerCase().startsWith(query));
+            let includes = adsList.filter(ad => ad.title.toLowerCase().includes(query) && !ad.title.toLowerCase().startsWith(query));
+            
+            renderAdGrid([...startsWith, ...includes], 'searchResults');
+        }
+
+        function filterCategory(cat) {
+            document.getElementById('searchInput').value = '';
+            const filtered = adsList.filter(ad => ad.category === cat);
+            document.getElementById('searchResults').innerHTML = `<h3 style="grid-column: span 2; font-size: 16px; margin-bottom:10px;">${cat} natijalari:</h3>`;
+            renderAdGrid(filtered, 'searchResults');
+        }
+
+        // --- ELON JOYLASh LOGIKASI ---
+        function nextStep(stepNum) {
+            if(stepNum === 2 && currentTempImages.length === 0) {
+                alert("Iltimos kamida bitta rasm yuklang!"); return;
+            }
+            if(stepNum === 3) {
+                if(!document.getElementById('adTitle').value.trim()) { alert("Nomi kiritilishi shart!"); return; }
+                if(!document.getElementById('adDesc').value.trim()) { alert("Tavsif kiritilishi shart!"); return; }
+            }
+            if(stepNum === 4) {
+                if(!document.getElementById('adPrice').value) { alert("Narx kiritilishi shart!"); return; }
+            }
+
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step' + stepNum).classList.add('active');
+        }
+
+        // Rasmni siqish (Xotira tolib qolmasligi uchun base64)
+        function previewImages(event) {
+            const files = Array.from(event.target.files).slice(0, 5); // Max 5
+            const container = document.getElementById('imagePreviewContainer');
+            
+            if(currentTempImages.length + files.length > 5) {
+                alert("Maksimal 5 ta rasm mumkin!"); return;
+            }
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Rasmni Canvas orqali kichraytiramiz
+                    let img = new Image();
+                    img.onload = function() {
+                        let canvas = document.createElement('canvas');
+                        let ctx = canvas.getContext('2d');
+                        let maxWidth = 400; // LocalStorage uchun yetarli sifat
+                        let scale = maxWidth / img.width;
+                        canvas.width = maxWidth;
+                        canvas.height = img.height * scale;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        
+                        let base64 = canvas.toDataURL('image/jpeg', 0.6);
+                        currentTempImages.push(base64);
+                        container.innerHTML += `<img src="${base64}">`;
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function formatUsername(input) {
+            let val = input.value;
+            if(!val.startsWith('@')) val = '@' + val.replace(/@/g, '');
+            input.value = val;
+        }
+
+        function submitAd() {
+            let contact = document.getElementById('adContact').value;
+            if(contact.length < 5) { // @ + 4 ta harf
+                alert("Telegram username noto'g'ri! Kamida 4 ta belgi bo'lishi kerak.");
+                return;
+            }
+
+            let d = new Date();
+            let oyNomi = ["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"];
+
+            let newAd = {
+                id: 'id_' + Date.now(),
+                title: document.getElementById('adTitle').value,
+                desc: document.getElementById('adDesc').value,
+                category: document.getElementById('adCategory').value || 'Boshqa toifa',
+                price: document.getElementById('adPrice').value,
+                contact: contact,
+                images: currentTempImages,
+                date: `${d.getDate()} ${oyNomi[d.getMonth()]}`
+            };
+
+            adsList.push(newAd);
+            localStorage.setItem('idSavdoAds', JSON.stringify(adsList));
+            
+            alert("E'loningiz muvaffaqiyatli joylandi!");
+            switchTab('home');
+        }
+
+        function resetForm() {
+            currentTempImages = [];
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+            document.getElementById('adTitle').value = '';
+            document.getElementById('adDesc').value = '';
+            document.getElementById('adCategory').value = 'Boshqa toifa';
+            document.getElementById('adPrice').value = '';
+            document.getElementById('adContact').value = '@';
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step1').classList.add('active');
+        }
+
+        // --- DETAIL MODAL LOGIKASI ---
+        function openDetail(id) {
+            const ad = adsList.find(x => x.id === id);
+            if(!ad) return;
+
+            document.getElementById('detailTitle').innerText = ad.title;
+            document.getElementById('detailPrice').innerText = formatNumber(ad.price) + " so'm";
+            document.getElementById('detailDesc').innerText = ad.desc;
+            document.getElementById('detailDate').innerText = "Sana: " + ad.date;
+            
+            // T.me ssilkasi
+            let tgUsername = ad.contact.replace('@', '');
+            document.getElementById('detailBuyBtn').href = `https://t.me/${tgUsername}`;
+
+            const slider = document.getElementById('detailSlider');
+            slider.innerHTML = ad.images.map(img => `<img src="${img}">`).join('');
+            if(ad.images.length === 0) slider.innerHTML = `<img src="https://via.placeholder.com/600x800?text=Rasm+yoq">`;
+
+            document.getElementById('detail-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetail() {
+            document.getElementById('detail-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        function previewImages(event) {
+    const files = Array.from(event.target.files);
+    const container = document.getElementById('imagePreviewContainer');
+    
+    // Maksimal 5ta rasm tekshiruvi
+    if (currentTempImages.length + files.length > 5) {
+        alert("Maksimal 5 ta rasm yuklash mumkin!");
+        return;
+    }
+
+    files.forEach(file => {
+        // Fayl rasm ekanligini tekshirish
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            const base64Data = e.target.result;
+            
+            // Rasm elementini yaratish
+            const imgElement = document.createElement('img');
+            imgElement.src = base64Data;
+            imgElement.style.width = "60px";
+            imgElement.style.height = "80px";
+            imgElement.style.objectFit = "cover";
+            imgElement.style.borderRadius = "6px";
+            imgElement.style.marginRight = "10px";
+
+            // Ekran (container)ga qo'shish
+            container.appendChild(imgElement);
+            
+            // Massivga saqlash
+            currentTempImages.push(base64Data);
+            
+            console.log("Rasm muvaffaqiyatli yuklandi");
+        };
+
+        reader.onerror = function() {
+            console.error("Faylni o'qishda xatolik yuz berdi");
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
+
+    </script>
 </body>
 </html>
-
