@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IDSavdo</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -16,7 +18,7 @@
 
         body {
             background-color: rgba(0, 0, 139, 0.1);
-            color: white;
+            color: #333;
             overflow-x: hidden;
             padding-bottom: 70px; /* Tab bar uchun joy */
         }
@@ -78,7 +80,7 @@
             align-items: center;
             padding: 10px 0 20px 0;
         }
-        .header-logo { font-size: 24px; font-weight: 800;  padding: 5px 10px; border-radius: 8px;}
+        .header-logo { font-size: 24px; font-weight: 800; background: #0f172a; padding: 5px 10px; border-radius: 8px;}
         .header-logo .id { color: #ffffff; }
         .header-logo .savdo { color: #0066ff; }
 
@@ -289,7 +291,7 @@
                 <h3>4. Bog'lanish</h3>
                 <p style="font-size: 12px; color: gray; margin-top: 10px;">Faqat Telegram username kiriting (kamida 4ta harf/raqam)</p>
                 <input type="text" id="adContact" class="form-input" value="@" oninput="formatUsername(this)" style="margin-top: 5px;">
-                <button class="btn-primary" onclick="submitAd()" style="background: #10b981;">E'lonni joylash</button>
+                <button class="btn-primary" id="submitBtn" onclick="submitAd()" style="background: #10b981;">E'lonni joylash</button>
             </div>
         </div>
 
@@ -322,9 +324,25 @@
     </div>
 
     <script>
+        // ==========================================
+        // FIREBASE SOZLAMALARI (SHU YERNI O'ZGARTIRASIZ)
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "SIZNING_API_KEYINGIZ",
+            authDomain: "loyihangiz.firebaseapp.com",
+            projectId: "loyihangiz-id",
+            storageBucket: "loyihangiz.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef"
+        };
+        
+        // Firebaseni ishga tushirish
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         // --- INITS VA MA'LUMOTLAR ---
         let currentTempImages = [];
-        let adsList = JSON.parse(localStorage.getItem('idSavdoAds')) || [];
+        let adsList = []; // Endi localstoragedan emas, bo'sh massivdan boshlanadi
 
         // Splash ekran logikasi
         setTimeout(() => {
@@ -332,9 +350,25 @@
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
                 document.getElementById('app').style.display = 'block';
-                renderHome();
             }, 500);
         }, 2000);
+
+        // --- BAZADAN E'LONLARNI REAL-TIME OLISH ---
+        db.collection("elonlar").orderBy("timestamp", "desc").onSnapshot((querySnapshot) => {
+            adsList = [];
+            querySnapshot.forEach((doc) => {
+                let adData = doc.data();
+                adData.id = doc.id; // Firebase bergan maxsus ID
+                adsList.push(adData);
+            });
+            
+            // Agar Home yoki Search oynasida bo'lsak, ekranni yangilaymiz
+            if(document.getElementById('home').classList.contains('active')) {
+                renderHome();
+            } else if (document.getElementById('search').classList.contains('active')){
+                handleSearch(); // Qidiruv ochiq bo'lsa uni yangilash
+            }
+        });
 
         // Tablarni almashtirish
         function switchTab(tabId) {
@@ -372,9 +406,8 @@
                 track.scrollTo({ left: track.offsetWidth * bannerIndex, behavior: 'smooth' });
             }, 3000);
 
-            // Elonlar
-            renderAdGrid(adsList.reverse(), 'homeAdsGrid');
-            adsList.reverse(); // Asl tartibga qaytarish
+            // Elonlar bazadan kelyapti
+            renderAdGrid(adsList, 'homeAdsGrid');
         }
 
         // Elonlarni chizish
@@ -445,35 +478,41 @@
             document.getElementById('step' + stepNum).classList.add('active');
         }
 
-        // Rasmni siqish (Xotira tolib qolmasligi uchun base64)
+        // RASM YUKLASH FUNKSIYASI (SIQISH BILAN YANADA YAXSHILANDI BAZA UCHUN)
         function previewImages(event) {
-            const files = Array.from(event.target.files).slice(0, 5); // Max 5
+            const files = Array.from(event.target.files);
             const container = document.getElementById('imagePreviewContainer');
             
             if(currentTempImages.length + files.length > 5) {
-                alert("Maksimal 5 ta rasm mumkin!"); return;
+                alert("Maksimal 5 ta rasm mumkin!"); 
+                return;
             }
 
             files.forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    // Rasmni Canvas orqali kichraytiramiz
+                    // Bazaga yuklash uchun rasmni kichraytirish shart, aks holda baza to'lib xato beradi
                     let img = new Image();
                     img.onload = function() {
                         let canvas = document.createElement('canvas');
                         let ctx = canvas.getContext('2d');
-                        let maxWidth = 400; // LocalStorage uchun yetarli sifat
+                        let maxWidth = 400; // Bazani qotirmaslik uchun rasm eni
                         let scale = maxWidth / img.width;
                         canvas.width = maxWidth;
                         canvas.height = img.height * scale;
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         
-                        let base64 = canvas.toDataURL('image/jpeg', 0.6);
+                        let base64 = canvas.toDataURL('image/jpeg', 0.5); // Sifatini 50% ga siqamiz
                         currentTempImages.push(base64);
-                        container.innerHTML += `<img src="${base64}">`;
+                        
+                        let imgElement = document.createElement('img');
+                        imgElement.src = base64;
+                        container.appendChild(imgElement);
                     }
                     img.src = e.target.result;
-                }
+                };
                 reader.readAsDataURL(file);
             });
         }
@@ -484,6 +523,7 @@
             input.value = val;
         }
 
+        // BAZAGA JOYLASH
         function submitAd() {
             let contact = document.getElementById('adContact').value;
             if(contact.length < 5) { // @ + 4 ta harf
@@ -491,25 +531,38 @@
                 return;
             }
 
+            // Yuklash boshlanganda tugmani o'chirib turamiz (2 marta bosib yubormasligi uchun)
+            document.getElementById('submitBtn').innerText = "Joylanmoqda...";
+            document.getElementById('submitBtn').disabled = true;
+
             let d = new Date();
             let oyNomi = ["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"];
 
             let newAd = {
-                id: 'id_' + Date.now(),
                 title: document.getElementById('adTitle').value,
                 desc: document.getElementById('adDesc').value,
                 category: document.getElementById('adCategory').value || 'Boshqa toifa',
                 price: document.getElementById('adPrice').value,
                 contact: contact,
                 images: currentTempImages,
-                date: `${d.getDate()} ${oyNomi[d.getMonth()]}`
+                date: `${d.getDate()} ${oyNomi[d.getMonth()]}`,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp() // Bazaga tushgan aniq vaqt
             };
 
-            adsList.push(newAd);
-            localStorage.setItem('idSavdoAds', JSON.stringify(adsList));
-            
-            alert("E'loningiz muvaffaqiyatli joylandi!");
-            switchTab('home');
+            // Firestore ga ma'lumotni yuborish
+            db.collection("elonlar").add(newAd)
+            .then((docRef) => {
+                alert("E'loningiz muvaffaqiyatli joylandi!");
+                document.getElementById('submitBtn').innerText = "E'lonni joylash";
+                document.getElementById('submitBtn').disabled = false;
+                switchTab('home');
+            })
+            .catch((error) => {
+                console.error("Xatolik: ", error);
+                alert("Xatolik yuz berdi. Internetni tekshiring.");
+                document.getElementById('submitBtn').innerText = "E'lonni joylash";
+                document.getElementById('submitBtn').disabled = false;
+            });
         }
 
         function resetForm() {
@@ -550,51 +603,6 @@
             document.getElementById('detail-modal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-        function previewImages(event) {
-    const files = Array.from(event.target.files);
-    const container = document.getElementById('imagePreviewContainer');
-    
-    // Maksimal 5ta rasm tekshiruvi
-    if (currentTempImages.length + files.length > 5) {
-        alert("Maksimal 5 ta rasm yuklash mumkin!");
-        return;
-    }
-
-    files.forEach(file => {
-        // Fayl rasm ekanligini tekshirish
-        if (!file.type.startsWith('image/')) return;
-
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            const base64Data = e.target.result;
-            
-            // Rasm elementini yaratish
-            const imgElement = document.createElement('img');
-            imgElement.src = base64Data;
-            imgElement.style.width = "60px";
-            imgElement.style.height = "80px";
-            imgElement.style.objectFit = "cover";
-            imgElement.style.borderRadius = "6px";
-            imgElement.style.marginRight = "10px";
-
-            // Ekran (container)ga qo'shish
-            container.appendChild(imgElement);
-            
-            // Massivga saqlash
-            currentTempImages.push(base64Data);
-            
-            console.log("Rasm muvaffaqiyatli yuklandi");
-        };
-
-        reader.onerror = function() {
-            console.error("Faylni o'qishda xatolik yuz berdi");
-        };
-
-        reader.readAsDataURL(file);
-    });
-}
-
     </script>
 </body>
 </html>
