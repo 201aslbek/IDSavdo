@@ -12,6 +12,30 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
     <style>
+        /* CSS O'zgaruvchilar (Tungi va Kunduzgi rejim uchun) */
+        :root {
+            --bg-main: #f5f5f5;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --tab-bg: rgba(255, 255, 255, 0.85);
+            --modal-bg: #f8f9fa;
+            --primary-color: #0066ff;
+            --danger-color: #ef4444;
+        }
+
+        /* Tungi rejim ranglari */
+        body.dark-theme {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --tab-bg: rgba(30, 41, 59, 0.85);
+            --modal-bg: #0f172a;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -21,10 +45,11 @@
         }
 
         body {
-            background-color: #f5f5f5; 
-            color: #333;
+            background-color: var(--bg-main); 
+            color: var(--text-main);
             overflow-x: hidden;
             padding-bottom: 90px; 
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* Loading Screen */
@@ -45,7 +70,15 @@
             font-style: italic; 
         }
         .logo-text .id { color: #ffffff; } 
-        .logo-text .savdo { color: #0066ff; }
+        .logo-text .savdo { color: var(--primary-color); }
+.version-text {
+    position: absolute;
+    bottom: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-color); /* Yoki to'g'ridan-to'g'ri #0066ff */
+    letter-spacing: 1px;
+}
 
         /* Dynamic Island Tab Bar */
         .tab-bar {
@@ -55,22 +88,23 @@
             transform: translateX(-50%);
             width: 90%; 
             height: 65px;
-            background: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background:black var(--tab-bg); 
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
             border-radius: 35px; 
             display: flex;
             justify-content: space-around;
             align-items: center;
             z-index: 1000;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: background 0.3s;
         }
         .tab-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 11px;
             text-decoration: none;
             padding: 5px 10px;
@@ -78,13 +112,13 @@
             transition: all 0.3s ease;
         }
         .tab-item.active { 
-            color: #0066ff; 
+            color: var(--primary-color); 
             background: rgba(0, 102, 255, 0.1); 
         }
         .tab-item i { font-size: 24px; margin-bottom: 2px; }
 
         .tab-item.sell-btn {
-            background: #0066ff;
+            background: var(--primary-color);
             color: white;
             border-radius: 50%;
             width: 50px;
@@ -96,7 +130,6 @@
         .tab-item.sell-btn i { margin-bottom: 0; font-size: 28px;}
         .tab-item.sell-btn span { display: none; } 
 
-        /* Tepa qismini pastroqqa tushirish (Status bar muammosi uchun) */
         .page { 
             display: none; 
             padding: 15px; 
@@ -118,25 +151,27 @@
             font-weight: 900; 
             font-style: italic;
         }
-        .header-logo .id { color: #333; } 
-        .header-logo .savdo { color: #0066ff; }
+        .header-logo .id { color: var(--text-main); } 
+        .header-logo .savdo { color: var(--primary-color); }
 
         /* Search Bar */
         .fake-search {
-            background: #fff;
+            background: var(--bg-card);
             padding: 14px 15px;
             border-radius: 12px;
             display: flex;
             align-items: center;
-            color: #94a3b8;
+            color: var(--text-muted);
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
             margin-bottom: 20px;
+            border: 1px solid var(--border-color);
         }
         .fake-search i { margin-right: 10px; }
         
         .real-search { 
-            width: 100%; padding: 14px 15px; border-radius: 12px; border: none; 
+            width: 100%; padding: 14px 15px; border-radius: 12px; border: 1px solid var(--border-color); 
             outline: none; margin-bottom: 20px; font-size: 16px; 
+            background: var(--bg-card); color: var(--text-main);
             box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
         }
 
@@ -148,7 +183,7 @@
             overflow: hidden;
             position: relative;
             margin-bottom: 25px;
-            background: #e2e8f0;
+            background: var(--border-color);
         }
         .banner-track {
             display: flex;
@@ -166,7 +201,7 @@
             scroll-snap-align: start;
             background-size: cover;
             background-position: center;
-            background-color: #cbd5e1;
+            background-color: var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,7 +210,7 @@
         }
 
         /* Titles */
-        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: #1e293b; }
+        .section-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: var(--text-main); }
 
         /* Ad Grid */
         .ad-grid {
@@ -184,11 +219,12 @@
             gap: 12px;
         }
         .ad-card {
-            background: #fff;
+            background: var(--bg-card);
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0,0,0,0.04);
             position: relative;
+            border: 1px solid var(--border-color);
         }
         .ad-img-slider {
             width: 100%;
@@ -204,58 +240,64 @@
             height: 100%;
             object-fit: cover;
             scroll-snap-align: start;
-            background: #f1f5f9;
+            background: var(--border-color);
         }
-        .ad-info { padding: 10px; }
-        .ad-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .ad-price { font-size: 15px; font-weight: 700; color: #0066ff; margin-bottom: 5px; }
+        .ad-info { padding: 10px; display: flex; flex-direction: column; }
+        /* Yangilangan E'lon kartasi matnlari */
+        .ad-price { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+        .ad-title { 
+            font-size: 13px; font-weight: 500; color: var(--text-muted); 
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+            overflow: hidden; text-overflow: ellipsis; line-height: 1.4;
+        }
+        .ad-spacer { flex-grow: 1; min-height: 8px; }
+        .ad-date { font-size: 11px; color: var(--text-muted); opacity: 0.8; }
 
         /* Katalog Grid */
         .katalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .katalog-card { height: 80px; border-radius: 12px; background: linear-gradient(45deg, #3b82f6, #8b5cf6); color: white; padding: 10px; font-weight: 600; display: flex; flex-direction: column; justify-content: space-between; }
-
-        /* Katalog Natijalari (Modal) */
-        #catalog-results-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #f5f5f5; z-index: 1500; display: none; overflow-y: auto; padding-bottom: 80px;
-        }
+        .katalog-card { height: 80px; border-radius: 12px; color: white; padding: 10px; font-weight: 600; display: flex; flex-direction: column; justify-content: space-between; border: none;}
 
         /* Sell Page Form */
-        .form-step { display: none; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .form-step { display: none; background: var(--bg-card); padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color);}
         .form-step.active { display: block; }
-        .form-input, .form-select { width: 100%; padding: 15px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 15px; font-size: 16px; outline: none; }
-        .form-input:focus { border-color: #0066ff; }
-        .btn-primary { width: 100%; padding: 15px; background: #0066ff; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; margin-top: 10px; }
+        .form-input, .form-select { 
+            width: 100%; padding: 15px; border: 1px solid var(--border-color); 
+            border-radius: 10px; margin-bottom: 15px; font-size: 16px; outline: none; 
+            background: var(--bg-main); color: var(--text-main);
+        }
+        .form-input:focus, .form-select:focus { border-color: var(--primary-color); }
+        .btn-primary { width: 100%; padding: 15px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; margin-top: 10px; }
         
-        .img-upload-box { border: 2px dashed #cbd5e1; padding: 30px; text-align: center; border-radius: 12px; margin-bottom: 15px; position: relative; }
+        .img-upload-box { border: 2px dashed var(--border-color); padding: 30px; text-align: center; border-radius: 12px; margin-bottom: 15px; position: relative; }
         .img-upload-box input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; }
         .preview-imgs { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; }
         .preview-imgs img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; }
 
-        /* Modal */
-        #detail-modal { 
+        /* Modallar Umumiy Stili */
+        .full-modal { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #f8f9fa; z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px;
+            background: var(--modal-bg); z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px;
         }
         
         .modal-header { 
             padding: max(45px, env(safe-area-inset-top)) 15px 15px 15px; 
             display: flex; align-items: center; 
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            background: var(--tab-bg); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
             position: sticky; top: 0; z-index: 2010; 
         }
         
         .modal-back-btn {
             display: flex; align-items: center; justify-content: center;
-            background: #f1f5f9; color: #1e293b;
+            background: var(--border-color); color: var(--text-main);
             padding: 8px 16px; border-radius: 20px;
             font-size: 15px; font-weight: 600;
         }
-        .modal-back-btn i { font-size: 20px; margin-right: 6px; color: #0066ff;}
+        .modal-back-btn i { font-size: 20px; margin-right: 6px; color: var(--primary-color);}
         
+        /* Detail Oynasi Ichki Qismi */
         .detail-img-container {
-            position: relative; width: 100%; background: #fff;
+            position: relative; width: 100%; background: var(--bg-card);
             border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
             overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
@@ -272,53 +314,53 @@
             display: flex; gap: 5px;
         }
         .dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; transition: 0.3s; }
-        .dot.active { background: #0066ff; width: 15px; border-radius: 5px; }
+        .dot.active { background: var(--primary-color); width: 15px; border-radius: 5px; }
 
         .detail-body { padding: 20px; }
         
         .seller-info {
             display: flex; align-items: center; padding: 15px; 
-            background: #fff; border-radius: 12px; margin-top: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            background: var(--bg-card); border-radius: 12px; margin-top: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color);
         }
         .seller-avatar {
-            width: 50px; height: 50px; border-radius: 50%; background: #e2e8f0; 
-            display: flex; justify-content: center; align-items: center; font-size: 20px; color: #94a3b8;
-            margin-right: 15px; overflow: hidden; border: 1px solid #e2e8f0;
+            width: 50px; height: 50px; border-radius: 50%; background: var(--border-color); 
+            display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--text-muted);
+            margin-right: 15px; overflow: hidden;
         }
         .seller-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .seller-details h4 { margin: 0; font-size: 16px; color: #1e293b; }
-        .seller-details p { margin: 2px 0 0 0; font-size: 12px; color: #64748b; }
+        .seller-details h4 { margin: 0; font-size: 16px; color: var(--text-main); }
+        .seller-details p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-muted); }
 
         .features-box {
-            background: #fff; padding: 15px; border-radius: 12px; margin-top: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            background: var(--bg-card); padding: 15px; border-radius: 12px; margin-top: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color);
         }
         .feature-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
         .feature-item:last-child { margin-bottom: 0; }
-        .feature-label { color: #64748b; }
-        .feature-value { font-weight: 600; color: #334155; }
+        .feature-label { color: var(--text-muted); }
+        .feature-value { font-weight: 600; color: var(--text-main); }
 
         .detail-desc-box {
-            background: #fff; padding: 15px; border-radius: 12px; margin-top: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            background: var(--bg-card); padding: 15px; border-radius: 12px; margin-top: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color);
         }
-        .detail-desc { color: #475569; font-size: 14px; line-height: 1.5; margin-top: 10px; }
-        .detail-footer-info { margin-top: 20px; padding: 0 10px; font-size: 12px; color: #94a3b8; display: flex; justify-content: space-between; }
+        .detail-desc { color: var(--text-main); font-size: 14px; line-height: 1.5; margin-top: 10px; }
+        .detail-footer-info { margin-top: 20px; padding: 0 10px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; }
 
         .buy-btn-container { 
             position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px; 
-            background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); z-index: 2010;
+            background: var(--tab-bg); backdrop-filter: blur(10px); z-index: 2010; border-top: 1px solid var(--border-color);
         }
         .btn-buy {
             display: block; text-align: center; text-decoration: none; width: 100%; 
-            padding: 15px; background: #0066ff; color: white; border-radius: 12px; 
+            padding: 15px; background: var(--primary-color); color: white; border-radius: 12px; 
             font-size: 16px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,102,255,0.3);
         }
 
         /* Profil Bo'limi */
         .profile-header {
-            background: #fff; 
+            background: var(--bg-card); 
             padding: 20px;
             border-radius: 15px;
             display: flex;
@@ -326,38 +368,63 @@
             justify-content: space-between;
             margin-bottom: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
         }
-        .profile-info {
-            display: flex; flex-direction: column;
-        }
-        .profile-info h2 { margin: 0; font-size: 20px; font-weight: 700; color: #1e293b; }
-        .profile-info h3 { margin: 4px 0 0 0; font-size: 14px; color: #64748b; font-weight: 500; }
+        .profile-info { display: flex; flex-direction: column; }
+        .profile-info h2 { margin: 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
+        .profile-info h3 { margin: 4px 0 0 0; font-size: 14px; color: var(--text-muted); font-weight: 500; }
         
         .profile-avatar {
-            width: 65px; height: 65px; border-radius: 50%; background: #f1f5f9;
+            width: 65px; height: 65px; border-radius: 50%; background: var(--border-color);
             display: flex; justify-content: center; align-items: center;
-            font-size: 30px; color: #94a3b8; overflow: hidden;
-            border: 2px solid #0066ff;
+            font-size: 30px; color: var(--text-muted); overflow: hidden;
+            border: 2px solid var(--primary-color);
         }
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
         
         .menu-list { display: flex; flex-direction: column; gap: 10px; }
         .menu-item {
-            background: #fff; padding: 15px 20px; border-radius: 12px;
+            background: var(--bg-card); padding: 15px 20px; border-radius: 12px;
             display: flex; align-items: center; justify-content: space-between;
-            color: #334155; font-weight: 500; font-size: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            text-decoration: none;
+            color: var(--text-main); font-weight: 500; font-size: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color);
+            text-decoration: none; cursor: pointer;
         }
         .menu-item-left { display: flex; align-items: center; gap: 15px; }
-        .menu-item-left i { color: #64748b; font-size: 22px;}
+        .menu-item-left i { color: var(--text-muted); font-size: 22px;}
         
+        /* Sozlamalar va Matnli oynalar */
+        .settings-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px; background: var(--bg-card); border-radius: 12px;
+            margin-bottom: 10px; border: 1px solid var(--border-color);
+        }
+        
+        /* Toggle Switch */
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        .terms-text {
+            color: var(--text-main); font-size: 14px; line-height: 1.6;
+        }
+        .terms-text h3 { margin-top: 20px; margin-bottom: 10px; font-size: 16px;}
+
+        .delete-btn {
+            background: var(--danger-color); color: white; border: none; padding: 8px 15px; 
+            border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;
+        }
+
     </style>
 </head>
 <body>
 
     <div id="splash">
         <div class="logo-text"><span class="id">ID</span><span class="savdo">Savdo</span></div>
+        <div class="version-text">1.0.0</div>
     </div>
 
     <div id="app" style="display: none;">
@@ -372,17 +439,19 @@
             </div>
 
             <div class="banner-container">
-                <div class="banner-track" id="bannerTrack">
-                    </div>
+                <div class="banner-track" id="bannerTrack"></div>
             </div>
 
             <div class="section-title">Tavsiya qilamiz ✨</div>
-            <div class="ad-grid" id="homeAdsGrid">
-                </div>
+            <div class="ad-grid" id="homeAdsGrid"></div>
         </div>
 
         <div id="search" class="page">
-            <input type="text" id="searchInput" class="real-search" placeholder="Qidirish..." oninput="handleSearch()">
+            <div class="header">
+                <div class="header-logo"><span class="id">ID</span><span class="savdo">Savdo</span></div>
+            </div>
+
+            <input type="text" id="searchInput" class="real-search" placeholder="E'lonlarni qidirish..." oninput="handleSearch()">
             
             <div class="section-title">#Kataloglar</div>
             <div class="katalog-grid">
@@ -397,18 +466,6 @@
             <div id="searchResults" class="ad-grid" style="margin-top: 20px;"></div>
         </div>
 
-        <div id="catalog-results-modal">
-            <div class="modal-header" onclick="closeCatalogResults()">
-                <div class="modal-back-btn" style="margin-right: 15px;">
-                    <i class="material-icons">arrow_back</i> Orqaga
-                </div>
-                <span id="catalog-modal-title" style="font-weight:bold; font-size: 18px; color: #1e293b;">Katalog</span>
-            </div>
-            <div style="padding: 15px;">
-                <div id="catalogResultsGrid" class="ad-grid"></div>
-            </div>
-        </div>
-
         <div id="sell" class="page">
             <div class="section-title" style="text-align:center; margin-bottom: 20px;">E'lon joylash</div>
             
@@ -416,8 +473,8 @@
                 <h3>1. Rasmlar qo'shish</h3>
                 <p style="font-size: 12px; color: gray; margin-bottom: 15px;">Maksimal 5 ta rasm (3:4 format tavsiya etiladi)</p>
                 <div class="img-upload-box">
-                    <i class="material-icons" style="font-size: 40px; color: #94a3b8;">add_photo_alternate</i>
-                    <p>Rasmlarni tanlang</p>
+                    <i class="material-icons" style="font-size: 40px; color: var(--text-muted);">add_photo_alternate</i>
+                    <p style="color: var(--text-main);">Rasmlarni tanlang</p>
                     <input type="file" id="adImages" multiple accept="image/*" onchange="previewImages(event)">
                 </div>
                 <div class="preview-imgs" id="imagePreviewContainer"></div>
@@ -456,9 +513,9 @@
 
         <div id="ads" class="page">
             <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height: 60vh; text-align:center;">
-                <i class="material-icons" style="font-size: 80px; color: #cbd5e1; margin-bottom: 20px;">campaign</i>
+                <i class="material-icons" style="font-size: 80px; color: var(--border-color); margin-bottom: 20px;">campaign</i>
                 <h2>Reklamalar</h2>
-                <p style="color: #64748b; margin-top: 10px;">Tez kunlarda ishga tushadi!</p>
+                <p style="color: var(--text-muted); margin-top: 10px;">Tez kunlarda ishga tushadi!</p>
             </div>
         </div>
 
@@ -474,7 +531,7 @@
             </div>
 
             <div class="menu-list">
-                <div class="menu-item" onclick="alert('Mening e\'lonlarim - Tez kunda!')">
+                <div class="menu-item" onclick="openMyAds()">
                     <div class="menu-item-left"><i class="material-icons">format_list_bulleted</i> Mening e'lonlarim</div>
                     <i class="material-icons">chevron_right</i>
                 </div>
@@ -482,11 +539,11 @@
                     <div class="menu-item-left"><i class="material-icons">campaign</i> Reklama berish</div>
                     <i class="material-icons">chevron_right</i>
                 </a>
-                <div class="menu-item" onclick="alert('Sozlamalar - Tez kunda!')">
+                <div class="menu-item" onclick="openSettings()">
                     <div class="menu-item-left"><i class="material-icons">settings</i> Sozlamalar</div>
                     <i class="material-icons">chevron_right</i>
                 </div>
-                <div class="menu-item" onclick="alert('1. Saytda firibgarlik taqiqlanadi.\n2. Ma\'lumotlar ochiq taqdim etiladi.')">
+                <div class="menu-item" onclick="openTerms()">
                     <div class="menu-item-left"><i class="material-icons">gavel</i> Foydalanish shartlari</div>
                     <i class="material-icons">chevron_right</i>
                 </div>
@@ -506,45 +563,46 @@
         </nav>
     </div>
 
-    <div id="detail-modal">
-        <div class="modal-header" onclick="closeDetail()">
+    <div id="catalog-results-modal" class="full-modal">
+        <div class="modal-header" onclick="closeModal('catalog-results-modal')">
+            <div class="modal-back-btn" style="margin-right: 15px;">
+                <i class="material-icons">arrow_back</i> Orqaga
+            </div>
+            <span id="catalog-modal-title" style="font-weight:bold; font-size: 18px; color: var(--text-main);">Katalog</span>
+        </div>
+        <div style="padding: 15px;">
+            <div id="catalogResultsGrid" class="ad-grid"></div>
+        </div>
+    </div>
+
+    <div id="detail-modal" class="full-modal">
+        <div class="modal-header" onclick="closeModal('detail-modal')">
             <div class="modal-back-btn">
                 <i class="material-icons">arrow_back</i> Orqaga
             </div>
         </div>
-        
         <div class="detail-img-container">
             <div class="detail-img-slider" id="detailSlider" onscroll="updateDots()"></div>
             <div class="slider-dots" id="detailDots"></div>
         </div>
-
         <div class="detail-body">
             <h2 id="detailTitle" style="font-size: 20px; font-weight: 600; margin-bottom: 5px;"></h2>
-            <div id="detailPrice" style="font-size: 24px; font-weight: bold; color: #000;"></div>
-            
+            <div id="detailPrice" style="font-size: 24px; font-weight: bold; color: var(--text-main);"></div>
             <div class="seller-info">
-                <div class="seller-avatar" id="sellerAvatar">
-                    <i class="material-icons">person</i>
-                </div>
+                <div class="seller-avatar" id="sellerAvatar"><i class="material-icons">person</i></div>
                 <div class="seller-details">
                     <h4 id="sellerName">Sotuvchi</h4>
                     <p>Telegram orqali bog'lanish</p>
                 </div>
             </div>
-
             <div class="features-box">
                 <h3 style="font-size: 16px; margin-bottom: 10px;">Xususiyatlar</h3>
-                <div class="feature-item">
-                    <span class="feature-label">Toifa</span>
-                    <span class="feature-value" id="detailCat"></span>
-                </div>
+                <div class="feature-item"><span class="feature-label">Toifa</span><span class="feature-value" id="detailCat"></span></div>
             </div>
-
             <div class="detail-desc-box">
                 <h3 style="font-size: 16px;">Tavsif</h3>
                 <div class="detail-desc" id="detailDesc"></div>
             </div>
-
             <div class="detail-footer-info">
                 <div>Raqam: <span id="detailId"></span></div>
                 <div>Nashr vaqti: <span id="detailDate"></span></div>
@@ -552,6 +610,75 @@
         </div>
         <div class="buy-btn-container">
             <a id="detailBuyBtn" target="_blank" class="btn-buy">Sotib olish</a>
+        </div>
+    </div>
+
+    <div id="my-ads-modal" class="full-modal">
+        <div class="modal-header" onclick="closeModal('my-ads-modal')">
+            <div class="modal-back-btn" style="margin-right: 15px;">
+                <i class="material-icons">arrow_back</i> Orqaga
+            </div>
+            <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Mening e'lonlarim</span>
+        </div>
+        <div style="padding: 15px;" id="myAdsContainer">
+            </div>
+    </div>
+
+    <div id="settings-modal" class="full-modal">
+        <div class="modal-header" onclick="closeModal('settings-modal')">
+            <div class="modal-back-btn" style="margin-right: 15px;">
+                <i class="material-icons">arrow_back</i> Orqaga
+            </div>
+            <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Sozlamalar</span>
+        </div>
+        <div style="padding: 15px;">
+            <div class="settings-row">
+                <span style="font-weight: 500;">Tungi rejim (Dark Theme)</span>
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle" onchange="toggleTheme(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="settings-row">
+                <span style="font-weight: 500;">Dastur tili</span>
+                <select class="form-select" style="width: auto; margin-bottom: 0; padding: 8px 15px;" id="langSelect">
+                    <option value="uz">O'zbekcha</option>
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="terms-modal" class="full-modal">
+        <div class="modal-header" onclick="closeModal('terms-modal')">
+            <div class="modal-back-btn" style="margin-right: 15px;">
+                <i class="material-icons">arrow_back</i> Orqaga
+            </div>
+            <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Shartlar</span>
+        </div>
+        <div style="padding: 20px;" class="terms-text">
+            <h2>Foydalanish shartlari va Maxfiylik siyosati (Privacy Policy)</h2>
+            <br>
+            <p>Ushbu Foydalanish shartlari ("Shartlar") sizning IDSavdo bot/ilovasidan ("Ilova") foydalanishingizni tartibga soladi. Ilovadan foydalanish orqali siz quyidagi shartlarga rozi ekanligingizni tasdiqlaysiz.</p>
+            
+            <h3>1. Umumiy qoidalar</h3>
+            <p>IDSavdo - bu foydalanuvchilar o'zlarining virtual akkauntlari (o'yinlar, ijtimoiy tarmoqlar) va boshqa raqamli tovarlarni sotish yoki sotib olish haqida e'lonlar qoldirishi mumkin bo'lgan platformadir. Ilova ma'muriyati sotilayotgan mahsulotlarning sifati va ishonchliligiga bevosita kafolat bermaydi.</p>
+            
+            <h3>2. E'lon joylash qoidalari</h3>
+            <p>Foydalanuvchilar e'lon joylashda quyidagilarga amal qilishlari shart: <br>
+            - Yolg'on yoki chalg'ituvchi ma'lumotlar bermaslik.<br>
+            - Taqiqlangan, qonunga xilof yoki o'g'irlangan akkauntlarni sotmaslik.<br>
+            - E'lon rasmlari va tavsifi mahsulotga aniq mos kelishi.</p>
+            
+            <h3>3. Maxfiylik va Ma'lumotlar</h3>
+            <p>Biz sizning Telegram ochiq ma'lumotlaringizni (Ism, Username, Profil rasmi) e'lonlaringizda bog'lanish uchun ishlatamiz. Platforma orqali amalga oshirilgan oldi-sotdi kelishuvlari uchun faqat xaridor va sotuvchi javobgardir. Ma'muriyat uchinchi shaxslarga foydalanuvchi ma'lumotlarini bermaydi (qonunda belgilangan holatlar bundan mustasno).</p>
+            
+            <h3>4. Firibgarlik va Cheklovlar</h3>
+            <p>Agar biror foydalanuvchi ustidan asosli shikoyatlar tushsa yoki firibgarlik holati aniqlansa, ma'muriyat e'lonni o'chirish va foydalanuvchini platformadan bloklash huquqiga ega.</p>
+            
+            <br>
+            <p><i>Oxirgi yangilanish: 2026-yil, Aprel.</i></p>
         </div>
     </div>
 
@@ -577,31 +704,45 @@
         let globalIdCounter = 1; 
 
         // ==========================================
-        // TELEGRAM WEB APP ORQALI HAQIQIY MA'LUMOT OLISH
+        // TELEGRAM WEB APP VA THEME INIT
         // ==========================================
         let tgApp = window.Telegram.WebApp;
-        tgApp.ready(); // Ilovani Telegramda tayyorlash
+        tgApp.ready(); 
 
-        // Standart (bo'sh) ma'lumotlar
         let tgUser = { 
             username: "Mehmon", 
             first_name: "Foydalanuvchi", 
             photo: "" 
         };
 
-        // Agar foydalanuvchi Telegram orqali kiritlgan bo'lsa (initDataUnsafe to'la bo'lsa)
         if (tgApp.initDataUnsafe && tgApp.initDataUnsafe.user) {
             let u = tgApp.initDataUnsafe.user;
-            tgUser.username = u.username || u.id; // username bo'lmasa, ID sini oladi
+            tgUser.username = u.username || u.id; 
             tgUser.first_name = u.first_name || "Foydalanuvchi";
             tgUser.photo = u.photo_url || "";
         }
 
-        // DOM ni Telegramdan olingan ma'lumotlar bilan to'ldirish
         document.getElementById('profName').innerText = tgUser.first_name;
         document.getElementById('profUsername').innerText = "@" + tgUser.username;
         if(tgUser.photo) {
             document.getElementById('profAvatar').innerHTML = `<img src="${tgUser.photo}">`;
+        }
+
+        // Theme Sozlamalari (LocalStoragedan o'qish)
+        const savedTheme = localStorage.getItem('idsavdo_theme');
+        if(savedTheme === 'dark' || (tgApp.colorScheme === 'dark' && !savedTheme)) {
+            document.body.classList.add('dark-theme');
+            document.getElementById('themeToggle').checked = true;
+        }
+
+        function toggleTheme(cb) {
+            if(cb.checked) {
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('idsavdo_theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-theme');
+                localStorage.setItem('idsavdo_theme', 'light');
+            }
         }
 
         // BAZADAN E'LONLARNI OLISH
@@ -617,6 +758,7 @@
             globalIdCounter = maxId + 1; 
             
             if(document.getElementById('home').classList.contains('active')) renderHome();
+            if(document.getElementById('my-ads-modal').style.display === 'block') loadMyAds();
         });
 
         // Splash ekran
@@ -652,31 +794,34 @@
             const track = document.getElementById('bannerTrack');
             track.innerHTML = banners.map(b => `<div class="banner-slide" style="background-image: url('${b}')"></div>`).join('');
             
-            let bannerIndex = 0;
-            setInterval(() => {
-                if(!document.getElementById('home').classList.contains('active')) return;
-                bannerIndex = (bannerIndex + 1) % banners.length;
-                track.scrollTo({ left: track.offsetWidth * bannerIndex, behavior: 'smooth' });
-            }, 3000);
-
             renderAdGrid(adsList, 'homeAdsGrid');
         }
 
-        function renderAdGrid(ads, containerId) {
+        // Yangilangan E'lon Chizish Funksiyasi (Dizayn o'zgartirildi)
+        function renderAdGrid(ads, containerId, isMyAds = false) {
             const container = document.getElementById(containerId);
             if(ads.length === 0) {
-                container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: #94a3b8; padding: 20px;">Hozircha e'lonlar yo'q</p>`;
+                container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: var(--text-muted); padding: 20px;">Hozircha e'lonlar yo'q</p>`;
                 return;
             }
 
             container.innerHTML = ads.map((ad) => {
                 const imgHtml = (ad.images && ad.images.length > 0) ? `<img src="${ad.images[0]}">` : '<img src="https://via.placeholder.com/300x400?text=Rasm+yoq">';
+                
+                // O'chirish tugmasi faqat "Mening e'lonlarim"da chiqadi
+                let deleteBtn = isMyAds ? `<button class="delete-btn" onclick="event.stopPropagation(); deleteAd('${ad.dbId}')"><i class="material-icons" style="font-size:16px;">delete</i> O'chirish</button>` : '';
+
                 return `
                     <div class="ad-card" onclick="openDetail('${ad.dbId}')">
                         <div class="ad-img-slider">${imgHtml}</div>
                         <div class="ad-info">
-                            <div class="ad-title">${ad.title}</div>
                             <div class="ad-price">${formatNumber(ad.price)} so'm</div>
+                            <div class="ad-title">${ad.title}</div>
+                            <div class="ad-spacer"></div>
+                            <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                                <div class="ad-date">${ad.date ? ad.date.split(',')[1] : ''}</div>
+                                ${deleteBtn}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -694,6 +839,14 @@
             renderAdGrid(filtered, 'searchResults');
         }
 
+        // ==========================================
+        // MODALLARNI BOSHQARISH
+        // ==========================================
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
         function openCatalogResults(cat) {
             document.getElementById('catalog-modal-title').innerText = cat;
             const filtered = adsList.filter(ad => ad.category === cat);
@@ -702,11 +855,40 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function closeCatalogResults() {
-            document.getElementById('catalog-results-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+        function openSettings() {
+            document.getElementById('settings-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
+        function openTerms() {
+            document.getElementById('terms-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openMyAds() {
+            loadMyAds();
+            document.getElementById('my-ads-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function loadMyAds() {
+            // E'lonlarni username bo'yicha saralash
+            let myAds = adsList.filter(ad => ad.contact.replace('@','') === tgUser.username);
+            renderAdGrid(myAds, 'myAdsContainer', true);
+        }
+
+        function deleteAd(dbId) {
+            if(confirm("Haqiqatan ham bu e'lonni o'chirmoqchimisiz?")) {
+                db.collection("elonlar").doc(dbId).delete().then(() => {
+                    alert("E'lon muvaffaqiyatli o'chirildi.");
+                    loadMyAds();
+                }).catch((error) => {
+                    alert("O'chirishda xatolik yuz berdi.");
+                });
+            }
+        }
+
+        // E'lon Joylash Qadamlari
         function nextStep(stepNum) {
             if(stepNum === 2 && currentTempImages.length === 0) { alert("Iltimos kamida bitta rasm yuklang!"); return; }
             if(stepNum === 3) {
@@ -860,11 +1042,6 @@
                 if(i === index) dot.classList.add('active');
                 else dot.classList.remove('active');
             });
-        }
-
-        function closeDetail() {
-            document.getElementById('detail-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
         }
     </script>
 </body>
