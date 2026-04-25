@@ -1183,6 +1183,19 @@
                 </div>
             `).join('');
         }
+function toggleBlock(uid, isBlocked) {
+    // Tanlangan foydalanuvchini ro'yxatdan topish
+    let targetUser = usersList.find(u => u.dbId === uid);
+    
+    // Agar u admin bo'lsa, bloklashni to'xtatish
+    if (targetUser && ADMIN_USERS.includes(targetUser.username)) {
+        alert("O'zingizni (Asosiy adminni) bloklay olmaysiz!");
+        return;
+    }
+    
+    // Oddiy foydalanuvchi bo'lsa bloklash/ochish
+    db.collection("users").doc(uid).update({isBlocked: !isBlocked});
+}
 
     </script>
 </body>
