@@ -6,13 +6,12 @@
     <title>IDSavdo</title>
     
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
     <style>
-        /* CSS O'zgaruvchilar (Tungi va Kunduzgi rejim uchun) */
+        /* --- CSS VARIABLES --- */
         :root {
             --bg-main: #f5f5f5;
             --bg-card: #ffffff;
@@ -23,9 +22,10 @@
             --modal-bg: #f8f9fa;
             --primary-color: #0066ff;
             --danger-color: #ef4444;
+            --admin-color: #8b5cf6;
+            --premium-bg: rgba(250, 204, 21, 0.15);
+            --premium-border: #f59e0b;
         }
-
-        /* Tungi rejim ranglari */
         body.dark-theme {
             --bg-main: #0f172a;
             --bg-card: #1e293b;
@@ -34,373 +34,140 @@
             --border-color: #334155;
             --tab-bg: rgba(30, 41, 59, 0.85);
             --modal-bg: #0f172a;
+            --premium-bg: rgba(250, 204, 21, 0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; padding-bottom: 90px; transition: 0.3s; }
 
-        body {
-            background-color: var(--bg-main); 
-            color: var(--text-main);
-            overflow-x: hidden;
-            padding-bottom: 90px; 
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        /* Loading Screen */
-        #splash {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #0f172a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        .logo-text {
-            font-size: 36px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            font-style: italic; 
-        }
+        /* Splash Screen */
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
+        .logo-text { font-size: 36px; font-weight: 900; letter-spacing: 1px; font-style: italic; }
         .logo-text .id { color: #ffffff; } 
         .logo-text .savdo { color: var(--primary-color); }
-.version-text {
-    position: absolute;
-    bottom: 40px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--primary-color); /* Yoki to'g'ridan-to'g'ri #0066ff */
-    letter-spacing: 1px;
-}
+        .version-text { position: absolute; bottom: 40px; font-size: 14px; font-weight: 600; color: var(--primary-color); letter-spacing: 1px; }
 
-        /* Dynamic Island Tab Bar */
+        /* Tab Bar */
         .tab-bar {
-            position: fixed;
-            bottom: 20px; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%; 
-            height: 65px;
-            background:black var(--tab-bg); 
-            backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 1px solid var(--border-color);
-            border-radius: 35px; 
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            transition: background 0.3s;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; height: 65px;
+            background: var(--tab-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color); border-radius: 35px; display: flex; justify-content: space-around; align-items: center;
+            z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.3s;
         }
-        .tab-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 11px;
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        .tab-item.active { 
-            color: var(--primary-color); 
-            background: rgba(0, 102, 255, 0.1); 
-        }
+        .tab-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; padding: 5px 10px; border-radius: 20px; transition: 0.3s; }
+        .tab-item.active { color: var(--primary-color); background: rgba(0, 102, 255, 0.1); }
         .tab-item i { font-size: 24px; margin-bottom: 2px; }
-
-        .tab-item.sell-btn {
-            background: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            justify-content: center;
-            margin-top: -20px; 
-            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);
-        }
+        .tab-item.sell-btn { background: var(--primary-color); color: white; border-radius: 50%; width: 50px; height: 50px; justify-content: center; margin-top: -20px; box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4); }
         .tab-item.sell-btn i { margin-bottom: 0; font-size: 28px;}
-        .tab-item.sell-btn span { display: none; } 
+        .tab-item.sell-btn span { display: none; }
 
-        .page { 
-            display: none; 
-            padding: 15px; 
-            padding-top: max(45px, env(safe-area-inset-top)); 
-            animation: fadeIn 0.3s ease; 
-        }
+        /* Pages */
+        .page { display: none; padding: 15px; padding-top: max(45px, env(safe-area-inset-top)); animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Header Logo */
-        .header {
-            display: flex;
-            justify-content: center; 
-            align-items: center;
-            padding: 0 0 20px 0;
-        }
-        .header-logo { 
-            font-size: 28px; 
-            font-weight: 900; 
-            font-style: italic;
-        }
+        /* Header */
+        .header { display: flex; justify-content: center; align-items: center; padding: 0 0 20px 0; }
+        .header-logo { font-size: 28px; font-weight: 900; font-style: italic; }
         .header-logo .id { color: var(--text-main); } 
         .header-logo .savdo { color: var(--primary-color); }
 
         /* Search Bar */
-        .fake-search {
-            background: var(--bg-card);
-            padding: 14px 15px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            color: var(--text-muted);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-        }
+        .fake-search { background: var(--bg-card); padding: 14px 15px; border-radius: 12px; display: flex; align-items: center; color: var(--text-muted); box-shadow: 0 4px 10px rgba(0,0,0,0.03); margin-bottom: 20px; border: 1px solid var(--border-color); }
         .fake-search i { margin-right: 10px; }
-        
-        .real-search { 
-            width: 100%; padding: 14px 15px; border-radius: 12px; border: 1px solid var(--border-color); 
-            outline: none; margin-bottom: 20px; font-size: 16px; 
-            background: var(--bg-card); color: var(--text-main);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
-        }
+        .real-search { width: 100%; padding: 14px 15px; border-radius: 12px; border: 1px solid var(--border-color); outline: none; margin-bottom: 20px; font-size: 16px; background: var(--bg-card); color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
 
         /* Banners */
-        .banner-container {
-            width: 100%;
-            height: 150px;
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 25px;
-            background: var(--border-color);
-        }
-        .banner-track {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.4s ease-in-out;
-            scroll-snap-type: x mandatory;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
+        .banner-container { width: 100%; height: 160px; border-radius: 15px; overflow: hidden; position: relative; margin-bottom: 25px; background: var(--border-color); }
+        .banner-track { display: flex; width: 100%; height: 100%; transition: transform 0.4s ease-in-out; scroll-snap-type: x mandatory; overflow-x: auto; scrollbar-width: none; }
         .banner-track::-webkit-scrollbar { display: none; }
-        .banner-slide {
-            min-width: 100%;
-            height: 100%;
-            scroll-snap-align: start;
-            background-size: cover;
-            background-position: center;
-            background-color: var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        /* Titles */
+        .banner-slide { min-width: 100%; height: 100%; scroll-snap-align: start; background-size: cover; background-position: center; display: flex; align-items: flex-end; cursor:pointer;}
+        
         .section-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: var(--text-main); }
 
-        /* Ad Grid */
-        .ad-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .ad-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
-            position: relative;
-            border: 1px solid var(--border-color);
-        }
-        .ad-img-slider {
-            width: 100%;
-            aspect-ratio: 3/4;
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-        }
+        /* Ad Grid & Cards */
+        .ad-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .ad-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.04); position: relative; border: 1px solid var(--border-color); display:flex; flex-direction:column;}
+        
+        .ad-card.premium-ad { background: var(--premium-bg); border-color: var(--premium-border); }
+        .premium-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; display: flex; align-items: center; z-index: 10;}
+        .premium-badge i { font-size: 13px; margin-right: 3px; color: #f59e0b;}
+
+        .ad-img-slider { width: 100%; aspect-ratio: 3/4; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; position:relative;}
         .ad-img-slider::-webkit-scrollbar { display: none; }
-        .ad-img-slider img {
-            min-width: 100%;
-            height: 100%;
-            object-fit: cover;
-            scroll-snap-align: start;
-            background: var(--border-color);
-        }
-        .ad-info { padding: 10px; display: flex; flex-direction: column; }
-        /* Yangilangan E'lon kartasi matnlari */
-        .ad-price { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
-        .ad-title { 
-            font-size: 13px; font-weight: 500; color: var(--text-muted); 
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
-            overflow: hidden; text-overflow: ellipsis; line-height: 1.4;
-        }
+        .ad-img-slider img { min-width: 100%; height: 100%; object-fit: cover; scroll-snap-align: start; background: var(--border-color); }
+        
+        .ad-info { padding: 10px; display: flex; flex-direction: column; flex-grow: 1; }
+        .ad-price { font-size: 17px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; }
+        .ad-title { font-size: 13px; font-weight: 500; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
         .ad-spacer { flex-grow: 1; min-height: 8px; }
         .ad-date { font-size: 11px; color: var(--text-muted); opacity: 0.8; }
 
         /* Katalog Grid */
         .katalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .katalog-card { height: 80px; border-radius: 12px; color: white; padding: 10px; font-weight: 600; display: flex; flex-direction: column; justify-content: space-between; border: none;}
+        .katalog-card { height: 80px; border-radius: 12px; color: white; padding: 10px; font-weight: 600; display: flex; flex-direction: column; justify-content: space-between; border: none; cursor:pointer;}
 
-        /* Sell Page Form */
+        /* Form */
         .form-step { display: none; background: var(--bg-card); padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid var(--border-color);}
         .form-step.active { display: block; }
-        .form-input, .form-select { 
-            width: 100%; padding: 15px; border: 1px solid var(--border-color); 
-            border-radius: 10px; margin-bottom: 15px; font-size: 16px; outline: none; 
-            background: var(--bg-main); color: var(--text-main);
-        }
+        .form-input, .form-select { width: 100%; padding: 15px; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 15px; font-size: 16px; outline: none; background: var(--bg-main); color: var(--text-main); }
         .form-input:focus, .form-select:focus { border-color: var(--primary-color); }
         .btn-primary { width: 100%; padding: 15px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; margin-top: 10px; }
+        .btn-success { background: #10b981; }
         
         .img-upload-box { border: 2px dashed var(--border-color); padding: 30px; text-align: center; border-radius: 12px; margin-bottom: 15px; position: relative; }
         .img-upload-box input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; }
         .preview-imgs { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; }
-        .preview-imgs img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; }
+        .preview-imgs img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; position:relative;}
 
-        /* Modallar Umumiy Stili */
-        .full-modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--modal-bg); z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px;
-        }
-        
-        .modal-header { 
-            padding: max(45px, env(safe-area-inset-top)) 15px 15px 15px; 
-            display: flex; align-items: center; 
-            background: var(--tab-bg); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky; top: 0; z-index: 2010; 
-        }
-        
-        .modal-back-btn {
-            display: flex; align-items: center; justify-content: center;
-            background: var(--border-color); color: var(--text-main);
-            padding: 8px 16px; border-radius: 20px;
-            font-size: 15px; font-weight: 600;
-        }
+        /* Modals */
+        .full-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-bg); z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px; }
+        .modal-header { padding: max(45px, env(safe-area-inset-top)) 15px 15px 15px; display: flex; align-items: center; background: var(--tab-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 2010; }
+        .modal-back-btn { display: flex; align-items: center; justify-content: center; background: var(--border-color); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 15px; font-weight: 600; cursor:pointer;}
         .modal-back-btn i { font-size: 20px; margin-right: 6px; color: var(--primary-color);}
         
-        /* Detail Oynasi Ichki Qismi */
-        .detail-img-container {
-            position: relative; width: 100%; background: var(--bg-card);
-            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
-            overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .detail-img-slider { 
-            width: 100%; aspect-ratio: 1/1; 
-            display: flex; overflow-x: auto; scroll-snap-type: x mandatory; 
-            scrollbar-width: none;
-        }
+        /* Detail */
+        .detail-img-container { position: relative; width: 100%; background: var(--bg-card); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .detail-img-slider { width: 100%; aspect-ratio: 1/1; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
         .detail-img-slider::-webkit-scrollbar { display: none; }
         .detail-img-slider img { min-width: 100%; height: 100%; object-fit: cover; scroll-snap-align: start; }
-        
-        .slider-dots {
-            position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 5px;
-        }
+        .slider-dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; }
         .dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; transition: 0.3s; }
         .dot.active { background: var(--primary-color); width: 15px; border-radius: 5px; }
 
         .detail-body { padding: 20px; }
-        
-        .seller-info {
-            display: flex; align-items: center; padding: 15px; 
-            background: var(--bg-card); border-radius: 12px; margin-top: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color);
-        }
-        .seller-avatar {
-            width: 50px; height: 50px; border-radius: 50%; background: var(--border-color); 
-            display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--text-muted);
-            margin-right: 15px; overflow: hidden;
-        }
+        .seller-info, .features-box, .detail-desc-box { background: var(--bg-card); padding: 15px; border-radius: 12px; margin-top: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color); }
+        .seller-info { display: flex; align-items: center; }
+        .seller-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--border-color); display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--text-muted); margin-right: 15px; overflow: hidden; }
         .seller-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .seller-details h4 { margin: 0; font-size: 16px; color: var(--text-main); }
         .seller-details p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-muted); }
-
-        .features-box {
-            background: var(--bg-card); padding: 15px; border-radius: 12px; margin-top: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color);
-        }
+        
         .feature-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
         .feature-item:last-child { margin-bottom: 0; }
         .feature-label { color: var(--text-muted); }
         .feature-value { font-weight: 600; color: var(--text-main); }
-
-        .detail-desc-box {
-            background: var(--bg-card); padding: 15px; border-radius: 12px; margin-top: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color);
-        }
         .detail-desc { color: var(--text-main); font-size: 14px; line-height: 1.5; margin-top: 10px; }
         .detail-footer-info { margin-top: 20px; padding: 0 10px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; }
 
-        .buy-btn-container { 
-            position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px; 
-            background: var(--tab-bg); backdrop-filter: blur(10px); z-index: 2010; border-top: 1px solid var(--border-color);
-        }
-        .btn-buy {
-            display: block; text-align: center; text-decoration: none; width: 100%; 
-            padding: 15px; background: var(--primary-color); color: white; border-radius: 12px; 
-            font-size: 16px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,102,255,0.3);
-        }
+        .buy-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px; background: var(--tab-bg); backdrop-filter: blur(10px); z-index: 2010; border-top: 1px solid var(--border-color); }
+        .btn-buy { display: block; text-align: center; text-decoration: none; width: 100%; padding: 15px; background: var(--primary-color); color: white; border-radius: 12px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,102,255,0.3); }
 
-        /* Profil Bo'limi */
-        .profile-header {
-            background: var(--bg-card); 
-            padding: 20px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            border: 1px solid var(--border-color);
-        }
+        /* Profile */
+        .profile-header { background: var(--bg-card); padding: 20px; border-radius: 15px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
         .profile-info { display: flex; flex-direction: column; }
         .profile-info h2 { margin: 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
         .profile-info h3 { margin: 4px 0 0 0; font-size: 14px; color: var(--text-muted); font-weight: 500; }
-        
-        .profile-avatar {
-            width: 65px; height: 65px; border-radius: 50%; background: var(--border-color);
-            display: flex; justify-content: center; align-items: center;
-            font-size: 30px; color: var(--text-muted); overflow: hidden;
-            border: 2px solid var(--primary-color);
-        }
+        .profile-avatar { width: 65px; height: 65px; border-radius: 50%; background: var(--border-color); display: flex; justify-content: center; align-items: center; font-size: 30px; color: var(--text-muted); overflow: hidden; border: 2px solid var(--primary-color); }
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
         
         .menu-list { display: flex; flex-direction: column; gap: 10px; }
-        .menu-item {
-            background: var(--bg-card); padding: 15px 20px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: space-between;
-            color: var(--text-main); font-weight: 500; font-size: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color);
-            text-decoration: none; cursor: pointer;
-        }
+        .menu-item { background: var(--bg-card); padding: 15px 20px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; color: var(--text-main); font-weight: 500; font-size: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color); text-decoration: none; cursor: pointer; }
         .menu-item-left { display: flex; align-items: center; gap: 15px; }
         .menu-item-left i { color: var(--text-muted); font-size: 22px;}
         
-        /* Sozlamalar va Matnli oynalar */
-        .settings-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px; background: var(--bg-card); border-radius: 12px;
-            margin-bottom: 10px; border: 1px solid var(--border-color);
-        }
-        
-        /* Toggle Switch */
+        /* Settings & Toggles */
+        .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--bg-card); border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); }
         .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
@@ -408,15 +175,40 @@
         input:checked + .slider { background-color: var(--primary-color); }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        .terms-text {
-            color: var(--text-main); font-size: 14px; line-height: 1.6;
-        }
+        .terms-text { color: var(--text-main); font-size: 14px; line-height: 1.6; }
         .terms-text h3 { margin-top: 20px; margin-bottom: 10px; font-size: 16px;}
 
-        .delete-btn {
-            background: var(--danger-color); color: white; border: none; padding: 8px 15px; 
-            border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;
-        }
+        /* Admin Buttons */
+        .action-btns { display: flex; gap: 5px; margin-top: 10px;}
+        .btn-small { flex:1; padding: 8px; border-radius: 8px; font-size: 12px; font-weight:bold; border:none; cursor:pointer; color:white; display:flex; justify-content:center; align-items:center; gap:5px;}
+        .btn-delete { background: var(--danger-color); }
+        .btn-edit { background: #3b82f6; }
+        .btn-premium { background: #f59e0b; color:#fff;}
+        .btn-alert { background: #8b5cf6;}
+        .btn-block { background: #ef4444;}
+        .btn-unblock { background: #10b981;}
+
+        /* Admin Tab */
+        .admin-nav { display:flex; gap:10px; padding: 15px; background:var(--bg-card); position:sticky; top:0; z-index:100; border-bottom:1px solid var(--border-color);}
+        .admin-tab { flex:1; text-align:center; padding:10px; border-radius:8px; background:var(--border-color); color:var(--text-main); font-size:13px; font-weight:bold;}
+        .admin-tab.active { background:var(--admin-color); color:white;}
+        
+        .user-card { background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;}
+        .user-status { width: 10px; height: 10px; border-radius: 50%; display:inline-block; margin-right:5px;}
+        .online { background: #10b981; }
+        .offline { background: #94a3b8; }
+
+        /* Popup Ad Modal */
+        #entry-ad-modal { z-index: 99999; background: rgba(0,0,0,0.8); justify-content:center; align-items:center; display:none;}
+        .entry-ad-box { background: var(--bg-card); width: 85%; border-radius: 20px; overflow: hidden; position:relative; max-width:400px; margin: auto; margin-top: 20vh; animation: zoomIn 0.3s ease;}
+        @keyframes zoomIn { from {transform:scale(0.8); opacity:0;} to {transform:scale(1); opacity:1;} }
+        .entry-close { position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); color:white; width:30px; height:30px; border-radius:50%; display:flex; justify-content:center; align-items:center; z-index:10;}
+        .entry-img { width:100%; aspect-ratio: 16/9; background:#eee; object-fit:cover;}
+        .entry-content { padding: 20px; text-align:center; }
+        
+        /* Alert Message Modal */
+        #user-alert-box { position: fixed; top: env(safe-area-inset-top, 20px); left: 5%; width: 90%; background: #0066ff; color: white; padding: 15px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,102,255,0.4); z-index: 100000; display: none; align-items: center; justify-content: space-between; font-weight: bold; animation: slideDown 0.3s;}
+        @keyframes slideDown { from{top:-50px; opacity:0;} to{top:20px; opacity:1;} }
 
     </style>
 </head>
@@ -427,32 +219,44 @@
         <div class="version-text">1.0.0</div>
     </div>
 
+    <div id="user-alert-box">
+        <span id="user-alert-text">Xabar!</span>
+        <i class="material-icons" style="font-size:24px; cursor:pointer;" onclick="closeUserAlert()">close</i>
+    </div>
+    
+    <div id="blocked-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-main); z-index:999999; justify-content:center; align-items:center; flex-direction:column;">
+        <i class="material-icons" style="font-size:80px; color:var(--danger-color);">block</i>
+        <h2 style="color:var(--text-main); margin-top:20px;">Siz bloklangansiz</h2>
+        <p style="color:var(--text-muted); margin-top:10px;">Kirish imkonsiz.</p>
+    </div>
+
+    <div id="entry-ad-modal">
+        <div class="entry-ad-box">
+            <div class="entry-close" onclick="closeEntryAd()"><i class="material-icons">close</i></div>
+            <img id="entryAdImg" class="entry-img" src="" style="display:none;">
+            <div class="entry-content">
+                <h3 id="entryAdTitle" style="margin-bottom:10px; font-size:18px;"></h3>
+                <p id="entryAdDesc" style="font-size:14px; color:var(--text-muted); margin-bottom:20px;"></p>
+                <button class="btn-primary" id="entryAdBtn" onclick="" style="margin-top:0;">Batafsil</button>
+            </div>
+        </div>
+    </div>
+
     <div id="app" style="display: none;">
 
         <div id="home" class="page active">
             <div class="header">
                 <div class="header-logo"><span class="id">ID</span><span class="savdo">Savdo</span></div>
             </div>
-            
-            <div class="fake-search" onclick="switchTab('search')">
-                <i class="material-icons">search</i> Nimalarni qidiramiz?
-            </div>
-
-            <div class="banner-container">
-                <div class="banner-track" id="bannerTrack"></div>
-            </div>
-
+            <div class="fake-search" onclick="switchTab('search')"><i class="material-icons">search</i> Nimalarni qidiramiz?</div>
+            <div class="banner-container"><div class="banner-track" id="bannerTrack"></div></div>
             <div class="section-title">Tavsiya qilamiz ✨</div>
             <div class="ad-grid" id="homeAdsGrid"></div>
         </div>
 
         <div id="search" class="page">
-            <div class="header">
-                <div class="header-logo"><span class="id">ID</span><span class="savdo">Savdo</span></div>
-            </div>
-
+            <div class="header"><div class="header-logo"><span class="id">ID</span><span class="savdo">Savdo</span></div></div>
             <input type="text" id="searchInput" class="real-search" placeholder="E'lonlarni qidirish..." oninput="handleSearch()">
-            
             <div class="section-title">#Kataloglar</div>
             <div class="katalog-grid">
                 <div class="katalog-card" style="background: linear-gradient(45deg, #f43f5e, #fb923c);" onclick="openCatalogResults('O\'yin akkauntlar')">O'yin akkauntlar</div>
@@ -462,12 +266,11 @@
                 <div class="katalog-card" style="background: linear-gradient(45deg, #6366f1, #ec4899);" onclick="openCatalogResults('Premium usernamelar')">Premium usernamelar</div>
                 <div class="katalog-card" style="background: linear-gradient(45deg, #64748b, #475569);" onclick="openCatalogResults('Boshqa toifa')">Boshqa toifa</div>
             </div>
-
             <div id="searchResults" class="ad-grid" style="margin-top: 20px;"></div>
         </div>
 
         <div id="sell" class="page">
-            <div class="section-title" style="text-align:center; margin-bottom: 20px;">E'lon joylash</div>
+            <div class="section-title" id="sellTitle" style="text-align:center; margin-bottom: 20px;">E'lon joylash</div>
             
             <div class="form-step active" id="step1">
                 <h3>1. Rasmlar qo'shish</h3>
@@ -505,9 +308,9 @@
 
             <div class="form-step" id="step4">
                 <h3>4. Bog'lanish</h3>
-                <p style="font-size: 12px; color: gray; margin-top: 10px;">Faqat Telegram username kiriting (kamida 4ta harf/raqam)</p>
+                <p style="font-size: 12px; color: gray; margin-top: 10px;">Faqat Telegram username kiriting</p>
                 <input type="text" id="adContact" class="form-input" value="@" oninput="formatUsername(this)" style="margin-top: 5px;">
-                <button class="btn-primary" id="submitBtn" onclick="submitAd()" style="background: #10b981;">E'lonni joylash</button>
+                <button class="btn-primary btn-success" id="submitBtn" onclick="submitAd()">E'lonni joylash</button>
             </div>
         </div>
 
@@ -525,9 +328,7 @@
                     <h2 id="profName">Yuklanmoqda...</h2>
                     <h3 id="profUsername">@...</h3>
                 </div>
-                <div class="profile-avatar" id="profAvatar">
-                    <i class="material-icons">person</i>
-                </div>
+                <div class="profile-avatar" id="profAvatar"><i class="material-icons">person</i></div>
             </div>
 
             <div class="menu-list">
@@ -551,6 +352,11 @@
                     <div class="menu-item-left"><i class="material-icons">support_agent</i> Support</div>
                     <i class="material-icons">chevron_right</i>
                 </a>
+
+                <div class="menu-item" id="adminMenuBtn" style="display: none; background: rgba(139, 92, 246, 0.1); border-color: var(--admin-color);" onclick="openAdminPanel()">
+                    <div class="menu-item-left" style="color:var(--admin-color); font-weight:bold;"><i class="material-icons" style="color:var(--admin-color);">admin_panel_settings</i> Admin Panel</div>
+                    <i class="material-icons" style="color:var(--admin-color);">chevron_right</i>
+                </div>
             </div>
         </div>
 
@@ -565,21 +371,15 @@
 
     <div id="catalog-results-modal" class="full-modal">
         <div class="modal-header" onclick="closeModal('catalog-results-modal')">
-            <div class="modal-back-btn" style="margin-right: 15px;">
-                <i class="material-icons">arrow_back</i> Orqaga
-            </div>
+            <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span id="catalog-modal-title" style="font-weight:bold; font-size: 18px; color: var(--text-main);">Katalog</span>
         </div>
-        <div style="padding: 15px;">
-            <div id="catalogResultsGrid" class="ad-grid"></div>
-        </div>
+        <div style="padding: 15px;"><div id="catalogResultsGrid" class="ad-grid"></div></div>
     </div>
 
     <div id="detail-modal" class="full-modal">
         <div class="modal-header" onclick="closeModal('detail-modal')">
-            <div class="modal-back-btn">
-                <i class="material-icons">arrow_back</i> Orqaga
-            </div>
+            <div class="modal-back-btn"><i class="material-icons">arrow_back</i> Orqaga</div>
         </div>
         <div class="detail-img-container">
             <div class="detail-img-slider" id="detailSlider" onscroll="updateDots()"></div>
@@ -590,10 +390,7 @@
             <div id="detailPrice" style="font-size: 24px; font-weight: bold; color: var(--text-main);"></div>
             <div class="seller-info">
                 <div class="seller-avatar" id="sellerAvatar"><i class="material-icons">person</i></div>
-                <div class="seller-details">
-                    <h4 id="sellerName">Sotuvchi</h4>
-                    <p>Telegram orqali bog'lanish</p>
-                </div>
+                <div class="seller-details"><h4 id="sellerName">Sotuvchi</h4><p>Telegram orqali bog'lanish</p></div>
             </div>
             <div class="features-box">
                 <h3 style="font-size: 16px; margin-bottom: 10px;">Xususiyatlar</h3>
@@ -608,43 +405,79 @@
                 <div>Nashr vaqti: <span id="detailDate"></span></div>
             </div>
         </div>
-        <div class="buy-btn-container">
-            <a id="detailBuyBtn" target="_blank" class="btn-buy">Sotib olish</a>
-        </div>
+        <div class="buy-btn-container"><a id="detailBuyBtn" target="_blank" class="btn-buy">Sotib olish</a></div>
     </div>
 
     <div id="my-ads-modal" class="full-modal">
         <div class="modal-header" onclick="closeModal('my-ads-modal')">
-            <div class="modal-back-btn" style="margin-right: 15px;">
-                <i class="material-icons">arrow_back</i> Orqaga
-            </div>
+            <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Mening e'lonlarim</span>
         </div>
-        <div style="padding: 15px;" id="myAdsContainer">
+        <div style="padding: 15px;" id="myAdsContainer"></div>
+    </div>
+
+    <div id="admin-modal" class="full-modal">
+        <div class="modal-header" onclick="closeModal('admin-modal')">
+            <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
+            <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Admin Panel</span>
+        </div>
+        
+        <div class="admin-nav">
+            <div class="admin-tab active" onclick="switchAdminTab('users', this)">Foydalanuvchilar</div>
+            <div class="admin-tab" onclick="switchAdminTab('ads', this)">E'lonlar</div>
+            <div class="admin-tab" onclick="switchAdminTab('banners', this)">Reklama</div>
+        </div>
+
+        <div id="admin-users" style="padding:15px; display:block;">
+            <div style="background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:15px;">
+                <h4>Statistika</h4>
+                <p style="font-size:14px; margin-top:5px;">Jami: <b id="statTotalUsers">0</b> | Online: <b id="statOnlineUsers" style="color:#10b981;">0</b></p>
             </div>
+            <div id="adminUsersList"></div>
+        </div>
+
+        <div id="admin-ads" style="padding:15px; display:none;">
+            <div id="adminAdsList" class="ad-grid"></div>
+        </div>
+
+        <div id="admin-banners" style="padding:15px; display:none;">
+            <h3 style="margin-bottom:10px;">Banner qo'shish</h3>
+            <div style="background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:20px;">
+                <input type="text" id="addBannerLink" class="form-input" placeholder="Ssilka yoki Elon ID (Masalan: #25)">
+                <input type="file" id="addBannerFile" accept="image/*" class="form-input" style="padding:10px;">
+                <button class="btn-primary" onclick="saveBanner()">Banner Qo'shish</button>
+            </div>
+            <h3 style="margin-bottom:10px;">Joriy Bannerlar</h3>
+            <div id="adminBannersList" style="display:flex; flex-direction:column; gap:10px; margin-bottom:30px;"></div>
+
+            <h3 style="margin-bottom:10px; border-top:1px solid var(--border-color); padding-top:20px;">Kirishdagi Pop-up Reklama</h3>
+            <div style="background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid var(--border-color);">
+                <label style="display:flex; align-items:center; gap:10px; margin-bottom:15px; font-weight:bold;">
+                    <input type="checkbox" id="popupActiveToggle" style="width:20px;height:20px;"> Pop-up ni yoqish
+                </label>
+                <input type="text" id="popupTitle" class="form-input" placeholder="Sarlavha">
+                <input type="text" id="popupDesc" class="form-input" placeholder="Matn">
+                <input type="text" id="popupLink" class="form-input" placeholder="Ssilka yoki #Elon_ID">
+                <input type="file" id="popupFile" accept="image/*" class="form-input" style="padding:10px;">
+                <button class="btn-primary btn-success" onclick="savePopupAd()">Saqlash</button>
+            </div>
+        </div>
     </div>
 
     <div id="settings-modal" class="full-modal">
         <div class="modal-header" onclick="closeModal('settings-modal')">
-            <div class="modal-back-btn" style="margin-right: 15px;">
-                <i class="material-icons">arrow_back</i> Orqaga
-            </div>
+            <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Sozlamalar</span>
         </div>
         <div style="padding: 15px;">
             <div class="settings-row">
                 <span style="font-weight: 500;">Tungi rejim (Dark Theme)</span>
-                <label class="switch">
-                    <input type="checkbox" id="themeToggle" onchange="toggleTheme(this)">
-                    <span class="slider"></span>
-                </label>
+                <label class="switch"><input type="checkbox" id="themeToggle" onchange="toggleTheme(this)"><span class="slider"></span></label>
             </div>
             <div class="settings-row">
                 <span style="font-weight: 500;">Dastur tili</span>
                 <select class="form-select" style="width: auto; margin-bottom: 0; padding: 8px 15px;" id="langSelect">
-                    <option value="uz">O'zbekcha</option>
-                    <option value="ru">Русский</option>
-                    <option value="en">English</option>
+                    <option value="uz">O'zbekcha</option><option value="ru">Русский</option><option value="en">English</option>
                 </select>
             </div>
         </div>
@@ -652,32 +485,16 @@
 
     <div id="terms-modal" class="full-modal">
         <div class="modal-header" onclick="closeModal('terms-modal')">
-            <div class="modal-back-btn" style="margin-right: 15px;">
-                <i class="material-icons">arrow_back</i> Orqaga
-            </div>
+            <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Shartlar</span>
         </div>
         <div style="padding: 20px;" class="terms-text">
-            <h2>Foydalanish shartlari va Maxfiylik siyosati (Privacy Policy)</h2>
-            <br>
-            <p>Ushbu Foydalanish shartlari ("Shartlar") sizning IDSavdo bot/ilovasidan ("Ilova") foydalanishingizni tartibga soladi. Ilovadan foydalanish orqali siz quyidagi shartlarga rozi ekanligingizni tasdiqlaysiz.</p>
-            
-            <h3>1. Umumiy qoidalar</h3>
-            <p>IDSavdo - bu foydalanuvchilar o'zlarining virtual akkauntlari (o'yinlar, ijtimoiy tarmoqlar) va boshqa raqamli tovarlarni sotish yoki sotib olish haqida e'lonlar qoldirishi mumkin bo'lgan platformadir. Ilova ma'muriyati sotilayotgan mahsulotlarning sifati va ishonchliligiga bevosita kafolat bermaydi.</p>
-            
-            <h3>2. E'lon joylash qoidalari</h3>
-            <p>Foydalanuvchilar e'lon joylashda quyidagilarga amal qilishlari shart: <br>
-            - Yolg'on yoki chalg'ituvchi ma'lumotlar bermaslik.<br>
-            - Taqiqlangan, qonunga xilof yoki o'g'irlangan akkauntlarni sotmaslik.<br>
-            - E'lon rasmlari va tavsifi mahsulotga aniq mos kelishi.</p>
-            
-            <h3>3. Maxfiylik va Ma'lumotlar</h3>
-            <p>Biz sizning Telegram ochiq ma'lumotlaringizni (Ism, Username, Profil rasmi) e'lonlaringizda bog'lanish uchun ishlatamiz. Platforma orqali amalga oshirilgan oldi-sotdi kelishuvlari uchun faqat xaridor va sotuvchi javobgardir. Ma'muriyat uchinchi shaxslarga foydalanuvchi ma'lumotlarini bermaydi (qonunda belgilangan holatlar bundan mustasno).</p>
-            
-            <h3>4. Firibgarlik va Cheklovlar</h3>
-            <p>Agar biror foydalanuvchi ustidan asosli shikoyatlar tushsa yoki firibgarlik holati aniqlansa, ma'muriyat e'lonni o'chirish va foydalanuvchini platformadan bloklash huquqiga ega.</p>
-            
-            <br>
+            <h2>Foydalanish shartlari va Maxfiylik siyosati (Privacy Policy)</h2><br>
+            <p>Ushbu Foydalanish shartlari ("Shartlar") sizning IDSavdo bot/ilovasidan foydalanishingizni tartibga soladi. Ilovadan foydalanish orqali shartlarga rozi ekanligingizni tasdiqlaysiz.</p>
+            <h3>1. Umumiy qoidalar</h3><p>IDSavdo - bu foydalanuvchilar virtual akkauntlari va raqamli tovarlarni sotish/sotib olish maydonchasidir.</p>
+            <h3>2. E'lon joylash qoidalari</h3><p>Yolg'on ma'lumotlar bermaslik, taqiqlangan tovarlar sotmaslik shart.</p>
+            <h3>3. Maxfiylik va Ma'lumotlar</h3><p>Biz faqat Telegram ochiq ma'lumotlaringizni (Ism, Username, Rasm) aloqa uchun ishlatamiz.</p>
+            <h3>4. Firibgarlik</h3><p>Firibgarlik holati aniqlansa, ma'muriyat e'lonni o'chirish va foydalanuvchini platformadan umrbod bloklash huquqiga ega.</p><br>
             <p><i>Oxirgi yangilanish: 2026-yil, Aprel.</i></p>
         </div>
     </div>
@@ -692,63 +509,92 @@
             projectId: "idsavdo-7dd3f",
             storageBucket: "idsavdo-7dd3f.firebasestorage.app",
             messagingSenderId: "359888487090",
-            appId: "1:359888487090:web:ea6433efdfe1e1498d3fab",
-            measurementId: "G-PLJGSD10Y0"
+            appId: "1:359888487090:web:ea6433efdfe1e1498d3fab"
         };
-        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // ==========================================
+        // GLOBAL VA TELEGRAM INIT
+        // ==========================================
         let currentTempImages = [];
         let adsList = []; 
+        let usersList = [];
+        let bannersList = [];
         let globalIdCounter = 1; 
+        let editingAdId = null;
 
-        // ==========================================
-        // TELEGRAM WEB APP VA THEME INIT
-        // ==========================================
+        const ADMIN_USERS = ['aslbek201', 'aslbek_dev', 'Mehmon', 'User']; 
+
         let tgApp = window.Telegram.WebApp;
         tgApp.ready(); 
 
-        let tgUser = { 
-            username: "Mehmon", 
-            first_name: "Foydalanuvchi", 
-            photo: "" 
-        };
-
+        let tgUser = { username: "Mehmon", first_name: "Foydalanuvchi", photo: "" };
         if (tgApp.initDataUnsafe && tgApp.initDataUnsafe.user) {
             let u = tgApp.initDataUnsafe.user;
-            tgUser.username = u.username || u.id; 
+            tgUser.username = u.username || String(u.id); 
             tgUser.first_name = u.first_name || "Foydalanuvchi";
             tgUser.photo = u.photo_url || "";
         }
 
+        // BAZAGA FOYDALANUVCHINI YOZISH VA ONLINE/BLOCK TEKSHIRISH
+        let myDocRef = db.collection("users").doc(tgUser.username);
+        myDocRef.set({
+            username: tgUser.username,
+            first_name: tgUser.first_name,
+            photo: tgUser.photo,
+            lastActive: Date.now(),
+            isOnline: true
+        }, {merge: true});
+
+        // O'zimning statusimni eshitish (Block va Alert uchun)
+        myDocRef.onSnapshot(doc => {
+            if(doc.exists) {
+                let data = doc.data();
+                if(data.isBlocked) {
+                    document.getElementById('app').style.display = 'none';
+                    document.getElementById('blocked-screen').style.display = 'flex';
+                } else {
+                    document.getElementById('blocked-screen').style.display = 'none';
+                }
+                if(data.alertMessage) {
+                    document.getElementById('user-alert-text').innerText = data.alertMessage;
+                    document.getElementById('user-alert-box').style.display = 'flex';
+                }
+            }
+        });
+
+        // Ilovadan chiqqanda offlinga o'tkazish
+        window.addEventListener("beforeunload", () => {
+            myDocRef.update({ isOnline: false, lastActive: Date.now() });
+        });
+
+        // DOM Profil To'ldirish
+        if(ADMIN_USERS.includes(tgUser.username)) document.getElementById('adminMenuBtn').style.display = 'flex';
         document.getElementById('profName').innerText = tgUser.first_name;
         document.getElementById('profUsername').innerText = "@" + tgUser.username;
-        if(tgUser.photo) {
-            document.getElementById('profAvatar').innerHTML = `<img src="${tgUser.photo}">`;
-        }
+        if(tgUser.photo) document.getElementById('profAvatar').innerHTML = `<img src="${tgUser.photo}">`;
 
-        // Theme Sozlamalari (LocalStoragedan o'qish)
+        // Theme Init
         const savedTheme = localStorage.getItem('idsavdo_theme');
         if(savedTheme === 'dark' || (tgApp.colorScheme === 'dark' && !savedTheme)) {
             document.body.classList.add('dark-theme');
             document.getElementById('themeToggle').checked = true;
         }
-
         function toggleTheme(cb) {
-            if(cb.checked) {
-                document.body.classList.add('dark-theme');
-                localStorage.setItem('idsavdo_theme', 'dark');
-            } else {
-                document.body.classList.remove('dark-theme');
-                localStorage.setItem('idsavdo_theme', 'light');
-            }
+            document.body.classList.toggle('dark-theme', cb.checked);
+            localStorage.setItem('idsavdo_theme', cb.checked ? 'dark' : 'light');
         }
 
-        // BAZADAN E'LONLARNI OLISH
-        db.collection("elonlar").orderBy("timestamp", "desc").onSnapshot((querySnapshot) => {
+        // ==========================================
+        // REAL-TIME LISTNERS (ADS, BANNERS, ENTRY AD)
+        // ==========================================
+        
+        // E'LONLAR
+        db.collection("elonlar").onSnapshot((querySnapshot) => {
             adsList = [];
             let maxId = 0;
+            let now = Date.now();
             querySnapshot.forEach((doc) => {
                 let adData = doc.data();
                 adData.dbId = doc.id; 
@@ -756,72 +602,151 @@
                 if(adData.elonId && adData.elonId > maxId) maxId = adData.elonId;
             });
             globalIdCounter = maxId + 1; 
+
+            // Saralash: Avval Premiumlar (Muddati tugamaganlar), keyin yangilari
+            adsList.sort((a, b) => {
+                let aPrem = (a.isPremium && a.premiumUntil > now) ? 1 : 0;
+                let bPrem = (b.isPremium && b.premiumUntil > now) ? 1 : 0;
+                if(aPrem !== bPrem) return bPrem - aPrem; 
+                return (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0);
+            });
             
             if(document.getElementById('home').classList.contains('active')) renderHome();
             if(document.getElementById('my-ads-modal').style.display === 'block') loadMyAds();
+            if(document.getElementById('admin-modal').style.display === 'block') loadAdminAds();
         });
 
-        // Splash ekran
+        // BANNERLAR
+        db.collection("banners").onSnapshot((qs) => {
+            bannersList = [];
+            qs.forEach(doc => bannersList.push({dbId: doc.id, ...doc.data()}));
+            renderBanners();
+            if(document.getElementById('admin-modal').style.display === 'block') loadAdminBanners();
+        });
+
+        // USERS (Admin uchun)
+        db.collection("users").onSnapshot((qs) => {
+            usersList = [];
+            qs.forEach(doc => usersList.push({dbId: doc.id, ...doc.data()}));
+            // Sort: Online first, then offline by lastActive
+            usersList.sort((a,b) => {
+                if(a.isOnline === b.isOnline) return (b.lastActive || 0) - (a.lastActive || 0);
+                return a.isOnline ? -1 : 1;
+            });
+            if(document.getElementById('admin-modal').style.display === 'block') renderAdminUsers();
+        });
+
+        // POPUP AD (Kirishdagi)
         setTimeout(() => {
             document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
                 document.getElementById('app').style.display = 'block';
+                
+                // Splash ketgach, Popup tekshirish
+                db.collection("system").doc("entryAd").get().then(doc => {
+                    if(doc.exists && doc.data().isActive) {
+                        let d = doc.data();
+                        document.getElementById('entryAdTitle').innerText = d.title || '';
+                        document.getElementById('entryAdDesc').innerText = d.desc || '';
+                        if(d.image) {
+                            document.getElementById('entryAdImg').src = d.image;
+                            document.getElementById('entryAdImg').style.display = 'block';
+                        } else {
+                            document.getElementById('entryAdImg').style.display = 'none';
+                        }
+                        document.getElementById('entryAdBtn').onclick = () => handleLink(d.link);
+                        document.getElementById('entry-ad-modal').style.display = 'flex';
+                    }
+                });
             }, 500);
         }, 2000);
 
+        // ==========================================
+        // ASOSIY FUNKSIYALAR
+        // ==========================================
+        function closeUserAlert() {
+            document.getElementById('user-alert-box').style.display = 'none';
+            myDocRef.update({alertMessage: ""}); // Bazadan o'chirish qayta chiqmasligi uchun
+        }
+        function closeEntryAd() { document.getElementById('entry-ad-modal').style.display = 'none'; }
+        
+        function handleLink(link) {
+            if(!link) return;
+            if(link.startsWith('#')) { // E'lon ID si
+                closeEntryAd();
+                let ad = adsList.find(x => String(x.elonId) === link.replace('#',''));
+                if(ad) openDetail(ad.dbId);
+            } else {
+                window.location.href = link;
+            }
+        }
+
         function switchTab(tabId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
-            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             document.querySelector(`.tab-item[onclick="switchTab('${tabId}')"]`).classList.add('active');
-
             if(tabId === 'home') renderHome();
-            if(tabId === 'search') {
-                document.getElementById('searchInput').value = '';
-                document.getElementById('searchResults').innerHTML = '';
-            }
             if(tabId === 'sell') resetForm();
         }
 
-        const banners = [
-            "https://via.placeholder.com/600x300/f59e0b/ffffff?text=Banner+1",
-            "https://via.placeholder.com/600x300/3b82f6/ffffff?text=Banner+2",
-        ];
-        
-        function renderHome() {
+        function renderBanners() {
             const track = document.getElementById('bannerTrack');
-            track.innerHTML = banners.map(b => `<div class="banner-slide" style="background-image: url('${b}')"></div>`).join('');
-            
-            renderAdGrid(adsList, 'homeAdsGrid');
+            if(bannersList.length === 0) { track.innerHTML = ''; return; }
+            track.innerHTML = bannersList.map(b => `<div class="banner-slide" style="background-image: url('${b.image}')" onclick="handleLink('${b.link}')"></div>`).join('');
         }
 
-        // Yangilangan E'lon Chizish Funksiyasi (Dizayn o'zgartirildi)
-        function renderAdGrid(ads, containerId, isMyAds = false) {
-            const container = document.getElementById(containerId);
-            if(ads.length === 0) {
-                container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: var(--text-muted); padding: 20px;">Hozircha e'lonlar yo'q</p>`;
-                return;
-            }
+        let bannerIdx = 0;
+        setInterval(() => {
+            if(!document.getElementById('home').classList.contains('active') || bannersList.length === 0) return;
+            const track = document.getElementById('bannerTrack');
+            bannerIdx = (bannerIdx + 1) % bannersList.length;
+            track.scrollTo({ left: track.offsetWidth * bannerIdx, behavior: 'smooth' });
+        }, 3000);
 
+        function renderHome() { renderAdGrid(adsList, 'homeAdsGrid'); }
+
+        function renderAdGrid(ads, containerId, isMyAds = false, isAdmin = false) {
+            const container = document.getElementById(containerId);
+            if(ads.length === 0) { container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: var(--text-muted); padding: 20px;">E'lonlar yo'q</p>`; return; }
+
+            let now = Date.now();
             container.innerHTML = ads.map((ad) => {
                 const imgHtml = (ad.images && ad.images.length > 0) ? `<img src="${ad.images[0]}">` : '<img src="https://via.placeholder.com/300x400?text=Rasm+yoq">';
-                
-                // O'chirish tugmasi faqat "Mening e'lonlarim"da chiqadi
-                let deleteBtn = isMyAds ? `<button class="delete-btn" onclick="event.stopPropagation(); deleteAd('${ad.dbId}')"><i class="material-icons" style="font-size:16px;">delete</i> O'chirish</button>` : '';
+                let isPrem = (ad.isPremium && ad.premiumUntil > now);
+                let premClass = isPrem ? 'premium-ad' : '';
+                let premBadge = isPrem ? `<div class="premium-badge"><i class="material-icons">bolt</i>Premium</div>` : '';
+
+                let btns = '';
+                if(isMyAds) {
+                    btns = `<div class="action-btns">
+                                <button class="btn-small btn-edit" onclick="event.stopPropagation(); editAd('${ad.dbId}')"><i class="material-icons">edit</i></button>
+                                <button class="btn-small btn-delete" onclick="event.stopPropagation(); deleteAd('${ad.dbId}')"><i class="material-icons">delete</i></button>
+                            </div>`;
+                } else if(isAdmin) {
+                    btns = `<div class="action-btns">
+                                <button class="btn-small ${isPrem ? 'btn-danger' : 'btn-premium'}" onclick="event.stopPropagation(); togglePremium('${ad.dbId}', ${isPrem})"><i class="material-icons">${isPrem?'close':'star'}</i></button>
+                                <button class="btn-small btn-edit" onclick="event.stopPropagation(); editAd('${ad.dbId}')"><i class="material-icons">edit</i></button>
+                                <button class="btn-small btn-delete" onclick="event.stopPropagation(); deleteAdAdmin('${ad.dbId}')"><i class="material-icons">delete</i></button>
+                            </div>`;
+                }
+
+                let adminInfo = isAdmin ? `<div style="font-size:11px; color:var(--text-muted); margin-top:2px;">@${ad.sellerName || ad.contact.replace('@','')}</div>` : '';
 
                 return `
-                    <div class="ad-card" onclick="openDetail('${ad.dbId}')">
+                    <div class="ad-card ${premClass}" onclick="openDetail('${ad.dbId}')">
+                        ${premBadge}
                         <div class="ad-img-slider">${imgHtml}</div>
                         <div class="ad-info">
                             <div class="ad-price">${formatNumber(ad.price)} so'm</div>
                             <div class="ad-title">${ad.title}</div>
+                            ${adminInfo}
                             <div class="ad-spacer"></div>
                             <div style="display:flex; justify-content:space-between; align-items:flex-end;">
                                 <div class="ad-date">${ad.date ? ad.date.split(',')[1] : ''}</div>
-                                ${deleteBtn}
                             </div>
+                            ${btns}
                         </div>
                     </div>
                 `;
@@ -832,70 +757,59 @@
 
         function handleSearch() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const resultsDiv = document.getElementById('searchResults');
-            
-            if(query.length === 0) { resultsDiv.innerHTML = ''; return; }
+            if(query.length === 0) { document.getElementById('searchResults').innerHTML = ''; return; }
             let filtered = adsList.filter(ad => ad.title.toLowerCase().includes(query));
             renderAdGrid(filtered, 'searchResults');
         }
 
-        // ==========================================
-        // MODALLARNI BOSHQARISH
-        // ==========================================
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
+        // Modals
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; }
         function openCatalogResults(cat) {
             document.getElementById('catalog-modal-title').innerText = cat;
-            const filtered = adsList.filter(ad => ad.category === cat);
-            renderAdGrid(filtered, 'catalogResultsGrid');
+            renderAdGrid(adsList.filter(ad => ad.category === cat), 'catalogResultsGrid');
             document.getElementById('catalog-results-modal').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
-
-        function openSettings() {
-            document.getElementById('settings-modal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function openTerms() {
-            document.getElementById('terms-modal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function openMyAds() {
-            loadMyAds();
-            document.getElementById('my-ads-modal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function loadMyAds() {
-            // E'lonlarni username bo'yicha saralash
-            let myAds = adsList.filter(ad => ad.contact.replace('@','') === tgUser.username);
-            renderAdGrid(myAds, 'myAdsContainer', true);
-        }
-
+        function openSettings() { document.getElementById('settings-modal').style.display='block'; document.body.style.overflow='hidden'; }
+        function openTerms() { document.getElementById('terms-modal').style.display='block'; document.body.style.overflow='hidden'; }
+        function openMyAds() { loadMyAds(); document.getElementById('my-ads-modal').style.display='block'; document.body.style.overflow='hidden'; }
+        function loadMyAds() { renderAdGrid(adsList.filter(ad => ad.contact.replace('@','') === tgUser.username), 'myAdsContainer', true, false); }
+        
         function deleteAd(dbId) {
             if(confirm("Haqiqatan ham bu e'lonni o'chirmoqchimisiz?")) {
-                db.collection("elonlar").doc(dbId).delete().then(() => {
-                    alert("E'lon muvaffaqiyatli o'chirildi.");
-                    loadMyAds();
-                }).catch((error) => {
-                    alert("O'chirishda xatolik yuz berdi.");
-                });
+                db.collection("elonlar").doc(dbId).delete().then(() => alert("E'lon o'chirildi."));
             }
         }
 
-        // E'lon Joylash Qadamlari
+        // ==========================================
+        // E'LON JOYLASh VA TAHRIRLASH
+        // ==========================================
+        function editAd(dbId) {
+            const ad = adsList.find(x => x.dbId === dbId);
+            if(!ad) return;
+            editingAdId = dbId;
+            currentTempImages = ad.images || [];
+            
+            // Rasmlarni chiqarish
+            document.getElementById('imagePreviewContainer').innerHTML = currentTempImages.map(img => `<img src="${img}">`).join('');
+            
+            document.getElementById('adTitle').value = ad.title;
+            document.getElementById('adDesc').value = ad.desc;
+            document.getElementById('adCategory').value = ad.category;
+            document.getElementById('adPrice').value = ad.price;
+            document.getElementById('adContact').value = ad.contact;
+            
+            document.getElementById('sellTitle').innerText = "E'lonni tahrirlash";
+            document.getElementById('submitBtn').innerText = "Saqlash";
+            
+            closeModal('my-ads-modal'); closeModal('admin-modal');
+            switchTab('sell');
+        }
+
         function nextStep(stepNum) {
             if(stepNum === 2 && currentTempImages.length === 0) { alert("Iltimos kamida bitta rasm yuklang!"); return; }
-            if(stepNum === 3) {
-                if(!document.getElementById('adTitle').value.trim()) { alert("Nomi kiritilishi shart!"); return; }
-                if(!document.getElementById('adDesc').value.trim()) { alert("Tavsif kiritilishi shart!"); return; }
-            }
-            if(stepNum === 4) { if(!document.getElementById('adPrice').value) { alert("Narx kiritilishi shart!"); return; } }
+            if(stepNum === 3 && (!document.getElementById('adTitle').value.trim() || !document.getElementById('adDesc').value.trim())) { alert("Nomi va Tavsif shart!"); return; }
+            if(stepNum === 4 && !document.getElementById('adPrice').value) { alert("Narx kiritilishi shart!"); return; }
 
             document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
             document.getElementById('step' + stepNum).classList.add('active');
@@ -904,8 +818,7 @@
         function previewImages(event) {
             const files = Array.from(event.target.files);
             const container = document.getElementById('imagePreviewContainer');
-            
-            if(currentTempImages.length + files.length > 5) { alert("Maksimal 5 ta rasm mumkin!"); return; }
+            if(currentTempImages.length + files.length > 5) { alert("Maksimal 5 rasm!"); return; }
 
             files.forEach(file => {
                 if (!file.type.startsWith('image/')) return;
@@ -913,17 +826,12 @@
                 reader.onload = function(e) {
                     let img = new Image();
                     img.onload = function() {
-                        let canvas = document.createElement('canvas');
-                        let ctx = canvas.getContext('2d');
-                        let maxWidth = 400; 
-                        let scale = maxWidth / img.width;
-                        canvas.width = maxWidth; canvas.height = img.height * scale;
+                        let canvas = document.createElement('canvas'); let ctx = canvas.getContext('2d');
+                        let scale = 400 / img.width; canvas.width = 400; canvas.height = img.height * scale;
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        let base64 = canvas.toDataURL('image/jpeg', 0.5); 
+                        let base64 = canvas.toDataURL('image/jpeg', 0.4); 
                         currentTempImages.push(base64);
-                        let imgElement = document.createElement('img');
-                        imgElement.src = base64;
-                        container.appendChild(imgElement);
+                        container.innerHTML += `<img src="${base64}">`;
                     }
                     img.src = e.target.result;
                 };
@@ -931,69 +839,62 @@
             });
         }
 
-        function formatUsername(input) {
-            let val = input.value;
-            if(!val.startsWith('@')) val = '@' + val.replace(/@/g, '');
-            input.value = val;
-        }
+        function formatUsername(input) { let v = input.value; if(!v.startsWith('@')) v = '@' + v.replace(/@/g, ''); input.value = v; }
 
         function submitAd() {
             let contact = document.getElementById('adContact').value;
-            if(contact.length < 5) { alert("Telegram username noto'g'ri! Kamida 4 ta belgi bo'lishi kerak."); return; }
+            if(contact.length < 5) { alert("Username noto'g'ri!"); return; }
 
-            document.getElementById('submitBtn').innerText = "Joylanmoqda...";
-            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').disabled = true; document.getElementById('submitBtn').innerText = "Kuting...";
 
             let d = new Date();
-            let day = String(d.getDate()).padStart(2, '0');
-            let month = String(d.getMonth() + 1).padStart(2, '0');
-            let year = d.getFullYear();
-            let hours = String(d.getHours()).padStart(2, '0');
-            let mins = String(d.getMinutes()).padStart(2, '0');
-            let formattedDate = `${hours}:${mins}, ${day}.${month}.${year}`;
+            let dateStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}, ${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth()+1).padStart(2, '0')}.${d.getFullYear()}`;
 
-            let newAd = {
-                elonId: globalIdCounter, 
+            let data = {
                 title: document.getElementById('adTitle').value,
                 desc: document.getElementById('adDesc').value,
-                category: document.getElementById('adCategory').value || 'Boshqa toifa',
+                category: document.getElementById('adCategory').value,
                 price: document.getElementById('adPrice').value,
                 contact: contact,
-                sellerName: tgUser.username !== "Mehmon" ? tgUser.first_name : contact.replace('@', ''), 
+                sellerName: tgUser.username !== "Mehmon" ? tgUser.username : contact.replace('@', ''), 
                 sellerPhoto: tgUser.photo,
                 images: currentTempImages,
-                date: formattedDate,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp() 
             };
 
-            db.collection("elonlar").add(newAd)
-            .then((docRef) => {
-                alert("E'loningiz muvaffaqiyatli joylandi!");
-                document.getElementById('submitBtn').innerText = "E'lonni joylash";
-                document.getElementById('submitBtn').disabled = false;
-                switchTab('home');
-            })
-            .catch((error) => {
-                alert("Xatolik yuz berdi. Internetni tekshiring.");
-                document.getElementById('submitBtn').innerText = "E'lonni joylash";
-                document.getElementById('submitBtn').disabled = false;
-            });
+            if(editingAdId) {
+                db.collection("elonlar").doc(editingAdId).update(data).then(() => {
+                    alert("Muvaffaqiyatli saqlandi!");
+                    switchTab('home');
+                });
+            } else {
+                data.elonId = globalIdCounter;
+                data.date = dateStr;
+                data.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+                data.isPremium = false;
+                
+                db.collection("elonlar").add(data).then(() => {
+                    alert("E'lon joylandi!");
+                    switchTab('home');
+                });
+            }
         }
 
         function resetForm() {
-            currentTempImages = [];
+            editingAdId = null; currentTempImages = [];
             document.getElementById('imagePreviewContainer').innerHTML = '';
-            document.getElementById('adTitle').value = '';
-            document.getElementById('adDesc').value = '';
-            document.getElementById('adCategory').value = 'Boshqa toifa';
-            document.getElementById('adPrice').value = '';
+            document.getElementById('adTitle').value = ''; document.getElementById('adDesc').value = '';
+            document.getElementById('adCategory').value = 'Boshqa toifa'; document.getElementById('adPrice').value = '';
             document.getElementById('adContact').value = tgUser.username !== "Mehmon" ? "@"+tgUser.username : '@';
+            document.getElementById('sellTitle').innerText = "E'lon joylash";
+            document.getElementById('submitBtn').innerText = "E'lonni joylash"; document.getElementById('submitBtn').disabled = false;
             document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
             document.getElementById('step1').classList.add('active');
         }
 
+        // ==========================================
+        // DETAIL OYNASI
+        // ==========================================
         let sliderElem, dotsElem;
-
         function openDetail(dbId) {
             const ad = adsList.find(x => x.dbId === dbId);
             if(!ad) return;
@@ -1004,45 +905,153 @@
             document.getElementById('detailDesc').innerText = ad.desc;
             document.getElementById('detailId').innerText = ad.elonId || "001";
             document.getElementById('detailDate').innerText = ad.date || "";
+            document.getElementById('sellerName').innerText = "@" + (ad.sellerName || ad.contact.replace('@', ''));
             
-            document.getElementById('sellerName').innerText = (ad.sellerName || ad.contact.replace('@', ''));
-            const avatarBox = document.getElementById('sellerAvatar');
-            if(ad.sellerPhoto) {
-                avatarBox.innerHTML = `<img src="${ad.sellerPhoto}">`;
-            } else {
-                avatarBox.innerHTML = `<i class="material-icons">person</i>`;
-            }
-            
-            let tgUsername = ad.contact.replace('@', '');
-            document.getElementById('detailBuyBtn').href = `https://t.me/${tgUsername}`;
+            document.getElementById('sellerAvatar').innerHTML = ad.sellerPhoto ? `<img src="${ad.sellerPhoto}">` : `<i class="material-icons">person</i>`;
+            document.getElementById('detailBuyBtn').href = `https://t.me/${ad.contact.replace('@', '')}`;
 
-            sliderElem = document.getElementById('detailSlider');
-            dotsElem = document.getElementById('detailDots');
-            
+            sliderElem = document.getElementById('detailSlider'); dotsElem = document.getElementById('detailDots');
             if(ad.images && ad.images.length > 0) {
                 sliderElem.innerHTML = ad.images.map(img => `<img src="${img}">`).join('');
                 dotsElem.innerHTML = ad.images.map((img, i) => `<div class="dot ${i===0?'active':''}"></div>`).join('');
             } else {
-                sliderElem.innerHTML = `<img src="https://via.placeholder.com/600x600?text=Rasm+yoq">`;
-                dotsElem.innerHTML = '';
+                sliderElem.innerHTML = `<img src="https://via.placeholder.com/600x600?text=Rasm+yoq">`; dotsElem.innerHTML = '';
             }
 
-            document.getElementById('detail-modal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            document.getElementById('detail-modal').style.display = 'block'; document.body.style.overflow = 'hidden';
         }
 
         function updateDots() {
             if(!sliderElem || !dotsElem) return;
-            const scrollLeft = sliderElem.scrollLeft;
-            const width = sliderElem.offsetWidth;
-            const index = Math.round(scrollLeft / width);
+            const index = Math.round(sliderElem.scrollLeft / sliderElem.offsetWidth);
+            dotsElem.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
+        }
+
+        // ==========================================
+        // ADMIN PANEL FUNKSIYALAR
+        // ==========================================
+        function openAdminPanel() {
+            renderAdminUsers(); // Default tab
+            document.getElementById('admin-modal').style.display = 'block'; document.body.style.overflow = 'hidden';
+        }
+
+        function switchAdminTab(tab, el) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('admin-users').style.display = tab==='users'?'block':'none';
+            document.getElementById('admin-ads').style.display = tab==='ads'?'block':'none';
+            document.getElementById('admin-banners').style.display = tab==='banners'?'block':'none';
+            if(tab==='users') renderAdminUsers();
+            if(tab==='ads') loadAdminAds();
+            if(tab==='banners') loadAdminBanners();
+        }
+
+        // USERS TAB
+        function renderAdminUsers() {
+            document.getElementById('statTotalUsers').innerText = usersList.length;
+            document.getElementById('statOnlineUsers').innerText = usersList.filter(u=>u.isOnline).length;
             
-            const dots = dotsElem.querySelectorAll('.dot');
-            dots.forEach((dot, i) => {
-                if(i === index) dot.classList.add('active');
-                else dot.classList.remove('active');
+            document.getElementById('adminUsersList').innerHTML = usersList.map(u => {
+                let status = u.isOnline ? `<div class="user-status online"></div> Online` : `<div class="user-status offline"></div> Offline`;
+                let blockText = u.isBlocked ? "Unblock" : "Block";
+                let blockClass = u.isBlocked ? "btn-unblock" : "btn-block";
+                
+                return `
+                <div class="user-card">
+                    <div>
+                        <div style="font-weight:bold; font-size:15px; color:var(--text-main);">@${u.username}</div>
+                        <div style="font-size:12px; color:var(--text-muted); margin-top:3px;">${status} | Ism: ${u.first_name}</div>
+                    </div>
+                    <div style="display:flex; gap:5px;">
+                        <button class="btn-small btn-alert" onclick="sendAlert('${u.dbId}')"><i class="material-icons">notifications</i></button>
+                        <button class="btn-small ${blockClass}" onclick="toggleBlock('${u.dbId}', ${u.isBlocked})">${blockText}</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function sendAlert(uid) {
+            let msg = prompt("Foydalanuvchiga ekranda chiqib turadigan xabar yozing:");
+            if(msg) db.collection("users").doc(uid).update({alertMessage: msg});
+        }
+
+        function toggleBlock(uid, isBlocked) {
+            db.collection("users").doc(uid).update({isBlocked: !isBlocked});
+        }
+
+        // ADS TAB
+        function loadAdminAds() { renderAdGrid(adsList, 'adminAdsList', false, true); }
+        function deleteAdAdmin(dbId) {
+            if(confirm("ADMIN: E'lonni butunlay o'chirasizmi?")) db.collection("elonlar").doc(dbId).delete();
+        }
+        function togglePremium(dbId, isPremium) {
+            if(isPremium) {
+                db.collection("elonlar").doc(dbId).update({isPremium: false});
+            } else {
+                let week = Date.now() + (7 * 24 * 60 * 60 * 1000); // 7 kun
+                db.collection("elonlar").doc(dbId).update({isPremium: true, premiumUntil: week});
+            }
+        }
+
+        // BANNERS TAB
+        let tempBannerBase64 = null;
+        let tempPopupBase64 = null;
+
+        document.getElementById('addBannerFile').addEventListener('change', function(e) {
+            let reader = new FileReader();
+            reader.onload = (ev) => { tempBannerBase64 = ev.target.result; };
+            reader.readAsDataURL(e.target.files[0]);
+        });
+
+        function saveBanner() {
+            let link = document.getElementById('addBannerLink').value;
+            if(!tempBannerBase64) return alert("Rasm tanlang!");
+            db.collection("banners").add({ image: tempBannerBase64, link: link }).then(() => {
+                alert("Banner qo'shildi!"); tempBannerBase64=null; document.getElementById('addBannerLink').value='';
             });
         }
+
+        function loadAdminBanners() {
+            document.getElementById('adminBannersList').innerHTML = bannersList.map(b => `
+                <div class="user-card" style="flex-direction:column; align-items:flex-start;">
+                    <img src="${b.image}" style="width:100%; height:80px; object-fit:cover; border-radius:8px;">
+                    <div style="margin-top:10px; width:100%; display:flex; justify-content:space-between;">
+                        <span style="font-size:12px;">URL: ${b.link}</span>
+                        <button class="btn-small btn-delete" onclick="db.collection('banners').doc('${b.dbId}').delete()">O'chirish</button>
+                    </div>
+                </div>
+            `).join('');
+
+            db.collection("system").doc("entryAd").get().then(doc => {
+                if(doc.exists) {
+                    let d = doc.data();
+                    document.getElementById('popupActiveToggle').checked = d.isActive;
+                    document.getElementById('popupTitle').value = d.title || '';
+                    document.getElementById('popupDesc').value = d.desc || '';
+                    document.getElementById('popupLink').value = d.link || '';
+                }
+            });
+        }
+
+        document.getElementById('popupFile').addEventListener('change', function(e) {
+            let reader = new FileReader();
+            reader.onload = (ev) => { tempPopupBase64 = ev.target.result; };
+            reader.readAsDataURL(e.target.files[0]);
+        });
+
+        function savePopupAd() {
+            let data = {
+                isActive: document.getElementById('popupActiveToggle').checked,
+                title: document.getElementById('popupTitle').value,
+                desc: document.getElementById('popupDesc').value,
+                link: document.getElementById('popupLink').value
+            };
+            if(tempPopupBase64) data.image = tempPopupBase64;
+            
+            db.collection("system").doc("entryAd").set(data, {merge:true}).then(()=>alert("Pop-up saqlandi!"));
+        }
+
     </script>
 </body>
 </html>
+
