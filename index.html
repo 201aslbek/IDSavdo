@@ -112,7 +112,7 @@
         .form-step.active { display: block; }
         .form-input, .form-select { width: 100%; padding: 15px; border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 15px; font-size: 16px; outline: none; background: var(--bg-main); color: var(--text-main); }
         .form-input:focus, .form-select:focus { border-color: var(--primary-color); }
-        .btn-primary { width: 100%; padding: 15px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; margin-top: 10px; }
+        .btn-primary { width: 100%; padding: 15px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; margin-top: 10px; cursor: pointer; }
         .btn-success { background: #10b981; }
         
         .img-upload-box { border: 2px dashed var(--border-color); padding: 30px; text-align: center; border-radius: 12px; margin-bottom: 15px; position: relative; }
@@ -189,8 +189,8 @@
         .btn-unblock { background: #10b981;}
 
         /* Admin Tab */
-        .admin-nav { display:flex; gap:10px; padding: 15px; background:var(--bg-card); position:sticky; top:0; z-index:100; border-bottom:1px solid var(--border-color);}
-        .admin-tab { flex:1; text-align:center; padding:10px; border-radius:8px; background:var(--border-color); color:var(--text-main); font-size:13px; font-weight:bold;}
+        .admin-nav { display:flex; flex-wrap: wrap; gap:10px; padding: 15px; background:var(--bg-card); position:sticky; top:0; z-index:100; border-bottom:1px solid var(--border-color);}
+        .admin-tab { flex: 1 1 calc(33% - 10px); text-align:center; padding:10px; border-radius:8px; background:var(--border-color); color:var(--text-main); font-size:12px; font-weight:bold; cursor:pointer;}
         .admin-tab.active { background:var(--admin-color); color:white;}
         
         .user-card { background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;}
@@ -198,18 +198,33 @@
         .online { background: #10b981; }
         .offline { background: #94a3b8; }
 
-        /* Popup Ad Modal */
-        #entry-ad-modal { z-index: 99999; background: rgba(0,0,0,0.8); justify-content:center; align-items:center; display:none;}
-        .entry-ad-box { background: var(--bg-card); width: 85%; border-radius: 20px; overflow: hidden; position:relative; max-width:400px; margin: auto; margin-top: 20vh; animation: zoomIn 0.3s ease;}
+        /* Popup Ad Modal (Starter) */
+        #entry-ad-modal { z-index: 99999; background: rgba(0,0,0,0.85); justify-content:center; align-items:center; display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;}
+        .entry-ad-box { width: 90%; max-width: 400px; position:relative; margin: auto; animation: zoomIn 0.3s ease;}
         @keyframes zoomIn { from {transform:scale(0.8); opacity:0;} to {transform:scale(1); opacity:1;} }
-        .entry-close { position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.5); color:white; width:30px; height:30px; border-radius:50%; display:flex; justify-content:center; align-items:center; z-index:10;}
-        .entry-img { width:100%; aspect-ratio: 16/9; background:#eee; object-fit:cover;}
-        .entry-content { padding: 20px; text-align:center; }
+        .entry-close { position:absolute; top:-15px; right:-15px; background:var(--danger-color); color:white; width:35px; height:35px; border-radius:50%; display:flex; justify-content:center; align-items:center; z-index:10; border: 2px solid white; cursor: pointer;}
+        .entry-img { width:100%; border-radius:15px; object-fit:contain; display:none;}
+        .entry-content { background: var(--bg-card); padding: 15px; border-radius: 15px; text-align:center; margin-top: 10px;}
         
-        /* Alert Message Modal */
-        #user-alert-box { position: fixed; top: env(safe-area-inset-top, 20px); left: 5%; width: 90%; background: #0066ff; color: white; padding: 15px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,102,255,0.4); z-index: 100000; display: none; align-items: center; justify-content: space-between; font-weight: bold; animation: slideDown 0.3s;}
-        @keyframes slideDown { from{top:-50px; opacity:0;} to{top:20px; opacity:1;} }
+        /* Alert Message Modal (O'rtada chiqadigan) */
+        #user-alert-box { 
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80%; max-width: 350px; background: #0066ff; color: white; 
+            padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
+            z-index: 100000; display: none; flex-direction: column; align-items: center; 
+            text-align: center; font-weight: bold; animation: popIn 0.3s;
+        }
+        @keyframes popIn { from{transform: translate(-50%, -40%); opacity:0;} to{transform: translate(-50%, -50%); opacity:1;} }
+        .alert-btn-close { margin-top: 15px; padding: 10px 20px; background: rgba(255,255,255,0.2); border-radius: 10px; color: white; cursor: pointer; border: none; font-weight: bold;}
 
+        /* Section Ads (2-rasmdagi reklama stili) */
+        .section-ad-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);}
+        .section-ad-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: var(--border-color); }
+        .section-ad-body { padding: 15px; }
+        .section-ad-badge { color: var(--danger-color); font-size: 13px; font-weight: bold; margin-bottom: 5px; }
+        .section-ad-title { font-size: 17px; font-weight: bold; color: var(--text-main); margin-bottom: 5px; }
+        .section-ad-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; line-height: 1.4; }
+        .section-ad-btn { width: 100%; background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer;}
     </style>
 </head>
 <body>
@@ -221,7 +236,7 @@
 
     <div id="user-alert-box">
         <span id="user-alert-text">Xabar!</span>
-        <i class="material-icons" style="font-size:24px; cursor:pointer;" onclick="closeUserAlert()">close</i>
+        <button class="alert-btn-close" onclick="closeUserAlert()">Tushunarli</button>
     </div>
     
     <div id="blocked-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-main); z-index:999999; justify-content:center; align-items:center; flex-direction:column;">
@@ -233,11 +248,11 @@
     <div id="entry-ad-modal">
         <div class="entry-ad-box">
             <div class="entry-close" onclick="closeEntryAd()"><i class="material-icons">close</i></div>
-            <img id="entryAdImg" class="entry-img" src="" style="display:none;">
-            <div class="entry-content">
-                <h3 id="entryAdTitle" style="margin-bottom:10px; font-size:18px;"></h3>
-                <p id="entryAdDesc" style="font-size:14px; color:var(--text-muted); margin-bottom:20px;"></p>
-                <button class="btn-primary" id="entryAdBtn" onclick="" style="margin-top:0;">Batafsil</button>
+            <img id="entryAdImg" class="entry-img" src="" style="display:none;" onclick="triggerEntryLink()">
+            <div class="entry-content" id="entryTextContainer" style="display:none;">
+                <h3 id="entryAdTitle" style="margin-bottom:5px; font-size:18px;"></h3>
+                <p id="entryAdDesc" style="font-size:14px; color:var(--text-muted); margin-bottom:15px;"></p>
+                <button class="btn-primary" id="entryAdBtn" onclick="triggerEntryLink()" style="margin-top:0;">Batafsil</button>
             </div>
         </div>
     </div>
@@ -315,11 +330,9 @@
         </div>
 
         <div id="ads" class="page">
-            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height: 60vh; text-align:center;">
-                <i class="material-icons" style="font-size: 80px; color: var(--border-color); margin-bottom: 20px;">campaign</i>
-                <h2>Reklamalar</h2>
-                <p style="color: var(--text-muted); margin-top: 10px;">Tez kunlarda ishga tushadi!</p>
-            </div>
+            <div class="header"><div class="header-logo"><span class="id">ID</span><span class="savdo">Reklama</span></div></div>
+            <div id="sectionAdsContainer" style="margin-top: 10px;">
+                </div>
         </div>
 
         <div id="profile" class="page">
@@ -423,9 +436,11 @@
         </div>
         
         <div class="admin-nav">
-            <div class="admin-tab active" onclick="switchAdminTab('users', this)">Foydalanuvchilar</div>
+            <div class="admin-tab active" onclick="switchAdminTab('users', this)">Users</div>
             <div class="admin-tab" onclick="switchAdminTab('ads', this)">E'lonlar</div>
-            <div class="admin-tab" onclick="switchAdminTab('banners', this)">Reklama</div>
+            <div class="admin-tab" onclick="switchAdminTab('banners', this)">Banner (Karusel)</div>
+            <div class="admin-tab" onclick="switchAdminTab('popup', this)">Starter Ad (Pop-up)</div>
+            <div class="admin-tab" onclick="switchAdminTab('sectionads', this)">Ads bo'limi</div>
         </div>
 
         <div id="admin-users" style="padding:15px; display:block;">
@@ -441,7 +456,7 @@
         </div>
 
         <div id="admin-banners" style="padding:15px; display:none;">
-            <h3 style="margin-bottom:10px;">Banner qo'shish</h3>
+            <h3 style="margin-bottom:10px;">Tepadagi Banner qo'shish</h3>
             <div style="background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:20px;">
                 <input type="text" id="addBannerLink" class="form-input" placeholder="Ssilka yoki Elon ID (Masalan: #25)">
                 <input type="file" id="addBannerFile" accept="image/*" class="form-input" style="padding:10px;">
@@ -449,18 +464,33 @@
             </div>
             <h3 style="margin-bottom:10px;">Joriy Bannerlar</h3>
             <div id="adminBannersList" style="display:flex; flex-direction:column; gap:10px; margin-bottom:30px;"></div>
+        </div>
 
-            <h3 style="margin-bottom:10px; border-top:1px solid var(--border-color); padding-top:20px;">Kirishdagi Pop-up Reklama</h3>
+        <div id="admin-popup" style="padding:15px; display:none;">
+            <h3 style="margin-bottom:10px;">Botga kirgandagi Pop-up</h3>
             <div style="background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid var(--border-color);">
                 <label style="display:flex; align-items:center; gap:10px; margin-bottom:15px; font-weight:bold;">
                     <input type="checkbox" id="popupActiveToggle" style="width:20px;height:20px;"> Pop-up ni yoqish
                 </label>
-                <input type="text" id="popupTitle" class="form-input" placeholder="Sarlavha">
-                <input type="text" id="popupDesc" class="form-input" placeholder="Matn">
+                <input type="text" id="popupTitle" class="form-input" placeholder="Sarlavha (Ixtiyoriy)">
+                <input type="text" id="popupDesc" class="form-input" placeholder="Matn (Ixtiyoriy)">
                 <input type="text" id="popupLink" class="form-input" placeholder="Ssilka yoki #Elon_ID">
                 <input type="file" id="popupFile" accept="image/*" class="form-input" style="padding:10px;">
                 <button class="btn-primary btn-success" onclick="savePopupAd()">Saqlash</button>
             </div>
+        </div>
+
+        <div id="admin-sectionads" style="padding:15px; display:none;">
+            <h3 style="margin-bottom:10px;">Ads bo'limiga reklama qo'shish</h3>
+            <div style="background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:20px;">
+                <input type="text" id="addSecAdTitle" class="form-input" placeholder="Reklama nomi">
+                <textarea id="addSecAdDesc" class="form-input" placeholder="Reklama tavsifi" rows="3"></textarea>
+                <input type="text" id="addSecAdLink" class="form-input" placeholder="Ssilka (masalan: t.me/kanal)">
+                <input type="file" id="addSecAdFile" accept="image/*" class="form-input" style="padding:10px;">
+                <button class="btn-primary" onclick="saveSectionAd()">Qo'shish</button>
+            </div>
+            <h3 style="margin-bottom:10px;">Ads Bo'limidagi Reklamalar</h3>
+            <div id="adminSectionAdsList" style="display:flex; flex-direction:column; gap:10px; margin-bottom:30px;"></div>
         </div>
     </div>
 
@@ -490,12 +520,11 @@
         </div>
         <div style="padding: 20px;" class="terms-text">
             <h2>Foydalanish shartlari va Maxfiylik siyosati (Privacy Policy)</h2><br>
-            <p>Ushbu Foydalanish shartlari ("Shartlar") sizning IDSavdo bot/ilovasidan foydalanishingizni tartibga soladi. Ilovadan foydalanish orqali shartlarga rozi ekanligingizni tasdiqlaysiz.</p>
+            <p>Ushbu Foydalanish shartlari ("Shartlar") sizning IDSavdo bot/ilovasidan foydalanishingizni tartibga soladi.</p>
             <h3>1. Umumiy qoidalar</h3><p>IDSavdo - bu foydalanuvchilar virtual akkauntlari va raqamli tovarlarni sotish/sotib olish maydonchasidir.</p>
             <h3>2. E'lon joylash qoidalari</h3><p>Yolg'on ma'lumotlar bermaslik, taqiqlangan tovarlar sotmaslik shart.</p>
-            <h3>3. Maxfiylik va Ma'lumotlar</h3><p>Biz faqat Telegram ochiq ma'lumotlaringizni (Ism, Username, Rasm) aloqa uchun ishlatamiz.</p>
-            <h3>4. Firibgarlik</h3><p>Firibgarlik holati aniqlansa, ma'muriyat e'lonni o'chirish va foydalanuvchini platformadan umrbod bloklash huquqiga ega.</p><br>
-            <p><i>Oxirgi yangilanish: 2026-yil, Aprel.</i></p>
+            <h3>3. Maxfiylik va Ma'lumotlar</h3><p>Biz faqat Telegram ochiq ma'lumotlaringizni aloqa uchun ishlatamiz.</p>
+            <h3>4. Firibgarlik</h3><p>Firibgarlik holati aniqlansa, e'lonni o'chirish va bloklash huquqiga egamiz.</p><br>
         </div>
     </div>
 
@@ -521,23 +550,34 @@
         let adsList = []; 
         let usersList = [];
         let bannersList = [];
+        let sectionAdsList = [];
         let globalIdCounter = 1; 
         let editingAdId = null;
 
-        const ADMIN_USERS = ['aslbek201', 'aslbek_dev', 'Mehmon', 'User']; 
+        // DIQQAT: Faqat siz admin!
+        const ADMIN_USERS = ['aslbek201']; 
 
         let tgApp = window.Telegram.WebApp;
         tgApp.ready(); 
 
-        let tgUser = { username: "Mehmon", first_name: "Foydalanuvchi", photo: "" };
+        let tgUser = { username: "", first_name: "Foydalanuvchi", photo: "" };
+        
         if (tgApp.initDataUnsafe && tgApp.initDataUnsafe.user) {
             let u = tgApp.initDataUnsafe.user;
-            tgUser.username = u.username || String(u.id); 
+            // Agar username yo'q bo'lsa, xatolik bermasligi uchun unikal ID beramiz
+            tgUser.username = u.username || ("user_" + u.id); 
             tgUser.first_name = u.first_name || "Foydalanuvchi";
             tgUser.photo = u.photo_url || "";
+        } else {
+            // Brauzerdan kirganda online muammosini hal qilish uchun vaqtinchalik unikal nom
+            let localUser = localStorage.getItem('idsavdo_local_user');
+            if(!localUser) {
+                localUser = "web_" + Math.floor(Math.random()*100000);
+                localStorage.setItem('idsavdo_local_user', localUser);
+            }
+            tgUser.username = localUser;
         }
 
-        // BAZAGA FOYDALANUVCHINI YOZISH VA ONLINE/BLOCK TEKSHIRISH
         let myDocRef = db.collection("users").doc(tgUser.username);
         myDocRef.set({
             username: tgUser.username,
@@ -546,6 +586,18 @@
             lastActive: Date.now(),
             isOnline: true
         }, {merge: true});
+
+        // Online/Offline statusni brauzer tab/ilova faolligiga qarab kuzatish
+        document.addEventListener("visibilitychange", function() {
+            if (document.visibilityState === 'visible') {
+                myDocRef.update({ isOnline: true, lastActive: Date.now() });
+            } else {
+                myDocRef.update({ isOnline: false, lastActive: Date.now() });
+            }
+        });
+        window.addEventListener("beforeunload", () => {
+            myDocRef.update({ isOnline: false, lastActive: Date.now() });
+        });
 
         // O'zimning statusimni eshitish (Block va Alert uchun)
         myDocRef.onSnapshot(doc => {
@@ -559,17 +611,12 @@
                 }
                 if(data.alertMessage) {
                     document.getElementById('user-alert-text').innerText = data.alertMessage;
+                    document.getElementById('user-alert-box').style.background = data.alertColor || '#0066ff';
                     document.getElementById('user-alert-box').style.display = 'flex';
                 }
             }
         });
 
-        // Ilovadan chiqqanda offlinga o'tkazish
-        window.addEventListener("beforeunload", () => {
-            myDocRef.update({ isOnline: false, lastActive: Date.now() });
-        });
-
-        // DOM Profil To'ldirish
         if(ADMIN_USERS.includes(tgUser.username)) document.getElementById('adminMenuBtn').style.display = 'flex';
         document.getElementById('profName').innerText = tgUser.first_name;
         document.getElementById('profUsername').innerText = "@" + tgUser.username;
@@ -587,7 +634,7 @@
         }
 
         // ==========================================
-        // REAL-TIME LISTNERS (ADS, BANNERS, ENTRY AD)
+        // REAL-TIME LISTNERS
         // ==========================================
         
         // E'LONLAR
@@ -603,7 +650,6 @@
             });
             globalIdCounter = maxId + 1; 
 
-            // Saralash: Avval Premiumlar (Muddati tugamaganlar), keyin yangilari
             adsList.sort((a, b) => {
                 let aPrem = (a.isPremium && a.premiumUntil > now) ? 1 : 0;
                 let bPrem = (b.isPremium && b.premiumUntil > now) ? 1 : 0;
@@ -624,11 +670,18 @@
             if(document.getElementById('admin-modal').style.display === 'block') loadAdminBanners();
         });
 
+        // SECTION ADS (Ads bo'limi)
+        db.collection("sectionAds").onSnapshot((qs) => {
+            sectionAdsList = [];
+            qs.forEach(doc => sectionAdsList.push({dbId: doc.id, ...doc.data()}));
+            renderSectionAds();
+            if(document.getElementById('admin-modal').style.display === 'block') loadAdminSectionAds();
+        });
+
         // USERS (Admin uchun)
         db.collection("users").onSnapshot((qs) => {
             usersList = [];
             qs.forEach(doc => usersList.push({dbId: doc.id, ...doc.data()}));
-            // Sort: Online first, then offline by lastActive
             usersList.sort((a,b) => {
                 if(a.isOnline === b.isOnline) return (b.lastActive || 0) - (a.lastActive || 0);
                 return a.isOnline ? -1 : 1;
@@ -636,26 +689,31 @@
             if(document.getElementById('admin-modal').style.display === 'block') renderAdminUsers();
         });
 
-        // POPUP AD (Kirishdagi)
+        // POPUP AD (Kirishdagi Starter)
+        let globalEntryLink = "";
         setTimeout(() => {
             document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
                 document.getElementById('app').style.display = 'block';
                 
-                // Splash ketgach, Popup tekshirish
                 db.collection("system").doc("entryAd").get().then(doc => {
                     if(doc.exists && doc.data().isActive) {
                         let d = doc.data();
-                        document.getElementById('entryAdTitle').innerText = d.title || '';
-                        document.getElementById('entryAdDesc').innerText = d.desc || '';
+                        globalEntryLink = d.link || "";
+                        
+                        if(d.title || d.desc) {
+                            document.getElementById('entryTextContainer').style.display = 'block';
+                            document.getElementById('entryAdTitle').innerText = d.title || '';
+                            document.getElementById('entryAdDesc').innerText = d.desc || '';
+                        } else {
+                            document.getElementById('entryTextContainer').style.display = 'none';
+                        }
+
                         if(d.image) {
                             document.getElementById('entryAdImg').src = d.image;
                             document.getElementById('entryAdImg').style.display = 'block';
-                        } else {
-                            document.getElementById('entryAdImg').style.display = 'none';
                         }
-                        document.getElementById('entryAdBtn').onclick = () => handleLink(d.link);
                         document.getElementById('entry-ad-modal').style.display = 'flex';
                     }
                 });
@@ -667,18 +725,21 @@
         // ==========================================
         function closeUserAlert() {
             document.getElementById('user-alert-box').style.display = 'none';
-            myDocRef.update({alertMessage: ""}); // Bazadan o'chirish qayta chiqmasligi uchun
+            myDocRef.update({alertMessage: ""}); 
         }
         function closeEntryAd() { document.getElementById('entry-ad-modal').style.display = 'none'; }
         
+        function triggerEntryLink() { handleLink(globalEntryLink); }
+
         function handleLink(link) {
             if(!link) return;
-            if(link.startsWith('#')) { // E'lon ID si
+            if(link.startsWith('#')) { 
                 closeEntryAd();
                 let ad = adsList.find(x => String(x.elonId) === link.replace('#',''));
                 if(ad) openDetail(ad.dbId);
             } else {
-                window.location.href = link;
+                if(!link.startsWith('http')) link = 'https://' + link;
+                window.open(link, '_blank');
             }
         }
 
@@ -732,8 +793,6 @@
                             </div>`;
                 }
 
-                let adminInfo = isAdmin ? `<div style="font-size:11px; color:var(--text-muted); margin-top:2px;">@${ad.sellerName || ad.contact.replace('@','')}</div>` : '';
-
                 return `
                     <div class="ad-card ${premClass}" onclick="openDetail('${ad.dbId}')">
                         ${premBadge}
@@ -741,7 +800,7 @@
                         <div class="ad-info">
                             <div class="ad-price">${formatNumber(ad.price)} so'm</div>
                             <div class="ad-title">${ad.title}</div>
-                            ${adminInfo}
+                            ${isAdmin ? `<div style="font-size:11px; color:var(--text-muted); margin-top:2px;">@${ad.sellerName || ad.contact.replace('@','')}</div>` : ''}
                             <div class="ad-spacer"></div>
                             <div style="display:flex; justify-content:space-between; align-items:flex-end;">
                                 <div class="ad-date">${ad.date ? ad.date.split(',')[1] : ''}</div>
@@ -751,6 +810,26 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        // Ads bo'limini render qilish
+        function renderSectionAds() {
+            const container = document.getElementById('sectionAdsContainer');
+            if(sectionAdsList.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--text-muted);"><i class="material-icons" style="font-size:50px;">campaign</i><br>Hozircha reklamalar yo'q</div>`;
+                return;
+            }
+            container.innerHTML = sectionAdsList.map(ad => `
+                <div class="section-ad-card">
+                    <img src="${ad.image}" class="section-ad-img">
+                    <div class="section-ad-body">
+                        <div class="section-ad-badge">Reklama</div>
+                        <div class="section-ad-title">${ad.title}</div>
+                        <div class="section-ad-desc">${ad.desc}</div>
+                        <button class="section-ad-btn" onclick="handleLink('${ad.link}')">KO'RISH</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function formatNumber(num) { return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
@@ -790,7 +869,6 @@
             editingAdId = dbId;
             currentTempImages = ad.images || [];
             
-            // Rasmlarni chiqarish
             document.getElementById('imagePreviewContainer').innerHTML = currentTempImages.map(img => `<img src="${img}">`).join('');
             
             document.getElementById('adTitle').value = ad.title;
@@ -815,6 +893,7 @@
             document.getElementById('step' + stepNum).classList.add('active');
         }
 
+        // Rasmni HD sifatda kichraytirish (Xiralikni yo'qotish uchun)
         function previewImages(event) {
             const files = Array.from(event.target.files);
             const container = document.getElementById('imagePreviewContainer');
@@ -827,9 +906,14 @@
                     let img = new Image();
                     img.onload = function() {
                         let canvas = document.createElement('canvas'); let ctx = canvas.getContext('2d');
-                        let scale = 400 / img.width; canvas.width = 400; canvas.height = img.height * scale;
+                        // Sifatni oshirish uchun 1024 gacha qildim (oldingi 400 edi)
+                        let maxWidth = 1024;
+                        let scale = maxWidth / img.width;
+                        if(scale > 1) scale = 1; // Kichkina rasmni kattalashtirmaydi
+                        canvas.width = img.width * scale; canvas.height = img.height * scale;
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        let base64 = canvas.toDataURL('image/jpeg', 0.4); 
+                        // Quality 0.85 ga ko'tarildi (HD)
+                        let base64 = canvas.toDataURL('image/jpeg', 0.85); 
                         currentTempImages.push(base64);
                         container.innerHTML += `<img src="${base64}">`;
                     }
@@ -856,7 +940,7 @@
                 category: document.getElementById('adCategory').value,
                 price: document.getElementById('adPrice').value,
                 contact: contact,
-                sellerName: tgUser.username !== "Mehmon" ? tgUser.username : contact.replace('@', ''), 
+                sellerName: (!tgUser.username.startsWith("web_") && !tgUser.username.startsWith("user_")) ? tgUser.username : contact.replace('@', ''), 
                 sellerPhoto: tgUser.photo,
                 images: currentTempImages,
             };
@@ -884,7 +968,7 @@
             document.getElementById('imagePreviewContainer').innerHTML = '';
             document.getElementById('adTitle').value = ''; document.getElementById('adDesc').value = '';
             document.getElementById('adCategory').value = 'Boshqa toifa'; document.getElementById('adPrice').value = '';
-            document.getElementById('adContact').value = tgUser.username !== "Mehmon" ? "@"+tgUser.username : '@';
+            document.getElementById('adContact').value = "@";
             document.getElementById('sellTitle').innerText = "E'lon joylash";
             document.getElementById('submitBtn').innerText = "E'lonni joylash"; document.getElementById('submitBtn').disabled = false;
             document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
@@ -931,8 +1015,13 @@
         // ADMIN PANEL FUNKSIYALAR
         // ==========================================
         function openAdminPanel() {
-            renderAdminUsers(); // Default tab
-            document.getElementById('admin-modal').style.display = 'block'; document.body.style.overflow = 'hidden';
+            let pin = prompt("Admin Panel uchun parolni kiriting:");
+            if(pin === "2580") {
+                renderAdminUsers(); 
+                document.getElementById('admin-modal').style.display = 'block'; document.body.style.overflow = 'hidden';
+            } else {
+                alert("Parol noto'g'ri!");
+            }
         }
 
         function switchAdminTab(tab, el) {
@@ -941,9 +1030,12 @@
             document.getElementById('admin-users').style.display = tab==='users'?'block':'none';
             document.getElementById('admin-ads').style.display = tab==='ads'?'block':'none';
             document.getElementById('admin-banners').style.display = tab==='banners'?'block':'none';
+            document.getElementById('admin-popup').style.display = tab==='popup'?'block':'none';
+            document.getElementById('admin-sectionads').style.display = tab==='sectionads'?'block':'none';
             if(tab==='users') renderAdminUsers();
             if(tab==='ads') loadAdminAds();
             if(tab==='banners') loadAdminBanners();
+            if(tab==='sectionads') loadAdminSectionAds();
         }
 
         // USERS TAB
@@ -971,8 +1063,13 @@
         }
 
         function sendAlert(uid) {
-            let msg = prompt("Foydalanuvchiga ekranda chiqib turadigan xabar yozing:");
-            if(msg) db.collection("users").doc(uid).update({alertMessage: msg});
+            let msg = prompt("Foydalanuvchiga markazda chiqib turadigan xabar yozing:");
+            if(msg) {
+                let colorInput = prompt("Xabar rangi qanday bo'lsin? (kok yoki qizil kiritng)", "kok").toLowerCase();
+                let colorCode = (colorInput === 'qizil') ? '#ef4444' : '#0066ff';
+                db.collection("users").doc(uid).update({alertMessage: msg, alertColor: colorCode});
+                alert("Xabar yuborildi!");
+            }
         }
 
         function toggleBlock(uid, isBlocked) {
@@ -995,14 +1092,11 @@
 
         // BANNERS TAB
         let tempBannerBase64 = null;
-        let tempPopupBase64 = null;
-
         document.getElementById('addBannerFile').addEventListener('change', function(e) {
             let reader = new FileReader();
             reader.onload = (ev) => { tempBannerBase64 = ev.target.result; };
             reader.readAsDataURL(e.target.files[0]);
         });
-
         function saveBanner() {
             let link = document.getElementById('addBannerLink').value;
             if(!tempBannerBase64) return alert("Rasm tanlang!");
@@ -1010,7 +1104,6 @@
                 alert("Banner qo'shildi!"); tempBannerBase64=null; document.getElementById('addBannerLink').value='';
             });
         }
-
         function loadAdminBanners() {
             document.getElementById('adminBannersList').innerHTML = bannersList.map(b => `
                 <div class="user-card" style="flex-direction:column; align-items:flex-start;">
@@ -1033,12 +1126,13 @@
             });
         }
 
+        // POP-UP TAB (Starter)
+        let tempPopupBase64 = null;
         document.getElementById('popupFile').addEventListener('change', function(e) {
             let reader = new FileReader();
             reader.onload = (ev) => { tempPopupBase64 = ev.target.result; };
             reader.readAsDataURL(e.target.files[0]);
         });
-
         function savePopupAd() {
             let data = {
                 isActive: document.getElementById('popupActiveToggle').checked,
@@ -1047,11 +1141,49 @@
                 link: document.getElementById('popupLink').value
             };
             if(tempPopupBase64) data.image = tempPopupBase64;
-            
             db.collection("system").doc("entryAd").set(data, {merge:true}).then(()=>alert("Pop-up saqlandi!"));
+        }
+
+        // SECTION ADS TAB (Ads bo'limi)
+        let tempSecAdBase64 = null;
+        document.getElementById('addSecAdFile').addEventListener('change', function(e) {
+            let reader = new FileReader();
+            reader.onload = (ev) => { tempSecAdBase64 = ev.target.result; };
+            reader.readAsDataURL(e.target.files[0]);
+        });
+        function saveSectionAd() {
+            let title = document.getElementById('addSecAdTitle').value;
+            let desc = document.getElementById('addSecAdDesc').value;
+            let link = document.getElementById('addSecAdLink').value;
+            
+            if(!title || !tempSecAdBase64) return alert("Nom va Rasm kiritilishi shart!");
+            
+            db.collection("sectionAds").add({
+                title: title, desc: desc, link: link, image: tempSecAdBase64
+            }).then(() => {
+                alert("Ads bo'limiga reklama qo'shildi!");
+                tempSecAdBase64 = null; 
+                document.getElementById('addSecAdTitle').value = '';
+                document.getElementById('addSecAdDesc').value = '';
+                document.getElementById('addSecAdLink').value = '';
+            });
+        }
+        function loadAdminSectionAds() {
+            document.getElementById('adminSectionAdsList').innerHTML = sectionAdsList.map(ad => `
+                <div class="user-card" style="flex-direction:column; align-items:flex-start;">
+                    <img src="${ad.image}" style="width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:8px;">
+                    <div style="margin-top:10px; width:100%;">
+                        <b>${ad.title}</b>
+                        <div style="font-size:12px; color:var(--text-muted);">${ad.desc}</div>
+                        <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:11px;">URL: ${ad.link}</span>
+                            <button class="btn-small btn-delete" onclick="db.collection('sectionAds').doc('${ad.dbId}').delete()">O'chirish</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
     </script>
 </body>
 </html>
-
