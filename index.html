@@ -1183,6 +1183,20 @@
                 </div>
             `).join('');
         }
+            // View qo'shish (Faqat 1 marta hisoblash uchun)
+            let viewedAds = JSON.parse(localStorage.getItem('viewedAds') || '[]');
+            if (!viewedAds.includes(dbId)) {
+                // Agar oldin ko'rmagan bo'lsa, bazaga +1 qo'shamiz
+                db.collection("elonlar").doc(dbId).update({ views: firebase.firestore.FieldValue.increment(1) });
+                document.getElementById('detailViews').innerText = (ad.views || 0) + 1;
+                
+                // Ko'rilganlar ro'yxatiga saqlab qo'yamiz
+                viewedAds.push(dbId);
+                localStorage.setItem('viewedAds', JSON.stringify(viewedAds));
+            } else {
+                // Agar oldin ko'rgan bo'lsa, faqat borini ko'rsatamiz
+                document.getElementById('detailViews').innerText = (ad.views || 0);
+            }
 
     </script>
 </body>
