@@ -140,7 +140,7 @@
         .seller-info { display: flex; align-items: center; }
         .seller-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--border-color); display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--text-muted); margin-right: 15px; overflow: hidden; }
         .seller-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .seller-details h4 { margin: 0; font-size: 16px; color: var(--text-main); }
+        .seller-details h4 { margin: 0; font-size: 16px; color: var(--text-main); display: flex; align-items: center; gap: 4px;}
         .seller-details p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-muted); }
         
         .feature-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
@@ -148,8 +148,9 @@
         .feature-label { color: var(--text-muted); }
         .feature-value { font-weight: 600; color: var(--text-main); }
         .detail-desc { color: var(--text-main); font-size: 14px; line-height: 1.5; margin-top: 10px; }
-        .detail-footer-info { margin-top: 20px; padding: 0 10px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; }
-
+        .detail-footer-info { margin-top: 20px; padding: 15px; background: var(--bg-card); border-radius: 12px; font-size: 14px; color: var(--text-main); display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--border-color);}
+        .detail-footer-row { display: flex; justify-content: space-between; align-items: center;}
+        
         .buy-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px; background: var(--tab-bg); backdrop-filter: blur(10px); z-index: 2010; border-top: 1px solid var(--border-color); }
         .btn-buy { display: block; text-align: center; text-decoration: none; width: 100%; padding: 15px; background: var(--primary-color); color: white; border-radius: 12px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,102,255,0.3); }
 
@@ -185,6 +186,7 @@
         .btn-edit { background: #3b82f6; }
         .btn-premium { background: #f59e0b; color:#fff;}
         .btn-alert { background: #8b5cf6;}
+        .btn-verified { background: #3b82f6; }
         .btn-block { background: #ef4444;}
         .btn-unblock { background: #10b981;}
 
@@ -193,7 +195,8 @@
         .admin-tab { flex: 1 1 calc(33% - 10px); text-align:center; padding:10px; border-radius:8px; background:var(--border-color); color:var(--text-main); font-size:12px; font-weight:bold; cursor:pointer;}
         .admin-tab.active { background:var(--admin-color); color:white;}
         
-        .user-card { background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;}
+        .user-card { background: var(--bg-card); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 10px; display:flex; flex-direction: column; gap: 10px;}
+        .user-card-header { display: flex; justify-content: space-between; align-items: center;}
         .user-status { width: 10px; height: 10px; border-radius: 50%; display:inline-block; margin-right:5px;}
         .online { background: #10b981; }
         .offline { background: #94a3b8; }
@@ -214,6 +217,7 @@
             z-index: 100000; display: none; flex-direction: column; align-items: center; 
             text-align: center; font-weight: bold; animation: popIn 0.3s;
         }
+        #user-alert-img { width: 100%; border-radius: 10px; margin-bottom: 15px; display: none; object-fit: cover; }
         @keyframes popIn { from{transform: translate(-50%, -40%); opacity:0;} to{transform: translate(-50%, -50%); opacity:1;} }
         .alert-btn-close { margin-top: 15px; padding: 10px 20px; background: rgba(255,255,255,0.2); border-radius: 10px; color: white; cursor: pointer; border: none; font-weight: bold;}
 
@@ -235,10 +239,29 @@
     </div>
 
     <div id="user-alert-box">
+        <img id="user-alert-img" src="">
         <span id="user-alert-text">Xabar!</span>
         <button class="alert-btn-close" onclick="closeUserAlert()">Tushunarli</button>
     </div>
     
+    <div id="admin-create-alert-modal" class="full-modal" style="z-index: 3000;">
+        <div class="modal-header" onclick="closeModal('admin-create-alert-modal')">
+            <div class="modal-back-btn"><i class="material-icons">close</i> Bekor qilish</div>
+        </div>
+        <div style="padding: 20px;">
+            <h3>Xabar yuborish</h3>
+            <textarea id="adminAlertText" class="form-input" rows="4" placeholder="Xabar matnini kiriting..."></textarea>
+            <select id="adminAlertColor" class="form-select">
+                <option value="#0066ff">Ko'k (Oddiy)</option>
+                <option value="#ef4444">Qizil (Muhim)</option>
+                <option value="#10b981">Yashil (Muvaffaqiyat)</option>
+            </select>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:5px;">Rasm (Ixtiyoriy):</p>
+            <input type="file" id="adminAlertFile" accept="image/*" class="form-input" style="padding: 10px;">
+            <button class="btn-primary" onclick="sendCustomAlert()">Yuborish</button>
+        </div>
+    </div>
+
     <div id="blocked-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-main); z-index:999999; justify-content:center; align-items:center; flex-direction:column;">
         <i class="material-icons" style="font-size:80px; color:var(--danger-color);">block</i>
         <h2 style="color:var(--text-main); margin-top:20px;">Siz bloklangansiz</h2>
@@ -332,7 +355,7 @@
         <div id="ads" class="page">
             <div class="header"><div class="header-logo"><span class="id">ID</span><span class="savdo">Reklama</span></div></div>
             <div id="sectionAdsContainer" style="margin-top: 10px;">
-                </div>
+            </div>
         </div>
 
         <div id="profile" class="page">
@@ -413,9 +436,21 @@
                 <h3 style="font-size: 16px;">Tavsif</h3>
                 <div class="detail-desc" id="detailDesc"></div>
             </div>
+            
             <div class="detail-footer-info">
-                <div>Raqam: <span id="detailId"></span></div>
-                <div>Nashr vaqti: <span id="detailDate"></span></div>
+                <div class="detail-footer-row">
+                    <span style="color:var(--text-muted);">Ko'rishlar soni:</span>
+                    <span style="font-weight:bold; display:flex; align-items:center; gap:5px;"><i class="material-icons" style="font-size:16px;">visibility</i> <span id="detailViews">0</span></span>
+                </div>
+                <div class="detail-footer-row">
+                    <span style="color:var(--text-muted);">Raqam:</span>
+                    <span style="font-weight:bold;" id="detailId"></span>
+                </div>
+                <div class="detail-footer-row">
+                    <span style="color:var(--text-muted);">Nashr vaqti:</span>
+                    <span style="font-weight:bold;" id="detailDate"></span>
+                </div>
+                <button class="btn-primary" style="background:var(--bg-main); color:var(--text-main); border: 1px solid var(--border-color); margin-top: 10px; box-shadow: none;" id="btnReportAd">Shikoyat qilish</button>
             </div>
         </div>
         <div class="buy-btn-container"><a id="detailBuyBtn" target="_blank" class="btn-buy">Sotib olish</a></div>
@@ -439,7 +474,7 @@
             <div class="admin-tab active" onclick="switchAdminTab('users', this)">Users</div>
             <div class="admin-tab" onclick="switchAdminTab('ads', this)">E'lonlar</div>
             <div class="admin-tab" onclick="switchAdminTab('banners', this)">Banner (Karusel)</div>
-            <div class="admin-tab" onclick="switchAdminTab('popup', this)">Starter Ad (Pop-up)</div>
+            <div class="admin-tab" onclick="switchAdminTab('popup', this)">Starter Ad</div>
             <div class="admin-tab" onclick="switchAdminTab('sectionads', this)">Ads bo'limi</div>
         </div>
 
@@ -556,6 +591,7 @@
 
         // DIQQAT: Faqat siz admin!
         const ADMIN_USERS = ['aslbek201']; 
+        const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
         let tgApp = window.Telegram.WebApp;
         tgApp.ready(); 
@@ -564,12 +600,10 @@
         
         if (tgApp.initDataUnsafe && tgApp.initDataUnsafe.user) {
             let u = tgApp.initDataUnsafe.user;
-            // Agar username yo'q bo'lsa, xatolik bermasligi uchun unikal ID beramiz
             tgUser.username = u.username || ("user_" + u.id); 
             tgUser.first_name = u.first_name || "Foydalanuvchi";
             tgUser.photo = u.photo_url || "";
         } else {
-            // Brauzerdan kirganda online muammosini hal qilish uchun vaqtinchalik unikal nom
             let localUser = localStorage.getItem('idsavdo_local_user');
             if(!localUser) {
                 localUser = "web_" + Math.floor(Math.random()*100000);
@@ -587,19 +621,12 @@
             isOnline: true
         }, {merge: true});
 
-        // Online/Offline statusni brauzer tab/ilova faolligiga qarab kuzatish
         document.addEventListener("visibilitychange", function() {
-            if (document.visibilityState === 'visible') {
-                myDocRef.update({ isOnline: true, lastActive: Date.now() });
-            } else {
-                myDocRef.update({ isOnline: false, lastActive: Date.now() });
-            }
+            if (document.visibilityState === 'visible') myDocRef.update({ isOnline: true, lastActive: Date.now() });
+            else myDocRef.update({ isOnline: false, lastActive: Date.now() });
         });
-        window.addEventListener("beforeunload", () => {
-            myDocRef.update({ isOnline: false, lastActive: Date.now() });
-        });
+        window.addEventListener("beforeunload", () => myDocRef.update({ isOnline: false, lastActive: Date.now() }));
 
-        // O'zimning statusimni eshitish (Block va Alert uchun)
         myDocRef.onSnapshot(doc => {
             if(doc.exists) {
                 let data = doc.data();
@@ -609,9 +636,16 @@
                 } else {
                     document.getElementById('blocked-screen').style.display = 'none';
                 }
+                
                 if(data.alertMessage) {
                     document.getElementById('user-alert-text').innerText = data.alertMessage;
                     document.getElementById('user-alert-box').style.background = data.alertColor || '#0066ff';
+                    if(data.alertImage) {
+                        document.getElementById('user-alert-img').src = data.alertImage;
+                        document.getElementById('user-alert-img').style.display = 'block';
+                    } else {
+                        document.getElementById('user-alert-img').style.display = 'none';
+                    }
                     document.getElementById('user-alert-box').style.display = 'flex';
                 }
             }
@@ -637,24 +671,35 @@
         // REAL-TIME LISTNERS
         // ==========================================
         
-        // E'LONLAR
-        db.collection("elonlar").onSnapshot((querySnapshot) => {
+        // E'LONLAR (Sayt qotmasligi uchun limit qo'yildi va 30 kunlik o'chirish logikasi)
+        db.collection("elonlar").orderBy("createdAt", "desc").limit(100).onSnapshot((querySnapshot) => {
             adsList = [];
             let maxId = 0;
             let now = Date.now();
+            
             querySnapshot.forEach((doc) => {
                 let adData = doc.data();
                 adData.dbId = doc.id; 
+                
+                // 30 kun o'tgan bo'lsa ro'yxatga qo'shilmaydi va admin fon rejimida uni o'chirib yuboradi
+                if (adData.createdAt && (now - adData.createdAt > THIRTY_DAYS_MS)) {
+                    if (ADMIN_USERS.includes(tgUser.username)) {
+                        db.collection("elonlar").doc(doc.id).delete();
+                    }
+                    return; // Skip rendering
+                }
+                
                 adsList.push(adData);
                 if(adData.elonId && adData.elonId > maxId) maxId = adData.elonId;
             });
             globalIdCounter = maxId + 1; 
 
+            // Premium 7 kun o'tgan bo'lsa, oddiy e'longa aylanadi
             adsList.sort((a, b) => {
                 let aPrem = (a.isPremium && a.premiumUntil > now) ? 1 : 0;
                 let bPrem = (b.isPremium && b.premiumUntil > now) ? 1 : 0;
                 if(aPrem !== bPrem) return bPrem - aPrem; 
-                return (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0);
+                return (b.createdAt || 0) - (a.createdAt || 0);
             });
             
             if(document.getElementById('home').classList.contains('active')) renderHome();
@@ -664,16 +709,14 @@
 
         // BANNERLAR
         db.collection("banners").onSnapshot((qs) => {
-            bannersList = [];
-            qs.forEach(doc => bannersList.push({dbId: doc.id, ...doc.data()}));
+            bannersList = []; qs.forEach(doc => bannersList.push({dbId: doc.id, ...doc.data()}));
             renderBanners();
             if(document.getElementById('admin-modal').style.display === 'block') loadAdminBanners();
         });
 
         // SECTION ADS (Ads bo'limi)
         db.collection("sectionAds").onSnapshot((qs) => {
-            sectionAdsList = [];
-            qs.forEach(doc => sectionAdsList.push({dbId: doc.id, ...doc.data()}));
+            sectionAdsList = []; qs.forEach(doc => sectionAdsList.push({dbId: doc.id, ...doc.data()}));
             renderSectionAds();
             if(document.getElementById('admin-modal').style.display === 'block') loadAdminSectionAds();
         });
@@ -701,15 +744,11 @@
                     if(doc.exists && doc.data().isActive) {
                         let d = doc.data();
                         globalEntryLink = d.link || "";
-                        
                         if(d.title || d.desc) {
                             document.getElementById('entryTextContainer').style.display = 'block';
                             document.getElementById('entryAdTitle').innerText = d.title || '';
                             document.getElementById('entryAdDesc').innerText = d.desc || '';
-                        } else {
-                            document.getElementById('entryTextContainer').style.display = 'none';
                         }
-
                         if(d.image) {
                             document.getElementById('entryAdImg').src = d.image;
                             document.getElementById('entryAdImg').style.display = 'block';
@@ -725,10 +764,9 @@
         // ==========================================
         function closeUserAlert() {
             document.getElementById('user-alert-box').style.display = 'none';
-            myDocRef.update({alertMessage: ""}); 
+            myDocRef.update({alertMessage: "", alertImage: ""}); 
         }
         function closeEntryAd() { document.getElementById('entry-ad-modal').style.display = 'none'; }
-        
         function triggerEntryLink() { handleLink(globalEntryLink); }
 
         function handleLink(link) {
@@ -804,6 +842,7 @@
                             <div class="ad-spacer"></div>
                             <div style="display:flex; justify-content:space-between; align-items:flex-end;">
                                 <div class="ad-date">${ad.date ? ad.date.split(',')[1] : ''}</div>
+                                <div style="font-size:11px; color:var(--text-muted); display:flex; align-items:center;"><i class="material-icons" style="font-size:12px; margin-right:2px;">visibility</i> ${ad.views || 0}</div>
                             </div>
                             ${btns}
                         </div>
@@ -812,7 +851,6 @@
             }).join('');
         }
 
-        // Ads bo'limini render qilish
         function renderSectionAds() {
             const container = document.getElementById('sectionAdsContainer');
             if(sectionAdsList.length === 0) {
@@ -841,13 +879,11 @@
             renderAdGrid(filtered, 'searchResults');
         }
 
-        // Modals
         function closeModal(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; }
         function openCatalogResults(cat) {
             document.getElementById('catalog-modal-title').innerText = cat;
             renderAdGrid(adsList.filter(ad => ad.category === cat), 'catalogResultsGrid');
-            document.getElementById('catalog-results-modal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            document.getElementById('catalog-results-modal').style.display = 'block'; document.body.style.overflow = 'hidden';
         }
         function openSettings() { document.getElementById('settings-modal').style.display='block'; document.body.style.overflow='hidden'; }
         function openTerms() { document.getElementById('terms-modal').style.display='block'; document.body.style.overflow='hidden'; }
@@ -855,50 +891,34 @@
         function loadMyAds() { renderAdGrid(adsList.filter(ad => ad.contact.replace('@','') === tgUser.username), 'myAdsContainer', true, false); }
         
         function deleteAd(dbId) {
-            if(confirm("Haqiqatan ham bu e'lonni o'chirmoqchimisiz?")) {
-                db.collection("elonlar").doc(dbId).delete().then(() => alert("E'lon o'chirildi."));
-            }
+            if(confirm("Haqiqatan ham bu e'lonni o'chirmoqchimisiz?")) { db.collection("elonlar").doc(dbId).delete(); }
         }
 
         // ==========================================
-        // E'LON JOYLASh VA TAHRIRLASH
+        // E'LON JOYLASh
         // ==========================================
         function editAd(dbId) {
-            const ad = adsList.find(x => x.dbId === dbId);
-            if(!ad) return;
-            editingAdId = dbId;
-            currentTempImages = ad.images || [];
-            
+            const ad = adsList.find(x => x.dbId === dbId); if(!ad) return;
+            editingAdId = dbId; currentTempImages = ad.images || [];
             document.getElementById('imagePreviewContainer').innerHTML = currentTempImages.map(img => `<img src="${img}">`).join('');
-            
-            document.getElementById('adTitle').value = ad.title;
-            document.getElementById('adDesc').value = ad.desc;
-            document.getElementById('adCategory').value = ad.category;
-            document.getElementById('adPrice').value = ad.price;
+            document.getElementById('adTitle').value = ad.title; document.getElementById('adDesc').value = ad.desc;
+            document.getElementById('adCategory').value = ad.category; document.getElementById('adPrice').value = ad.price;
             document.getElementById('adContact').value = ad.contact;
-            
-            document.getElementById('sellTitle').innerText = "E'lonni tahrirlash";
-            document.getElementById('submitBtn').innerText = "Saqlash";
-            
-            closeModal('my-ads-modal'); closeModal('admin-modal');
-            switchTab('sell');
+            document.getElementById('sellTitle').innerText = "E'lonni tahrirlash"; document.getElementById('submitBtn').innerText = "Saqlash";
+            closeModal('my-ads-modal'); closeModal('admin-modal'); switchTab('sell');
         }
 
         function nextStep(stepNum) {
             if(stepNum === 2 && currentTempImages.length === 0) { alert("Iltimos kamida bitta rasm yuklang!"); return; }
             if(stepNum === 3 && (!document.getElementById('adTitle').value.trim() || !document.getElementById('adDesc').value.trim())) { alert("Nomi va Tavsif shart!"); return; }
             if(stepNum === 4 && !document.getElementById('adPrice').value) { alert("Narx kiritilishi shart!"); return; }
-
             document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
             document.getElementById('step' + stepNum).classList.add('active');
         }
 
-        // Rasmni HD sifatda kichraytirish (Xiralikni yo'qotish uchun)
         function previewImages(event) {
-            const files = Array.from(event.target.files);
-            const container = document.getElementById('imagePreviewContainer');
+            const files = Array.from(event.target.files); const container = document.getElementById('imagePreviewContainer');
             if(currentTempImages.length + files.length > 5) { alert("Maksimal 5 rasm!"); return; }
-
             files.forEach(file => {
                 if (!file.type.startsWith('image/')) return;
                 const reader = new FileReader();
@@ -906,16 +926,11 @@
                     let img = new Image();
                     img.onload = function() {
                         let canvas = document.createElement('canvas'); let ctx = canvas.getContext('2d');
-                        // Sifatni oshirish uchun 1024 gacha qildim (oldingi 400 edi)
-                        let maxWidth = 1024;
-                        let scale = maxWidth / img.width;
-                        if(scale > 1) scale = 1; // Kichkina rasmni kattalashtirmaydi
+                        let maxWidth = 1024; let scale = maxWidth / img.width; if(scale > 1) scale = 1; 
                         canvas.width = img.width * scale; canvas.height = img.height * scale;
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        // Quality 0.85 ga ko'tarildi (HD)
                         let base64 = canvas.toDataURL('image/jpeg', 0.85); 
-                        currentTempImages.push(base64);
-                        container.innerHTML += `<img src="${base64}">`;
+                        currentTempImages.push(base64); container.innerHTML += `<img src="${base64}">`;
                     }
                     img.src = e.target.result;
                 };
@@ -928,60 +943,45 @@
         function submitAd() {
             let contact = document.getElementById('adContact').value;
             if(contact.length < 5) { alert("Username noto'g'ri!"); return; }
-
             document.getElementById('submitBtn').disabled = true; document.getElementById('submitBtn').innerText = "Kuting...";
 
             let d = new Date();
             let dateStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}, ${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth()+1).padStart(2, '0')}.${d.getFullYear()}`;
 
             let data = {
-                title: document.getElementById('adTitle').value,
-                desc: document.getElementById('adDesc').value,
-                category: document.getElementById('adCategory').value,
-                price: document.getElementById('adPrice').value,
-                contact: contact,
-                sellerName: (!tgUser.username.startsWith("web_") && !tgUser.username.startsWith("user_")) ? tgUser.username : contact.replace('@', ''), 
-                sellerPhoto: tgUser.photo,
-                images: currentTempImages,
+                title: document.getElementById('adTitle').value, desc: document.getElementById('adDesc').value,
+                category: document.getElementById('adCategory').value, price: document.getElementById('adPrice').value,
+                contact: contact, sellerName: (!tgUser.username.startsWith("web_") && !tgUser.username.startsWith("user_")) ? tgUser.username : contact.replace('@', ''), 
+                sellerPhoto: tgUser.photo, images: currentTempImages,
             };
 
             if(editingAdId) {
-                db.collection("elonlar").doc(editingAdId).update(data).then(() => {
-                    alert("Muvaffaqiyatli saqlandi!");
-                    switchTab('home');
-                });
+                db.collection("elonlar").doc(editingAdId).update(data).then(() => { alert("Saqlandi!"); switchTab('home'); });
             } else {
-                data.elonId = globalIdCounter;
-                data.date = dateStr;
-                data.timestamp = firebase.firestore.FieldValue.serverTimestamp();
-                data.isPremium = false;
-                
-                db.collection("elonlar").add(data).then(() => {
-                    alert("E'lon joylandi!");
-                    switchTab('home');
-                });
+                data.elonId = globalIdCounter; data.date = dateStr; 
+                data.createdAt = Date.now(); data.views = 0; data.isPremium = false;
+                db.collection("elonlar").add(data).then(() => { alert("E'lon joylandi!"); switchTab('home'); });
             }
         }
 
         function resetForm() {
-            editingAdId = null; currentTempImages = [];
-            document.getElementById('imagePreviewContainer').innerHTML = '';
+            editingAdId = null; currentTempImages = []; document.getElementById('imagePreviewContainer').innerHTML = '';
             document.getElementById('adTitle').value = ''; document.getElementById('adDesc').value = '';
             document.getElementById('adCategory').value = 'Boshqa toifa'; document.getElementById('adPrice').value = '';
-            document.getElementById('adContact').value = "@";
-            document.getElementById('sellTitle').innerText = "E'lon joylash";
+            document.getElementById('adContact').value = "@"; document.getElementById('sellTitle').innerText = "E'lon joylash";
             document.getElementById('submitBtn').innerText = "E'lonni joylash"; document.getElementById('submitBtn').disabled = false;
-            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
-            document.getElementById('step1').classList.add('active');
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active')); document.getElementById('step1').classList.add('active');
         }
 
         // ==========================================
-        // DETAIL OYNASI
+        // DETAIL OYNASI VA VIEWS, SHIKOYAT, GALOCHKA
         // ==========================================
-        let sliderElem, dotsElem;
         function openDetail(dbId) {
-            const ad = adsList.find(x => x.dbId === dbId);
-            if(!ad) return;
+            const ad = adsList.find(x => x.dbId === dbId); if(!ad) return;
+
+            // View qo'shish
+            db.collection("elonlar").doc(dbId).update({ views: firebase.firestore.FieldValue.increment(1) });
+            document.getElementById('detailViews').innerText = (ad.views || 0) + 1;
 
             document.getElementById('detailTitle').innerText = ad.title;
             document.getElementById('detailPrice').innerText = formatNumber(ad.price) + " so'm";
@@ -989,8 +989,23 @@
             document.getElementById('detailDesc').innerText = ad.desc;
             document.getElementById('detailId').innerText = ad.elonId || "001";
             document.getElementById('detailDate').innerText = ad.date || "";
-            document.getElementById('sellerName').innerText = "@" + (ad.sellerName || ad.contact.replace('@', ''));
             
+            // Shikoyat qilish logikasi
+            document.getElementById('btnReportAd').onclick = function() {
+                window.open(`https://t.me/aslbek201?text=%23${ad.elonId}%20Elon%20ustidan%20shikoyat%20qilmoqchiman`, '_blank');
+            };
+
+            // Galochka tekshirish
+            let sName = (ad.sellerName || ad.contact.replace('@', ''));
+            let sHtml = `@${sName}`;
+            db.collection("users").doc(sName).get().then(doc => {
+                if(doc.exists && doc.data().isVerified) {
+                    document.getElementById('sellerName').innerHTML = `${sHtml} <i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>`;
+                } else {
+                    document.getElementById('sellerName').innerHTML = sHtml;
+                }
+            });
+
             document.getElementById('sellerAvatar').innerHTML = ad.sellerPhoto ? `<img src="${ad.sellerPhoto}">` : `<i class="material-icons">person</i>`;
             document.getElementById('detailBuyBtn').href = `https://t.me/${ad.contact.replace('@', '')}`;
 
@@ -1019,90 +1034,98 @@
             if(pin === "2580") {
                 renderAdminUsers(); 
                 document.getElementById('admin-modal').style.display = 'block'; document.body.style.overflow = 'hidden';
-            } else {
-                alert("Parol noto'g'ri!");
-            }
+            } else { alert("Parol noto'g'ri!"); }
         }
 
         function switchAdminTab(tab, el) {
-            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('admin-users').style.display = tab==='users'?'block':'none';
-            document.getElementById('admin-ads').style.display = tab==='ads'?'block':'none';
-            document.getElementById('admin-banners').style.display = tab==='banners'?'block':'none';
-            document.getElementById('admin-popup').style.display = tab==='popup'?'block':'none';
-            document.getElementById('admin-sectionads').style.display = tab==='sectionads'?'block':'none';
-            if(tab==='users') renderAdminUsers();
-            if(tab==='ads') loadAdminAds();
-            if(tab==='banners') loadAdminBanners();
-            if(tab==='sectionads') loadAdminSectionAds();
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); el.classList.add('active');
+            ['users','ads','banners','popup','sectionads'].forEach(t => document.getElementById(`admin-${t}`).style.display = tab===t?'block':'none');
+            if(tab==='users') renderAdminUsers(); if(tab==='ads') loadAdminAds(); if(tab==='banners') loadAdminBanners(); if(tab==='sectionads') loadAdminSectionAds();
         }
 
-        // USERS TAB
+        // USERS TAB (Block ximoyasi, Galochka, Custom Alert)
         function renderAdminUsers() {
             document.getElementById('statTotalUsers').innerText = usersList.length;
             document.getElementById('statOnlineUsers').innerText = usersList.filter(u=>u.isOnline).length;
             
             document.getElementById('adminUsersList').innerHTML = usersList.map(u => {
                 let status = u.isOnline ? `<div class="user-status online"></div> Online` : `<div class="user-status offline"></div> Offline`;
-                let blockText = u.isBlocked ? "Unblock" : "Block";
-                let blockClass = u.isBlocked ? "btn-unblock" : "btn-block";
                 
+                let blockButton = ADMIN_USERS.includes(u.username) 
+                    ? `<button class="btn-small" style="background:#94a3b8; cursor:not-allowed;">Daxlsiz</button>`
+                    : `<button class="btn-small ${u.isBlocked ? 'btn-unblock' : 'btn-block'}" onclick="toggleBlock('${u.dbId}', ${u.isBlocked})">${u.isBlocked ? 'Unblock' : 'Block'}</button>`;
+                
+                let verifyIcon = u.isVerified ? `<i class="material-icons" style="color:#3b82f6; font-size:16px;">verified</i>` : '';
+
                 return `
                 <div class="user-card">
-                    <div>
-                        <div style="font-weight:bold; font-size:15px; color:var(--text-main);">@${u.username}</div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:3px;">${status} | Ism: ${u.first_name}</div>
+                    <div class="user-card-header">
+                        <div style="font-weight:bold; font-size:15px; color:var(--text-main); display:flex; align-items:center; gap:4px;">@${u.username} ${verifyIcon}</div>
+                        <div style="font-size:12px; color:var(--text-muted);">${status} | ${u.first_name}</div>
                     </div>
-                    <div style="display:flex; gap:5px;">
-                        <button class="btn-small btn-alert" onclick="sendAlert('${u.dbId}')"><i class="material-icons">notifications</i></button>
-                        <button class="btn-small ${blockClass}" onclick="toggleBlock('${u.dbId}', ${u.isBlocked})">${blockText}</button>
+                    <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                        <button class="btn-small btn-alert" onclick="openAlertModal('${u.dbId}')"><i class="material-icons">notifications</i> Alert</button>
+                        <button class="btn-small btn-verified" onclick="toggleVerify('${u.dbId}', ${u.isVerified})"><i class="material-icons">${u.isVerified?'close':'verified'}</i> ${u.isVerified?'Olish':'Galochka'}</button>
+                        ${blockButton}
                     </div>
                 </div>`;
             }).join('');
         }
 
-        function sendAlert(uid) {
-            let msg = prompt("Foydalanuvchiga markazda chiqib turadigan xabar yozing:");
-            if(msg) {
-                let colorInput = prompt("Xabar rangi qanday bo'lsin? (kok yoki qizil kiritng)", "kok").toLowerCase();
-                let colorCode = (colorInput === 'qizil') ? '#ef4444' : '#0066ff';
-                db.collection("users").doc(uid).update({alertMessage: msg, alertColor: colorCode});
-                alert("Xabar yuborildi!");
-            }
+        function toggleBlock(uid, isBlocked) {
+            let targetUser = usersList.find(u => u.dbId === uid);
+            if (targetUser && ADMIN_USERS.includes(targetUser.username)) { alert("O'zingizni bloklay olmaysiz!"); return; }
+            db.collection("users").doc(uid).update({isBlocked: !isBlocked});
         }
 
-        function toggleBlock(uid, isBlocked) {
-            db.collection("users").doc(uid).update({isBlocked: !isBlocked});
+        function toggleVerify(uid, isVerified) { db.collection("users").doc(uid).update({isVerified: !isVerified}); }
+
+        let currentAlertTarget = null;
+        let tempAlertBase64 = null;
+        
+        document.getElementById('adminAlertFile').addEventListener('change', function(e) {
+            let reader = new FileReader();
+            reader.onload = (ev) => { tempAlertBase64 = ev.target.result; };
+            reader.readAsDataURL(e.target.files[0]);
+        });
+
+        function openAlertModal(uid) {
+            currentAlertTarget = uid; tempAlertBase64 = null;
+            document.getElementById('adminAlertText').value = '';
+            document.getElementById('adminAlertFile').value = '';
+            document.getElementById('admin-create-alert-modal').style.display = 'block';
+        }
+
+        function sendCustomAlert() {
+            let text = document.getElementById('adminAlertText').value;
+            let color = document.getElementById('adminAlertColor').value;
+            if(!text && !tempAlertBase64) return alert("Matn yoki Rasm kiriting!");
+            
+            let payload = { alertMessage: text || "Xabar!", alertColor: color };
+            if(tempAlertBase64) payload.alertImage = tempAlertBase64;
+
+            db.collection("users").doc(currentAlertTarget).update(payload).then(() => {
+                alert("Xabar yuborildi!"); closeModal('admin-create-alert-modal');
+            });
         }
 
         // ADS TAB
         function loadAdminAds() { renderAdGrid(adsList, 'adminAdsList', false, true); }
-        function deleteAdAdmin(dbId) {
-            if(confirm("ADMIN: E'lonni butunlay o'chirasizmi?")) db.collection("elonlar").doc(dbId).delete();
-        }
+        function deleteAdAdmin(dbId) { if(confirm("ADMIN: E'lonni butunlay o'chirasizmi?")) db.collection("elonlar").doc(dbId).delete(); }
         function togglePremium(dbId, isPremium) {
-            if(isPremium) {
-                db.collection("elonlar").doc(dbId).update({isPremium: false});
-            } else {
-                let week = Date.now() + (7 * 24 * 60 * 60 * 1000); // 7 kun
-                db.collection("elonlar").doc(dbId).update({isPremium: true, premiumUntil: week});
-            }
+            if(isPremium) { db.collection("elonlar").doc(dbId).update({isPremium: false}); } 
+            else { db.collection("elonlar").doc(dbId).update({isPremium: true, premiumUntil: Date.now() + (7 * 24 * 60 * 60 * 1000)}); }
         }
 
         // BANNERS TAB
         let tempBannerBase64 = null;
         document.getElementById('addBannerFile').addEventListener('change', function(e) {
-            let reader = new FileReader();
-            reader.onload = (ev) => { tempBannerBase64 = ev.target.result; };
-            reader.readAsDataURL(e.target.files[0]);
+            let reader = new FileReader(); reader.onload = (ev) => { tempBannerBase64 = ev.target.result; }; reader.readAsDataURL(e.target.files[0]);
         });
         function saveBanner() {
             let link = document.getElementById('addBannerLink').value;
             if(!tempBannerBase64) return alert("Rasm tanlang!");
-            db.collection("banners").add({ image: tempBannerBase64, link: link }).then(() => {
-                alert("Banner qo'shildi!"); tempBannerBase64=null; document.getElementById('addBannerLink').value='';
-            });
+            db.collection("banners").add({ image: tempBannerBase64, link: link }).then(() => { alert("Banner qo'shildi!"); tempBannerBase64=null; document.getElementById('addBannerLink').value=''; });
         }
         function loadAdminBanners() {
             document.getElementById('adminBannersList').innerHTML = bannersList.map(b => `
@@ -1114,14 +1137,10 @@
                     </div>
                 </div>
             `).join('');
-
             db.collection("system").doc("entryAd").get().then(doc => {
                 if(doc.exists) {
-                    let d = doc.data();
-                    document.getElementById('popupActiveToggle').checked = d.isActive;
-                    document.getElementById('popupTitle').value = d.title || '';
-                    document.getElementById('popupDesc').value = d.desc || '';
-                    document.getElementById('popupLink').value = d.link || '';
+                    let d = doc.data(); document.getElementById('popupActiveToggle').checked = d.isActive;
+                    document.getElementById('popupTitle').value = d.title || ''; document.getElementById('popupDesc').value = d.desc || ''; document.getElementById('popupLink').value = d.link || '';
                 }
             });
         }
@@ -1129,17 +1148,10 @@
         // POP-UP TAB (Starter)
         let tempPopupBase64 = null;
         document.getElementById('popupFile').addEventListener('change', function(e) {
-            let reader = new FileReader();
-            reader.onload = (ev) => { tempPopupBase64 = ev.target.result; };
-            reader.readAsDataURL(e.target.files[0]);
+            let reader = new FileReader(); reader.onload = (ev) => { tempPopupBase64 = ev.target.result; }; reader.readAsDataURL(e.target.files[0]);
         });
         function savePopupAd() {
-            let data = {
-                isActive: document.getElementById('popupActiveToggle').checked,
-                title: document.getElementById('popupTitle').value,
-                desc: document.getElementById('popupDesc').value,
-                link: document.getElementById('popupLink').value
-            };
+            let data = { isActive: document.getElementById('popupActiveToggle').checked, title: document.getElementById('popupTitle').value, desc: document.getElementById('popupDesc').value, link: document.getElementById('popupLink').value };
             if(tempPopupBase64) data.image = tempPopupBase64;
             db.collection("system").doc("entryAd").set(data, {merge:true}).then(()=>alert("Pop-up saqlandi!"));
         }
@@ -1147,25 +1159,13 @@
         // SECTION ADS TAB (Ads bo'limi)
         let tempSecAdBase64 = null;
         document.getElementById('addSecAdFile').addEventListener('change', function(e) {
-            let reader = new FileReader();
-            reader.onload = (ev) => { tempSecAdBase64 = ev.target.result; };
-            reader.readAsDataURL(e.target.files[0]);
+            let reader = new FileReader(); reader.onload = (ev) => { tempSecAdBase64 = ev.target.result; }; reader.readAsDataURL(e.target.files[0]);
         });
         function saveSectionAd() {
-            let title = document.getElementById('addSecAdTitle').value;
-            let desc = document.getElementById('addSecAdDesc').value;
-            let link = document.getElementById('addSecAdLink').value;
-            
+            let title = document.getElementById('addSecAdTitle').value; let desc = document.getElementById('addSecAdDesc').value; let link = document.getElementById('addSecAdLink').value;
             if(!title || !tempSecAdBase64) return alert("Nom va Rasm kiritilishi shart!");
-            
-            db.collection("sectionAds").add({
-                title: title, desc: desc, link: link, image: tempSecAdBase64
-            }).then(() => {
-                alert("Ads bo'limiga reklama qo'shildi!");
-                tempSecAdBase64 = null; 
-                document.getElementById('addSecAdTitle').value = '';
-                document.getElementById('addSecAdDesc').value = '';
-                document.getElementById('addSecAdLink').value = '';
+            db.collection("sectionAds").add({ title: title, desc: desc, link: link, image: tempSecAdBase64 }).then(() => {
+                alert("Ads bo'limiga reklama qo'shildi!"); tempSecAdBase64 = null; document.getElementById('addSecAdTitle').value = ''; document.getElementById('addSecAdDesc').value = ''; document.getElementById('addSecAdLink').value = '';
             });
         }
         function loadAdminSectionAds() {
@@ -1183,19 +1183,6 @@
                 </div>
             `).join('');
         }
-function toggleBlock(uid, isBlocked) {
-    // Tanlangan foydalanuvchini ro'yxatdan topish
-    let targetUser = usersList.find(u => u.dbId === uid);
-    
-    // Agar u admin bo'lsa, bloklashni to'xtatish
-    if (targetUser && ADMIN_USERS.includes(targetUser.username)) {
-        alert("O'zingizni (Asosiy adminni) bloklay olmaysiz!");
-        return;
-    }
-    
-    // Oddiy foydalanuvchi bo'lsa bloklash/ochish
-    db.collection("users").doc(uid).update({isBlocked: !isBlocked});
-}
 
     </script>
 </body>
