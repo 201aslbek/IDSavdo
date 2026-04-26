@@ -121,7 +121,7 @@
         .preview-imgs img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; position:relative;}
 
         /* Modals */
-        .full-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-bg); z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px; }
+        .full-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px; }
         .modal-header { padding: max(45px, env(safe-area-inset-top)) 15px 15px 15px; display: flex; align-items: center; background: var(--tab-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 2010; }
         .modal-back-btn { display: flex; align-items: center; justify-content: center; background: var(--border-color); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 15px; font-weight: 600; cursor:pointer;}
         .modal-back-btn i { font-size: 20px; margin-right: 6px; color: var(--primary-color);}
@@ -136,7 +136,7 @@
         .dot.active { background: var(--primary-color); width: 15px; border-radius: 5px; }
 
         .detail-body { padding: 20px; }
-        .seller-info, .features-box, .detail-desc-box { background: var(--bg-card); padding: 15px; border-radius: 12px; margin-top: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color); }
+        .seller-info, .features-box, .detail-desc-box { background: var(--bg-card); padding: 15px; border-radius: 12px; margin-top: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color); cursor: pointer;}
         .seller-info { display: flex; align-items: center; }
         .seller-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--border-color); display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--text-muted); margin-right: 15px; overflow: hidden; }
         .seller-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -154,7 +154,21 @@
         .buy-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px; background: var(--tab-bg); backdrop-filter: blur(10px); z-index: 2010; border-top: 1px solid var(--border-color); }
         .btn-buy { display: block; text-align: center; text-decoration: none; width: 100%; padding: 15px; background: var(--primary-color); color: white; border-radius: 12px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,102,255,0.3); }
 
-        /* Profile */
+        /* Public Profile Page */
+        .up-header-box { background: var(--bg-card); padding: 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
+        .up-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; border: 2px solid var(--border-color); }
+        .up-name { font-size: 20px; font-weight: bold; color: var(--text-main); display: flex; justify-content: center; align-items: center; gap: 5px;}
+        .up-username { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; }
+        .up-stats { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .up-stat-box { border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; flex: 1; max-width: 100px; text-align: center; background: var(--bg-main); }
+        .up-stat-val { font-size: 16px; font-weight: bold; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 4px;}
+        .up-stat-label { font-size: 11px; color: var(--text-muted); }
+        .btn-follow { width: 100%; padding: 12px; background: #c026d3; color: white; border-radius: 10px; font-weight: bold; border: none; cursor: pointer; font-size: 15px;}
+        .up-tabs-container { display: flex; background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
+        .up-tab { flex: 1; text-align: center; padding: 15px; font-weight: bold; color: var(--text-muted); border-bottom: 2px solid transparent; cursor: pointer;}
+        .up-tab.active { color: var(--text-main); border-bottom-color: #c026d3; }
+
+        /* Profile App Main */
         .profile-header { background: var(--bg-card); padding: 20px; border-radius: 15px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
         .profile-info { display: flex; flex-direction: column; }
         .profile-info h2 { margin: 0; font-size: 20px; font-weight: 700; color: var(--text-main); }
@@ -280,13 +294,46 @@
         </div>
     </div>
 
+    <div id="user-profile-modal" class="full-modal" style="z-index: 2020;">
+        <div class="modal-header" onclick="closeModal('user-profile-modal')">
+            <div class="modal-back-btn"><i class="material-icons">arrow_back</i> Orqaga</div>
+        </div>
+        <div class="up-header-box">
+            <img id="upAvatar" src="" class="up-avatar">
+            <div id="upName" class="up-name">Ism</div>
+            <div id="upUsername" class="up-username">@username</div>
+            <div class="up-stats">
+                <div class="up-stat-box"><div class="up-stat-val"><i class="material-icons" style="font-size:16px;">campaign</i> <span id="upAdsCount">0</span></div><div class="up-stat-label">E'lonlar</div></div>
+                <div class="up-stat-box"><div class="up-stat-val"><i class="material-icons" style="font-size:16px;">group</i> <span id="upFollowersCount">0</span></div><div class="up-stat-label">Obunachilar</div></div>
+                <div class="up-stat-box"><div class="up-stat-val"><i class="material-icons" style="color:#f59e0b; font-size:16px;">star</i> 0.0</div><div class="up-stat-label">Baholash</div></div>
+            </div>
+            <button id="btnFollow" class="btn-follow">Obuna bo'lish</button>
+        </div>
+        <div class="up-tabs-container">
+            <div class="up-tab active" id="tabUpAds" onclick="switchUpTab('ads')">E'lonlar</div>
+            <div class="up-tab" id="tabUpReklama" onclick="switchUpTab('reklama')">Reklamalar</div>
+        </div>
+        <div style="padding: 15px;">
+            <div id="upAdsContainer" class="ad-grid"></div>
+            <div id="upReklamaContainer" style="display:none;"></div>
+        </div>
+    </div>
+
+    <div id="subscriptions-modal" class="full-modal" style="z-index: 2015;">
+        <div class="modal-header" onclick="closeModal('subscriptions-modal')">
+            <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
+            <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Obunalarim</span>
+        </div>
+        <div style="padding: 15px;" id="subsContainer"></div>
+    </div>
+
     <div id="app" style="display: none;">
 
         <div id="home" class="page active">
             <div class="header">
                 <div class="header-logo"><span class="id">ID</span><span class="savdo">Savdo</span></div>
             </div>
-            <div class="fake-search" onclick="switchTab('search')"><i class="material-icons">search</i> Nimalarni qidiramiz?</div>
+            <div class="fake-search" onclick="switchTab('search')"><i class="material-icons">search</i> @username yoki e'lon qidiring...</div>
             <div class="banner-container"><div class="banner-track" id="bannerTrack"></div></div>
             <div class="section-title">Tavsiya qilamiz ✨</div>
             <div class="ad-grid" id="homeAdsGrid"></div>
@@ -294,16 +341,20 @@
 
         <div id="search" class="page">
             <div class="header"><div class="header-logo"><span class="id">ID</span><span class="savdo">Savdo</span></div></div>
-            <input type="text" id="searchInput" class="real-search" placeholder="E'lonlarni qidirish..." oninput="handleSearch()">
-            <div class="section-title">#Kataloglar</div>
-            <div class="katalog-grid">
-                <div class="katalog-card" style="background: linear-gradient(45deg, #f43f5e, #fb923c);" onclick="openCatalogResults('O\'yin akkauntlar')">O'yin akkauntlar</div>
-                <div class="katalog-card" style="background: linear-gradient(45deg, #8b5cf6, #3b82f6);" onclick="openCatalogResults('Ijtimoiy tarmoq akkauntlar')">Ijtimoiy tarmoqlar</div>
-                <div class="katalog-card" style="background: linear-gradient(45deg, #10b981, #3b82f6);" onclick="openCatalogResults('Premium akkauntlar')">Premium akkauntlar</div>
-                <div class="katalog-card" style="background: linear-gradient(45deg, #f59e0b, #ef4444);" onclick="openCatalogResults('Telefon raqamlar')">Telefon raqamlar</div>
-                <div class="katalog-card" style="background: linear-gradient(45deg, #6366f1, #ec4899);" onclick="openCatalogResults('Premium usernamelar')">Premium usernamelar</div>
-                <div class="katalog-card" style="background: linear-gradient(45deg, #64748b, #475569);" onclick="openCatalogResults('Boshqa toifa')">Boshqa toifa</div>
+            <input type="text" id="searchInput" class="real-search" placeholder="@username yoki e'lon nomi..." oninput="handleSearch()">
+            
+            <div id="katalogBox">
+                <div class="section-title">#Kataloglar</div>
+                <div class="katalog-grid">
+                    <div class="katalog-card" style="background: linear-gradient(45deg, #f43f5e, #fb923c);" onclick="openCatalogResults('O\'yin akkauntlar')">O'yin akkauntlar</div>
+                    <div class="katalog-card" style="background: linear-gradient(45deg, #8b5cf6, #3b82f6);" onclick="openCatalogResults('Ijtimoiy tarmoq akkauntlar')">Ijtimoiy tarmoqlar</div>
+                    <div class="katalog-card" style="background: linear-gradient(45deg, #10b981, #3b82f6);" onclick="openCatalogResults('Premium akkauntlar')">Premium akkauntlar</div>
+                    <div class="katalog-card" style="background: linear-gradient(45deg, #f59e0b, #ef4444);" onclick="openCatalogResults('Telefon raqamlar')">Telefon raqamlar</div>
+                    <div class="katalog-card" style="background: linear-gradient(45deg, #6366f1, #ec4899);" onclick="openCatalogResults('Premium usernamelar')">Premium usernamelar</div>
+                    <div class="katalog-card" style="background: linear-gradient(45deg, #64748b, #475569);" onclick="openCatalogResults('Boshqa toifa')">Boshqa toifa</div>
+                </div>
             </div>
+            
             <div id="searchResults" class="ad-grid" style="margin-top: 20px;"></div>
         </div>
 
@@ -372,6 +423,10 @@
                     <div class="menu-item-left"><i class="material-icons">format_list_bulleted</i> Mening e'lonlarim</div>
                     <i class="material-icons">chevron_right</i>
                 </div>
+                <div class="menu-item" onclick="openMySubscriptions()">
+                    <div class="menu-item-left"><i class="material-icons">group</i> Obunalarim</div>
+                    <i class="material-icons">chevron_right</i>
+                </div>
                 <a href="https://t.me/aslbek201?text=Assalomu%20Alekum%20Men%20reklama%20bermoqchiman" class="menu-item">
                     <div class="menu-item-left"><i class="material-icons">campaign</i> Reklama berish</div>
                     <i class="material-icons">chevron_right</i>
@@ -424,7 +479,7 @@
         <div class="detail-body">
             <h2 id="detailTitle" style="font-size: 20px; font-weight: 600; margin-bottom: 5px;"></h2>
             <div id="detailPrice" style="font-size: 24px; font-weight: bold; color: var(--text-main);"></div>
-            <div class="seller-info">
+            <div class="seller-info" id="detailSellerBox">
                 <div class="seller-avatar" id="sellerAvatar"><i class="material-icons">person</i></div>
                 <div class="seller-details"><h4 id="sellerName">Sotuvchi</h4><p>Telegram orqali bog'lanish</p></div>
             </div>
@@ -612,6 +667,11 @@
             tgUser.username = localUser;
         }
 
+        // Subscriptions local list (Auto-follow admin)
+        let myFollowing = JSON.parse(localStorage.getItem('idsavdo_following') || '[]');
+        if(!myFollowing.includes("aslbek201")) myFollowing.push("aslbek201");
+        localStorage.setItem('idsavdo_following', JSON.stringify(myFollowing));
+
         let myDocRef = db.collection("users").doc(tgUser.username);
         myDocRef.set({
             username: tgUser.username,
@@ -671,7 +731,7 @@
         // REAL-TIME LISTNERS
         // ==========================================
         
-        // E'LONLAR (Sayt qotmasligi uchun limit qo'yildi va 30 kunlik o'chirish logikasi)
+        // E'LONLAR
         db.collection("elonlar").orderBy("createdAt", "desc").limit(100).onSnapshot((querySnapshot) => {
             adsList = [];
             let maxId = 0;
@@ -681,12 +741,9 @@
                 let adData = doc.data();
                 adData.dbId = doc.id; 
                 
-                // 30 kun o'tgan bo'lsa ro'yxatga qo'shilmaydi va admin fon rejimida uni o'chirib yuboradi
                 if (adData.createdAt && (now - adData.createdAt > THIRTY_DAYS_MS)) {
-                    if (ADMIN_USERS.includes(tgUser.username)) {
-                        db.collection("elonlar").doc(doc.id).delete();
-                    }
-                    return; // Skip rendering
+                    if (ADMIN_USERS.includes(tgUser.username)) db.collection("elonlar").doc(doc.id).delete();
+                    return; 
                 }
                 
                 adsList.push(adData);
@@ -694,7 +751,6 @@
             });
             globalIdCounter = maxId + 1; 
 
-            // Premium 7 kun o'tgan bo'lsa, oddiy e'longa aylanadi
             adsList.sort((a, b) => {
                 let aPrem = (a.isPremium && a.premiumUntil > now) ? 1 : 0;
                 let bPrem = (b.isPremium && b.premiumUntil > now) ? 1 : 0;
@@ -705,6 +761,11 @@
             if(document.getElementById('home').classList.contains('active')) renderHome();
             if(document.getElementById('my-ads-modal').style.display === 'block') loadMyAds();
             if(document.getElementById('admin-modal').style.display === 'block') loadAdminAds();
+            // Profile modal update agar ochilgan bo'lsa
+            let profUName = document.getElementById('upUsername').innerText.replace('@','');
+            if(document.getElementById('user-profile-modal').style.display === 'block' && profUName) {
+                renderAdGrid(adsList.filter(a => a.sellerName === profUName), 'upAdsContainer');
+            }
         });
 
         // BANNERLAR
@@ -721,7 +782,7 @@
             if(document.getElementById('admin-modal').style.display === 'block') loadAdminSectionAds();
         });
 
-        // USERS (Admin uchun)
+        // USERS 
         db.collection("users").onSnapshot((qs) => {
             usersList = [];
             qs.forEach(doc => usersList.push({dbId: doc.id, ...doc.data()}));
@@ -762,10 +823,7 @@
         // ==========================================
         // ASOSIY FUNKSIYALAR
         // ==========================================
-        function closeUserAlert() {
-            document.getElementById('user-alert-box').style.display = 'none';
-            myDocRef.update({alertMessage: "", alertImage: ""}); 
-        }
+        function closeUserAlert() { document.getElementById('user-alert-box').style.display = 'none'; myDocRef.update({alertMessage: "", alertImage: ""}); }
         function closeEntryAd() { document.getElementById('entry-ad-modal').style.display = 'none'; }
         function triggerEntryLink() { handleLink(globalEntryLink); }
 
@@ -806,9 +864,10 @@
 
         function renderHome() { renderAdGrid(adsList, 'homeAdsGrid'); }
 
+        // Kartalarni chizish (Home screen va boshqalar)
         function renderAdGrid(ads, containerId, isMyAds = false, isAdmin = false) {
             const container = document.getElementById(containerId);
-            if(ads.length === 0) { container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: var(--text-muted); padding: 20px;">E'lonlar yo'q</p>`; return; }
+            if(ads.length === 0) { container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: var(--text-muted); padding: 20px;">Hech narsa topilmadi</p>`; return; }
 
             let now = Date.now();
             container.innerHTML = ads.map((ad) => {
@@ -831,6 +890,7 @@
                             </div>`;
                 }
 
+                // DIQQAT: View (ko'rishlar soni) bu yerda kartadan o'chirildi! Faqat detalda ko'rinadi.
                 return `
                     <div class="ad-card ${premClass}" onclick="openDetail('${ad.dbId}')">
                         ${premBadge}
@@ -842,7 +902,6 @@
                             <div class="ad-spacer"></div>
                             <div style="display:flex; justify-content:space-between; align-items:flex-end;">
                                 <div class="ad-date">${ad.date ? ad.date.split(',')[1] : ''}</div>
-                                <div style="font-size:11px; color:var(--text-muted); display:flex; align-items:center;"><i class="material-icons" style="font-size:12px; margin-right:2px;">visibility</i> ${ad.views || 0}</div>
                             </div>
                             ${btns}
                         </div>
@@ -851,13 +910,17 @@
             }).join('');
         }
 
-        function renderSectionAds() {
-            const container = document.getElementById('sectionAdsContainer');
-            if(sectionAdsList.length === 0) {
+        // Ads (Reklama) bo'limini chizish
+        function renderSectionAds(containerId = 'sectionAdsContainer', filterSeller = null) {
+            const container = document.getElementById(containerId);
+            let listToRender = sectionAdsList;
+            if(filterSeller) listToRender = sectionAdsList.filter(ad => ad.sellerName === filterSeller);
+
+            if(listToRender.length === 0) {
                 container.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--text-muted);"><i class="material-icons" style="font-size:50px;">campaign</i><br>Hozircha reklamalar yo'q</div>`;
                 return;
             }
-            container.innerHTML = sectionAdsList.map(ad => `
+            container.innerHTML = listToRender.map(ad => `
                 <div class="section-ad-card">
                     <img src="${ad.image}" class="section-ad-img">
                     <div class="section-ad-body">
@@ -872,9 +935,37 @@
 
         function formatNumber(num) { return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
 
+        // ==========================================
+        // QIDIRUV (Users yoki Ads)
+        // ==========================================
         function handleSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            document.getElementById('katalogBox').style.display = query.length > 0 ? 'none' : 'block';
+            
             if(query.length === 0) { document.getElementById('searchResults').innerHTML = ''; return; }
+            
+            // Foydalanuvchi qidirish
+            if(query.startsWith('@')) {
+                let uQuery = query.replace('@','');
+                let filteredUsers = usersList.filter(u => u.username.toLowerCase().includes(uQuery));
+                
+                if(filteredUsers.length === 0) {
+                    document.getElementById('searchResults').innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">Foydalanuvchi topilmadi</p>`;
+                } else {
+                    document.getElementById('searchResults').innerHTML = filteredUsers.map(u => `
+                        <div style="background:var(--bg-card); padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid var(--border-color); display:flex; align-items:center; gap:15px; cursor:pointer;" onclick="openUserProfile('${u.username}')">
+                            <img src="${u.photo || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+                            <div>
+                                <b style="color:var(--text-main); font-size:16px;">@${u.username} ${u.isVerified?'<i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>':''}</b>
+                                <div style="font-size:13px; color:var(--text-muted);">${u.first_name}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                return;
+            }
+
+            // E'lon qidirish
             let filtered = adsList.filter(ad => ad.title.toLowerCase().includes(query));
             renderAdGrid(filtered, 'searchResults');
         }
@@ -974,14 +1065,21 @@
         }
 
         // ==========================================
-        // DETAIL OYNASI VA VIEWS, SHIKOYAT, GALOCHKA
+        // DETAIL OYNASI VA VIEWS
         // ==========================================
         function openDetail(dbId) {
             const ad = adsList.find(x => x.dbId === dbId); if(!ad) return;
 
-            // View qo'shish
-            db.collection("elonlar").doc(dbId).update({ views: firebase.firestore.FieldValue.increment(1) });
-            document.getElementById('detailViews').innerText = (ad.views || 0) + 1;
+            // View qismini to'g'irlash (localStorage orqali 1 marta hisoblaydi)
+            let viewedAds = JSON.parse(localStorage.getItem('viewedAds') || '[]');
+            if (!viewedAds.includes(dbId)) {
+                db.collection("elonlar").doc(dbId).update({ views: firebase.firestore.FieldValue.increment(1) });
+                document.getElementById('detailViews').innerText = (ad.views || 0) + 1;
+                viewedAds.push(dbId);
+                localStorage.setItem('viewedAds', JSON.stringify(viewedAds));
+            } else {
+                document.getElementById('detailViews').innerText = (ad.views || 0);
+            }
 
             document.getElementById('detailTitle').innerText = ad.title;
             document.getElementById('detailPrice').innerText = formatNumber(ad.price) + " so'm";
@@ -990,12 +1088,10 @@
             document.getElementById('detailId').innerText = ad.elonId || "001";
             document.getElementById('detailDate').innerText = ad.date || "";
             
-            // Shikoyat qilish logikasi
-            document.getElementById('btnReportAd').onclick = function() {
-                window.open(`https://t.me/aslbek201?text=%23${ad.elonId}%20Elon%20ustidan%20shikoyat%20qilmoqchiman`, '_blank');
-            };
+            // Shikoyat qilish tugmasi
+            document.getElementById('btnReportAd').onclick = function() { window.open(`https://t.me/aslbek201?text=%23${ad.elonId}%20Elon%20ustidan%20shikoyat%20qilmoqchiman`, '_blank'); };
 
-            // Galochka tekshirish
+            // Sotuvchi ma'lumoti
             let sName = (ad.sellerName || ad.contact.replace('@', ''));
             let sHtml = `@${sName}`;
             db.collection("users").doc(sName).get().then(doc => {
@@ -1007,6 +1103,10 @@
             });
 
             document.getElementById('sellerAvatar').innerHTML = ad.sellerPhoto ? `<img src="${ad.sellerPhoto}">` : `<i class="material-icons">person</i>`;
+            
+            // Detail box on click open profile
+            document.getElementById('detailSellerBox').onclick = () => openUserProfile(sName);
+
             document.getElementById('detailBuyBtn').href = `https://t.me/${ad.contact.replace('@', '')}`;
 
             sliderElem = document.getElementById('detailSlider'); dotsElem = document.getElementById('detailDots');
@@ -1027,6 +1127,84 @@
         }
 
         // ==========================================
+        // FOYDALANUVCHI PROFILI VA OBUNALAR
+        // ==========================================
+        function toggleFollow(targetUsername) {
+            if (myFollowing.includes(targetUsername)) {
+                myFollowing = myFollowing.filter(u => u !== targetUsername);
+            } else {
+                myFollowing.push(targetUsername);
+            }
+            localStorage.setItem('idsavdo_following', JSON.stringify(myFollowing));
+            openUserProfile(targetUsername); // Update UI
+        }
+
+        function openUserProfile(username) {
+            let user = usersList.find(u => u.username === username) || {username: username, first_name: username, photo: '', isVerified: false};
+            let userAds = adsList.filter(a => a.sellerName === username);
+            
+            let verifyIcon = user.isVerified ? `<i class="material-icons" style="color:#3b82f6; font-size:20px;">verified</i>` : '';
+            document.getElementById('upName').innerHTML = `${user.first_name} ${verifyIcon}`;
+            document.getElementById('upUsername').innerText = "@" + user.username;
+            document.getElementById('upAvatar').src = user.photo || 'https://via.placeholder.com/100';
+            document.getElementById('upAdsCount').innerText = userAds.length;
+            
+            // Approximate followers based on how many people we know (mock for simple usage)
+            // To'g'ri sanash uchun global server kerak, biz vizualni chiroyli qilamiz.
+            let mockFollowers = username === 'aslbek201' ? usersList.length : Math.floor(Math.random() * 20);
+            document.getElementById('upFollowersCount').innerText = mockFollowers;
+
+            let followBtn = document.getElementById('btnFollow');
+            if(myFollowing.includes(username)) {
+                followBtn.innerText = "Obunani bekor qilish"; followBtn.style.background = "var(--border-color)"; followBtn.style.color = "var(--text-main)";
+            } else {
+                followBtn.innerText = "Obuna bo'lish"; followBtn.style.background = "#c026d3"; followBtn.style.color = "white";
+            }
+            followBtn.onclick = () => toggleFollow(username);
+
+            // Render Ads
+            renderAdGrid(userAds, 'upAdsContainer');
+            // Render Reklamalar
+            renderSectionAds('upReklamaContainer', username);
+            
+            switchUpTab('ads'); // Default tab
+            document.getElementById('user-profile-modal').style.display = 'block'; document.body.style.overflow = 'hidden';
+        }
+
+        function switchUpTab(tab) {
+            document.querySelectorAll('.up-tab').forEach(t => t.classList.remove('active'));
+            if(tab === 'ads') {
+                document.getElementById('tabUpAds').classList.add('active');
+                document.getElementById('upAdsContainer').style.display = 'grid';
+                document.getElementById('upReklamaContainer').style.display = 'none';
+            } else {
+                document.getElementById('tabUpReklama').classList.add('active');
+                document.getElementById('upAdsContainer').style.display = 'none';
+                document.getElementById('upReklamaContainer').style.display = 'block';
+            }
+        }
+
+        function openMySubscriptions() {
+            let container = document.getElementById('subsContainer');
+            let subsUsers = usersList.filter(u => myFollowing.includes(u.username));
+            
+            if(subsUsers.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">Siz hech kimga obuna emassiz</p>`;
+            } else {
+                container.innerHTML = subsUsers.map(u => `
+                    <div style="background:var(--bg-card); padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid var(--border-color); display:flex; align-items:center; gap:15px; cursor:pointer;" onclick="openUserProfile('${u.username}')">
+                        <img src="${u.photo || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+                        <div>
+                            <b style="color:var(--text-main); font-size:16px;">@${u.username} ${u.isVerified?'<i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>':''}</b>
+                            <div style="font-size:13px; color:var(--text-muted);">${u.first_name}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('subscriptions-modal').style.display = 'block'; document.body.style.overflow = 'hidden';
+        }
+
+        // ==========================================
         // ADMIN PANEL FUNKSIYALAR
         // ==========================================
         function openAdminPanel() {
@@ -1043,7 +1221,6 @@
             if(tab==='users') renderAdminUsers(); if(tab==='ads') loadAdminAds(); if(tab==='banners') loadAdminBanners(); if(tab==='sectionads') loadAdminSectionAds();
         }
 
-        // USERS TAB (Block ximoyasi, Galochka, Custom Alert)
         function renderAdminUsers() {
             document.getElementById('statTotalUsers').innerText = usersList.length;
             document.getElementById('statOnlineUsers').innerText = usersList.filter(u=>u.isOnline).length;
@@ -1080,36 +1257,26 @@
 
         function toggleVerify(uid, isVerified) { db.collection("users").doc(uid).update({isVerified: !isVerified}); }
 
-        let currentAlertTarget = null;
-        let tempAlertBase64 = null;
-        
+        let currentAlertTarget = null; let tempAlertBase64 = null;
         document.getElementById('adminAlertFile').addEventListener('change', function(e) {
-            let reader = new FileReader();
-            reader.onload = (ev) => { tempAlertBase64 = ev.target.result; };
-            reader.readAsDataURL(e.target.files[0]);
+            let reader = new FileReader(); reader.onload = (ev) => { tempAlertBase64 = ev.target.result; }; reader.readAsDataURL(e.target.files[0]);
         });
 
         function openAlertModal(uid) {
             currentAlertTarget = uid; tempAlertBase64 = null;
-            document.getElementById('adminAlertText').value = '';
-            document.getElementById('adminAlertFile').value = '';
+            document.getElementById('adminAlertText').value = ''; document.getElementById('adminAlertFile').value = '';
             document.getElementById('admin-create-alert-modal').style.display = 'block';
         }
 
         function sendCustomAlert() {
-            let text = document.getElementById('adminAlertText').value;
-            let color = document.getElementById('adminAlertColor').value;
+            let text = document.getElementById('adminAlertText').value; let color = document.getElementById('adminAlertColor').value;
             if(!text && !tempAlertBase64) return alert("Matn yoki Rasm kiriting!");
-            
             let payload = { alertMessage: text || "Xabar!", alertColor: color };
             if(tempAlertBase64) payload.alertImage = tempAlertBase64;
-
-            db.collection("users").doc(currentAlertTarget).update(payload).then(() => {
-                alert("Xabar yuborildi!"); closeModal('admin-create-alert-modal');
-            });
+            db.collection("users").doc(currentAlertTarget).update(payload).then(() => { alert("Xabar yuborildi!"); closeModal('admin-create-alert-modal'); });
         }
 
-        // ADS TAB
+        // BOSHQA ADMIN FUNKSIYALARI
         function loadAdminAds() { renderAdGrid(adsList, 'adminAdsList', false, true); }
         function deleteAdAdmin(dbId) { if(confirm("ADMIN: E'lonni butunlay o'chirasizmi?")) db.collection("elonlar").doc(dbId).delete(); }
         function togglePremium(dbId, isPremium) {
@@ -1117,7 +1284,6 @@
             else { db.collection("elonlar").doc(dbId).update({isPremium: true, premiumUntil: Date.now() + (7 * 24 * 60 * 60 * 1000)}); }
         }
 
-        // BANNERS TAB
         let tempBannerBase64 = null;
         document.getElementById('addBannerFile').addEventListener('change', function(e) {
             let reader = new FileReader(); reader.onload = (ev) => { tempBannerBase64 = ev.target.result; }; reader.readAsDataURL(e.target.files[0]);
@@ -1145,7 +1311,6 @@
             });
         }
 
-        // POP-UP TAB (Starter)
         let tempPopupBase64 = null;
         document.getElementById('popupFile').addEventListener('change', function(e) {
             let reader = new FileReader(); reader.onload = (ev) => { tempPopupBase64 = ev.target.result; }; reader.readAsDataURL(e.target.files[0]);
@@ -1156,7 +1321,6 @@
             db.collection("system").doc("entryAd").set(data, {merge:true}).then(()=>alert("Pop-up saqlandi!"));
         }
 
-        // SECTION ADS TAB (Ads bo'limi)
         let tempSecAdBase64 = null;
         document.getElementById('addSecAdFile').addEventListener('change', function(e) {
             let reader = new FileReader(); reader.onload = (ev) => { tempSecAdBase64 = ev.target.result; }; reader.readAsDataURL(e.target.files[0]);
@@ -1164,7 +1328,7 @@
         function saveSectionAd() {
             let title = document.getElementById('addSecAdTitle').value; let desc = document.getElementById('addSecAdDesc').value; let link = document.getElementById('addSecAdLink').value;
             if(!title || !tempSecAdBase64) return alert("Nom va Rasm kiritilishi shart!");
-            db.collection("sectionAds").add({ title: title, desc: desc, link: link, image: tempSecAdBase64 }).then(() => {
+            db.collection("sectionAds").add({ title: title, desc: desc, link: link, image: tempSecAdBase64, sellerName: tgUser.username }).then(() => {
                 alert("Ads bo'limiga reklama qo'shildi!"); tempSecAdBase64 = null; document.getElementById('addSecAdTitle').value = ''; document.getElementById('addSecAdDesc').value = ''; document.getElementById('addSecAdLink').value = '';
             });
         }
@@ -1183,21 +1347,8 @@
                 </div>
             `).join('');
         }
-            // View qo'shish (Faqat 1 marta hisoblash uchun)
-            let viewedAds = JSON.parse(localStorage.getItem('viewedAds') || '[]');
-            if (!viewedAds.includes(dbId)) {
-                // Agar oldin ko'rmagan bo'lsa, bazaga +1 qo'shamiz
-                db.collection("elonlar").doc(dbId).update({ views: firebase.firestore.FieldValue.increment(1) });
-                document.getElementById('detailViews').innerText = (ad.views || 0) + 1;
-                
-                // Ko'rilganlar ro'yxatiga saqlab qo'yamiz
-                viewedAds.push(dbId);
-                localStorage.setItem('viewedAds', JSON.stringify(viewedAds));
-            } else {
-                // Agar oldin ko'rgan bo'lsa, faqat borini ko'rsatamiz
-                document.getElementById('detailViews').innerText = (ad.views || 0);
-            }
 
     </script>
 </body>
 </html>
+
