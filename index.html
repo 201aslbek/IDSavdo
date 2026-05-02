@@ -772,14 +772,13 @@
             }
         });
 
-        document.addEventListener("DOMContentLoaded", () => {
-            let adminBtn = document.getElementById('adminMenuBtn');
-            if (ADMIN_USERS.includes(tgUser.username)) {
-                adminBtn.style.display = 'flex';
-            } else {
-                adminBtn.style.display = 'none';
-            }
-        });
+                let adminBtn = document.getElementById('adminMenuBtn');
+        if (ADMIN_USERS.includes(tgUser.username)) {
+            adminBtn.style.display = 'flex';
+        } else {
+            adminBtn.style.display = 'none';
+        }
+
 
         document.getElementById('profName').innerText = tgUser.first_name;
         document.getElementById('profUsername').innerText = "@" + tgUser.username;
@@ -1474,3 +1473,4 @@
     </script>
 </body>
 </html>
+
