@@ -43,7 +43,7 @@
         html { background-color: #cbd5e1; display: flex; justify-content: center; }
         body { 
             width: 100%; 
-            max-width: 480px; /* Telefon shaklida ushlab turadi */
+            max-width: 480px; 
             min-height: 100vh; 
             margin: 0 auto; 
             background-color: var(--bg-main); 
@@ -51,7 +51,7 @@
             overflow-x: hidden; 
             padding-bottom: 90px; 
             transition: 0.3s; 
-            box-shadow: 0 0 25px rgba(0,0,0,0.2); /* Chetlarda soya paydo bo'ladi */
+            box-shadow: 0 0 25px rgba(0,0,0,0.2); 
             position: relative; 
         }
 
@@ -134,6 +134,19 @@
         .img-upload-box input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; }
         .preview-imgs { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; }
         .preview-imgs img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; position:relative;}
+        
+        /* Tarif Kartalari */
+        .tariff-card { border: 2px solid var(--border-color); padding: 15px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; text-align: center; transition: 0.3s; background: var(--bg-main); }
+        .tariff-card.active { border-color: var(--primary-color); background: rgba(0, 102, 255, 0.05); }
+        .tariff-card h4 { font-size: 18px; color: var(--text-main); margin-bottom: 5px; }
+        .tariff-card p { font-size: 14px; color: var(--text-muted); font-weight: bold;}
+        .tariff-card.premium { border-color: var(--border-color); }
+        .tariff-card.premium.active { border-color: #f59e0b; background: rgba(250, 204, 21, 0.1); }
+        .tariff-card.premium h4 { color: #f59e0b; }
+
+        /* Social Media Tugmalari */
+        .social-btn { display: flex; justify-content: center; align-items: center; width: 50px; height: 50px; border-radius: 50%; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); text-decoration: none; font-size: 24px; transition: 0.2s;}
+        .social-btn:active { background: var(--border-color); }
 
         /* Modals */
         .full-modal { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; background: var(--bg-main); z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px; }
@@ -150,7 +163,7 @@
         .dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; transition: 0.3s; }
         .dot.active { background: var(--primary-color); width: 15px; border-radius: 5px; }
 
-        .detail-body { padding: 20px; }
+        .detail-body { padding: 20px; padding-bottom: 90px; } /* Sotib olish tugmasi to'sib qo'ymasligi uchun fix */
         .seller-info, .features-box, .detail-desc-box { background: var(--bg-card); padding: 15px; border-radius: 12px; margin-top: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid var(--border-color); cursor: pointer;}
         .seller-info { display: flex; align-items: center; }
         .seller-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--border-color); display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--text-muted); margin-right: 15px; overflow: hidden; }
@@ -424,7 +437,14 @@
         <div id="sell" class="page">
             <div class="section-title" id="sellTitle" style="text-align:center; margin-bottom: 20px;">E'lon joylash</div>
             
-            <div class="form-step active" id="step1">
+            <div class="form-step active" id="step0" style="text-align: center; padding: 40px 20px;">
+                <i class="material-icons" style="font-size: 60px; color: var(--primary-color); margin-bottom: 20px;">campaign</i>
+                <h3>Yangi e'lon yaratish</h3>
+                <p style="color: var(--text-muted); margin-bottom: 30px;">O'z virtual buyumingizni yoki akkauntingizni sotuvga qo'ying.</p>
+                <button class="btn-primary" onclick="nextStep(1)">E'lon joylash</button>
+            </div>
+
+            <div class="form-step" id="step1">
                 <h3 id="txtStep1">1. Rasmlar qo'shish</h3>
                 <p style="font-size: 12px; color: gray; margin-bottom: 15px;">Maksimal 5 ta rasm (3:4 format tavsiya etiladi)</p>
                 <div class="img-upload-box">
@@ -459,9 +479,19 @@
             </div>
 
             <div class="form-step" id="step4">
-                <h3 id="txtStep4">4. Bog'lanish</h3>
-                <p style="font-size: 12px; color: gray; margin-top: 10px;">Faqat Telegram username kiriting</p>
-                <input type="text" id="adContact" class="form-input" value="@" oninput="formatUsername(this)" style="margin-top: 5px;">
+                <h3 id="txtStep4">4. Tarifni tanlang</h3>
+                <p style="font-size: 12px; color: gray; margin-bottom: 15px;">E'loningizni tezroq sotish uchun Premium xizmatidan foydalaning.</p>
+                
+                <div class="tariff-card" onclick="selectTariff('oddiy')" id="tariffOddiy">
+                    <h4>Oddiy E'lon</h4>
+                    <p>Tekin</p>
+                </div>
+                <div class="tariff-card premium" onclick="selectTariff('premium')" id="tariffPremium">
+                    <h4>Premium E'lon <i class="material-icons" style="font-size:16px; vertical-align:middle;">bolt</i></h4>
+                    <p>10 000 so'm</p>
+                </div>
+                
+                <input type="hidden" id="selectedTariff" value="oddiy">
                 <button class="btn-primary btn-success" id="submitBtn" onclick="submitAd()">E'lonni joylash</button>
             </div>
         </div>
@@ -512,6 +542,14 @@
                     <i class="material-icons" style="color:var(--admin-color);">chevron_right</i>
                 </div>
             </div>
+
+            <div class="section-title" style="margin-top:30px; text-align:center; font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">idSavdo ijtimoiy tarmoqlarda</div>
+            <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;">
+                <a href="https://instagram.com/idsavdo" target="_blank" class="social-btn"><i class="material-icons">camera_alt</i></a> 
+                <a href="https://t.me/idsavdo" target="_blank" class="social-btn"><i class="material-icons">telegram</i></a>
+                <a href="https://youtube.com/@idsavdo" target="_blank" class="social-btn"><i class="material-icons">play_arrow</i></a>
+            </div>
+
         </div>
 
         <nav class="tab-bar">
@@ -707,7 +745,7 @@
         let globalIdCounter = 1; 
         let editingAdId = null;
 
-        const ADMIN_USERS = ['aslbek201']; 
+        const ADMIN_USERS = ['aslbek201']; // Admin akkaunt
         const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
         let tgApp = window.Telegram.WebApp;
@@ -772,13 +810,13 @@
             }
         });
 
-                let adminBtn = document.getElementById('adminMenuBtn');
-        if (ADMIN_USERS.includes(tgUser.username)) {
+        // YANGILIK: Harf katta kichikligini to'g'irlab tekshirish (aslbek201 vs Aslbek201)
+        let adminBtn = document.getElementById('adminMenuBtn');
+        if (ADMIN_USERS.includes(tgUser.username.toLowerCase())) {
             adminBtn.style.display = 'flex';
         } else {
             adminBtn.style.display = 'none';
         }
-
 
         document.getElementById('profName').innerText = tgUser.first_name;
         document.getElementById('profUsername').innerText = "@" + tgUser.username;
@@ -788,12 +826,12 @@
         const savedTheme = localStorage.getItem('idsavdo_theme');
         if(savedTheme === 'dark' || (tgApp.colorScheme === 'dark' && !savedTheme)) {
             document.body.classList.add('dark-theme');
-            document.documentElement.style.backgroundColor = '#0f172a'; // Tungi rejimda PC fonini qoraytirish
+            document.documentElement.style.backgroundColor = '#0f172a';
             document.getElementById('themeToggle').checked = true;
         }
         function toggleTheme(cb) {
             document.body.classList.toggle('dark-theme', cb.checked);
-            document.documentElement.style.backgroundColor = cb.checked ? '#0f172a' : '#cbd5e1'; // PC fon rangi o'zgarishi
+            document.documentElement.style.backgroundColor = cb.checked ? '#0f172a' : '#cbd5e1'; 
             localStorage.setItem('idsavdo_theme', cb.checked ? 'dark' : 'light');
         }
 
@@ -835,7 +873,7 @@
                 adData.dbId = doc.id; 
                 
                 if (adData.createdAt && (now - adData.createdAt > THIRTY_DAYS_MS)) {
-                    if (ADMIN_USERS.includes(tgUser.username)) db.collection("elonlar").doc(doc.id).delete();
+                    if (ADMIN_USERS.includes(tgUser.username.toLowerCase())) db.collection("elonlar").doc(doc.id).delete();
                     return; 
                 }
                 
@@ -1066,7 +1104,7 @@
         }
 
         // ==========================================
-        // E'LON JOYLASh
+        // E'LON JOYLASh VA TARIFLAR
         // ==========================================
         function editAd(dbId) {
             const ad = adsList.find(x => x.dbId === dbId); if(!ad) return;
@@ -1074,7 +1112,6 @@
             document.getElementById('imagePreviewContainer').innerHTML = currentTempImages.map(img => `<img src="${img}">`).join('');
             document.getElementById('adTitle').value = ad.title; document.getElementById('adDesc').value = ad.desc;
             document.getElementById('adCategory').value = ad.category; document.getElementById('adPrice').value = ad.price;
-            document.getElementById('adContact').value = ad.contact;
             document.getElementById('sellTitle').innerText = "E'lonni tahrirlash"; document.getElementById('submitBtn').innerText = "Saqlash";
             closeModal('my-ads-modal'); closeModal('admin-modal'); switchTab('sell');
         }
@@ -1109,29 +1146,59 @@
             });
         }
 
-        function formatUsername(input) { let v = input.value; if(!v.startsWith('@')) v = '@' + v.replace(/@/g, ''); input.value = v; }
+        function selectTariff(type) {
+            document.getElementById('tariffOddiy').classList.remove('active');
+            document.getElementById('tariffPremium').classList.remove('active');
+            
+            if(type === 'oddiy') {
+                document.getElementById('tariffOddiy').classList.add('active');
+                document.getElementById('selectedTariff').value = 'oddiy';
+                document.getElementById('submitBtn').innerText = "E'lonni joylash";
+            } else {
+                document.getElementById('tariffPremium').classList.add('active');
+                document.getElementById('selectedTariff').value = 'premium';
+                document.getElementById('submitBtn').innerText = "Joylash va To'lash (10 000 so'm)";
+            }
+        }
 
         function submitAd() {
-            let contact = document.getElementById('adContact').value;
-            if(contact.length < 5) { alert("Username noto'g'ri!"); return; }
             document.getElementById('submitBtn').disabled = true; document.getElementById('submitBtn').innerText = "Kuting...";
 
             let d = new Date();
             let dateStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}, ${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth()+1).padStart(2, '0')}.${d.getFullYear()}`;
+            let tariff = document.getElementById('selectedTariff').value;
 
             let data = {
-                title: document.getElementById('adTitle').value, desc: document.getElementById('adDesc').value,
-                category: document.getElementById('adCategory').value, price: document.getElementById('adPrice').value,
-                contact: contact, sellerName: (!tgUser.username.startsWith("web_") && !tgUser.username.startsWith("user_")) ? tgUser.username : contact.replace('@', ''), 
-                sellerPhoto: tgUser.photo, images: currentTempImages,
+                title: document.getElementById('adTitle').value, 
+                desc: document.getElementById('adDesc').value,
+                category: document.getElementById('adCategory').value, 
+                price: document.getElementById('adPrice').value,
+                contact: "@" + tgUser.username, // Avtomatik username olinadi
+                sellerName: tgUser.username, 
+                sellerPhoto: tgUser.photo, 
+                images: currentTempImages,
             };
 
             if(editingAdId) {
                 db.collection("elonlar").doc(editingAdId).update(data).then(() => { alert("Saqlandi!"); switchTab('home'); });
             } else {
                 data.elonId = globalIdCounter; data.date = dateStr; 
-                data.createdAt = Date.now(); data.views = 0; data.isPremium = false;
-                db.collection("elonlar").add(data).then(() => { alert("E'lon joylandi!"); switchTab('home'); });
+                data.createdAt = Date.now(); data.views = 0; data.isPremium = (tariff === 'premium');
+                
+                db.collection("elonlar").add(data).then(() => { 
+                    if (tariff === 'premium') {
+                        // Web App yordamida to'g'ridan-to'g'ri tizim orqali adminlarga xabar yuborish
+                        let msg = `Yangi Premium E'lon Sotib Olindi!\nFoydalanuvchi: @${tgUser.username}\nE'lon nomi: ${data.title}\nNarxi: 10,000 so'm`;
+                        try {
+                            tgApp.sendData(msg); 
+                        } catch(e) {
+                            alert("Premium e'lon saqlandi, iltimos to'lovni tasdiqlash uchun admin bilan bog'laning!");
+                        }
+                    } else {
+                        alert("E'lon joylandi!"); 
+                    }
+                    switchTab('home'); 
+                });
             }
         }
 
@@ -1139,9 +1206,11 @@
             editingAdId = null; currentTempImages = []; document.getElementById('imagePreviewContainer').innerHTML = '';
             document.getElementById('adTitle').value = ''; document.getElementById('adDesc').value = '';
             document.getElementById('adCategory').value = 'Boshqa toifa'; document.getElementById('adPrice').value = '';
-            document.getElementById('adContact').value = "@"; document.getElementById('sellTitle').innerText = "E'lon joylash";
-            document.getElementById('submitBtn').innerText = "E'lonni joylash"; document.getElementById('submitBtn').disabled = false;
-            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active')); document.getElementById('step1').classList.add('active');
+            document.getElementById('sellTitle').innerText = "E'lon joylash";
+            selectTariff('oddiy'); // Default tarif
+            document.getElementById('submitBtn').disabled = false;
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active')); 
+            document.getElementById('step0').classList.add('active'); // YANGILIK: 0-qadamga qaytish
         }
 
         // ==========================================
@@ -1171,18 +1240,17 @@
 
             let sName = (ad.sellerName || ad.contact.replace('@', ''));
             let sHtml = `@${sName}`;
-            db.collection("users").doc(sName).get().then(doc => {
-                if(doc.exists && doc.data().isVerified) {
-                    document.getElementById('sellerName').innerHTML = `${sHtml} <i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>`;
-                } else {
-                    document.getElementById('sellerName').innerHTML = sHtml;
-                }
-            });
+            
+            // Soxta ko'rinishlarning oldini olish (Real ma'lumot)
+            let userInDb = usersList.find(u => u.username.toLowerCase() === sName.toLowerCase());
+            if(userInDb && userInDb.isVerified) {
+                document.getElementById('sellerName').innerHTML = `${sHtml} <i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>`;
+            } else {
+                document.getElementById('sellerName').innerHTML = sHtml;
+            }
 
             document.getElementById('sellerAvatar').innerHTML = ad.sellerPhoto ? `<img src="${ad.sellerPhoto}">` : `<i class="material-icons">person</i>`;
-            
             document.getElementById('detailSellerBox').onclick = () => openUserProfile(sName);
-
             document.getElementById('detailBuyBtn').href = `https://t.me/${ad.contact.replace('@', '')}`;
 
             sliderElem = document.getElementById('detailSlider'); dotsElem = document.getElementById('detailDots');
@@ -1223,8 +1291,8 @@
         };
 
         function openUserProfile(username) {
-            let user = usersList.find(u => u.username === username) || {username: username, first_name: username, photo: '', isVerified: false};
-            let userAds = adsList.filter(a => a.sellerName === username);
+            let user = usersList.find(u => u.username.toLowerCase() === username.toLowerCase()) || {username: username, first_name: username, photo: '', isVerified: false, followers: 0};
+            let userAds = adsList.filter(a => a.sellerName.toLowerCase() === username.toLowerCase());
             
             let verifyIcon = user.isVerified ? `<i class="material-icons" style="color:#3b82f6; font-size:20px; vertical-align:middle;">verified</i>` : '';
             document.getElementById('upName').innerHTML = `${user.first_name} ${verifyIcon}`;
@@ -1232,15 +1300,14 @@
             document.getElementById('upAvatar').src = user.photo || 'https://via.placeholder.com/100';
             document.getElementById('upAdsCount').innerText = userAds.length;
             
-            let baseFollowers = username.length * 2; 
-            if(username === 'aslbek201') baseFollowers = usersList.length + 150; 
-            
+            // YANGILIK: Obunachilar soni soxta emas. (O'zining obunalari bazadan va shaxsiy tugmadan qo'shiladi)
+            let baseFollowers = user.followers || 0; 
             if(myFollowing.includes(username) && username !== tgUser.username) baseFollowers += 1;
             document.getElementById('upFollowersCount').innerText = baseFollowers;
 
             let followBtn = document.getElementById('btnFollow');
             
-            if (username === tgUser.username) {
+            if (username.toLowerCase() === tgUser.username.toLowerCase()) {
                 followBtn.innerText = "Edit profile";
                 followBtn.style.background = "var(--border-color)";
                 followBtn.style.color = "var(--text-main)";
@@ -1350,7 +1417,7 @@
             document.getElementById('adminUsersList').innerHTML = usersList.map(u => {
                 let status = u.isOnline ? `<div class="user-status online"></div> Online` : `<div class="user-status offline"></div> Offline`;
                 
-                let blockButton = ADMIN_USERS.includes(u.username) 
+                let blockButton = ADMIN_USERS.includes(u.username.toLowerCase()) 
                     ? `<button class="btn-small" style="background:#94a3b8; cursor:not-allowed;">Daxlsiz</button>`
                     : `<button class="btn-small ${u.isBlocked ? 'btn-unblock' : 'btn-block'}" onclick="toggleBlock('${u.dbId}', ${u.isBlocked})">${u.isBlocked ? 'Unblock' : 'Block'}</button>`;
                 
@@ -1373,7 +1440,7 @@
 
         function toggleBlock(uid, isBlocked) {
             let targetUser = usersList.find(u => u.dbId === uid);
-            if (targetUser && ADMIN_USERS.includes(targetUser.username)) { alert("O'zingizni bloklay olmaysiz!"); return; }
+            if (targetUser && ADMIN_USERS.includes(targetUser.username.toLowerCase())) { alert("O'zingizni bloklay olmaysiz!"); return; }
             db.collection("users").doc(uid).update({isBlocked: !isBlocked});
         }
 
@@ -1473,4 +1540,3 @@
     </script>
 </body>
 </html>
-
