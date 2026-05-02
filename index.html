@@ -38,10 +38,25 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; padding-bottom: 90px; transition: 0.3s; }
+        
+        /* KOMPYUTER VA KATTA EKRANLAR UCHUN MAXSUS FONT VA CHEGARALAR */
+        html { background-color: #cbd5e1; display: flex; justify-content: center; }
+        body { 
+            width: 100%; 
+            max-width: 480px; /* Telefon shaklida ushlab turadi */
+            min-height: 100vh; 
+            margin: 0 auto; 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            overflow-x: hidden; 
+            padding-bottom: 90px; 
+            transition: 0.3s; 
+            box-shadow: 0 0 25px rgba(0,0,0,0.2); /* Chetlarda soya paydo bo'ladi */
+            position: relative; 
+        }
 
         /* Splash Screen */
-        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
+        #splash { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; background: #0f172a; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
         .logo-text { font-size: 36px; font-weight: 900; letter-spacing: 1px; font-style: italic; }
         .logo-text .id { color: #ffffff; } 
         .logo-text .savdo { color: var(--primary-color); }
@@ -49,7 +64,7 @@
 
         /* Tab Bar */
         .tab-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; height: 65px;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 430px; height: 65px;
             background: var(--tab-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color); border-radius: 35px; display: flex; justify-content: space-around; align-items: center;
             z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.3s;
@@ -121,7 +136,7 @@
         .preview-imgs img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; position:relative;}
 
         /* Modals */
-        .full-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px; }
+        .full-modal { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; background: var(--bg-main); z-index: 2000; display: none; overflow-y: auto; padding-bottom: 80px; }
         .modal-header { padding: max(45px, env(safe-area-inset-top)) 15px 15px 15px; display: flex; align-items: center; background: var(--tab-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 2010; }
         .modal-back-btn { display: flex; align-items: center; justify-content: center; background: var(--border-color); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 15px; font-weight: 600; cursor:pointer;}
         .modal-back-btn i { font-size: 20px; margin-right: 6px; color: var(--primary-color);}
@@ -151,7 +166,7 @@
         .detail-footer-info { margin-top: 20px; padding: 15px; background: var(--bg-card); border-radius: 12px; font-size: 14px; color: var(--text-main); display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--border-color);}
         .detail-footer-row { display: flex; justify-content: space-between; align-items: center;}
         
-        .buy-btn-container { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px; background: var(--tab-bg); backdrop-filter: blur(10px); z-index: 2010; border-top: 1px solid var(--border-color); }
+        .buy-btn-container { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; padding: 15px; background: var(--tab-bg); backdrop-filter: blur(10px); z-index: 2010; border-top: 1px solid var(--border-color); }
         .btn-buy { display: block; text-align: center; text-decoration: none; width: 100%; padding: 15px; background: var(--primary-color); color: white; border-radius: 12px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,102,255,0.3); }
 
         /* Public Profile Page */
@@ -216,7 +231,7 @@
         .online { background: #10b981; }
         .offline { background: #94a3b8; }
 
-        /* PIN Lock Modal (iOS/Android Style) */
+        /* PIN Lock Modal */
         #pin-modal { background: var(--bg-main); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .pin-container { text-align: center; width: 100%; max-width: 320px; margin: 0 auto;}
         .pin-title { font-size: 22px; font-weight: bold; color: var(--text-main); margin-bottom: 30px; }
@@ -228,8 +243,8 @@
         .pin-btn:active { background: var(--border-color); }
         .pin-btn-action { background: transparent; box-shadow: none; font-size: 16px; font-weight: bold;}
 
-        /* Popup Ad Modal (Starter) */
-        #entry-ad-modal { z-index: 99999; background: rgba(0,0,0,0.85); justify-content:center; align-items:center; display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;}
+        /* Popup Ad Modal */
+        #entry-ad-modal { z-index: 99999; background: rgba(0,0,0,0.85); justify-content:center; align-items:center; display:none; position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%;}
         .entry-ad-box { width: 90%; max-width: 400px; position:relative; margin: auto; animation: zoomIn 0.3s ease;}
         @keyframes zoomIn { from {transform:scale(0.8); opacity:0;} to {transform:scale(1); opacity:1;} }
         .entry-close { position:absolute; top:-15px; right:-15px; background:var(--danger-color); color:white; width:35px; height:35px; border-radius:50%; display:flex; justify-content:center; align-items:center; z-index:10; border: 2px solid white; cursor: pointer;}
@@ -256,6 +271,9 @@
         .section-ad-title { font-size: 17px; font-weight: bold; color: var(--text-main); margin-bottom: 5px; }
         .section-ad-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 15px; line-height: 1.4; }
         .section-ad-btn { width: 100%; background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer;}
+        
+        /* Blocked Screen Fix for PC */
+        #blocked-screen { position:fixed; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; height:100%; background:var(--bg-main); z-index:999999; display:none; justify-content:center; align-items:center; flex-direction:column; }
     </style>
 </head>
 <body>
@@ -271,7 +289,7 @@
         <button class="alert-btn-close" onclick="closeUserAlert()">Tushunarli</button>
     </div>
     
-    <div id="admin-create-alert-modal" class="full-modal" style="z-index: 3000;">
+    <div id="admin-create-alert-modal" class="full-modal" style="display: none; z-index: 3000;">
         <div class="modal-header" onclick="closeModal('admin-create-alert-modal')">
             <div class="modal-back-btn"><i class="material-icons">close</i> Bekor qilish</div>
         </div>
@@ -289,7 +307,7 @@
         </div>
     </div>
 
-    <div id="blocked-screen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-main); z-index:999999; justify-content:center; align-items:center; flex-direction:column;">
+    <div id="blocked-screen">
         <i class="material-icons" style="font-size:80px; color:var(--danger-color);">block</i>
         <h2 style="color:var(--text-main); margin-top:20px;">Siz bloklangansiz</h2>
         <p style="color:var(--text-muted); margin-top:10px;">Kirish imkonsiz.</p>
@@ -308,7 +326,7 @@
         </div>
     </div>
 
-    <div id="user-profile-modal" class="full-modal" style="z-index: 2020;">
+    <div id="user-profile-modal" class="full-modal" style="display: none; z-index: 2020;">
         <div class="modal-header" onclick="closeModal('user-profile-modal')">
             <div class="modal-back-btn"><i class="material-icons">arrow_back</i> Orqaga</div>
         </div>
@@ -333,7 +351,7 @@
         </div>
     </div>
 
-    <div id="subscriptions-modal" class="full-modal" style="z-index: 2015;">
+    <div id="subscriptions-modal" class="full-modal" style="display: none; z-index: 2015;">
         <div class="modal-header" onclick="closeModal('subscriptions-modal')">
             <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Obunalarim</span>
@@ -341,7 +359,7 @@
         <div style="padding: 15px;" id="subsContainer"></div>
     </div>
 
-    <div id="pin-modal" class="full-modal" style="z-index: 3000;">
+    <div id="pin-modal" class="full-modal" style="display: none; z-index: 3000;">
         <div class="modal-header" onclick="closePinModal()">
             <div class="modal-back-btn"><i class="material-icons">close</i> Bekor qilish</div>
         </div>
@@ -505,7 +523,7 @@
         </nav>
     </div>
 
-    <div id="catalog-results-modal" class="full-modal">
+    <div id="catalog-results-modal" class="full-modal" style="display: none;">
         <div class="modal-header" onclick="closeModal('catalog-results-modal')">
             <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span id="catalog-modal-title" style="font-weight:bold; font-size: 18px; color: var(--text-main);">Katalog</span>
@@ -513,7 +531,7 @@
         <div style="padding: 15px;"><div id="catalogResultsGrid" class="ad-grid"></div></div>
     </div>
 
-    <div id="detail-modal" class="full-modal">
+    <div id="detail-modal" class="full-modal" style="display: none;">
         <div class="modal-header" onclick="closeModal('detail-modal')">
             <div class="modal-back-btn"><i class="material-icons">arrow_back</i> Orqaga</div>
         </div>
@@ -556,7 +574,7 @@
         <div class="buy-btn-container"><a id="detailBuyBtn" target="_blank" class="btn-buy">Sotib olish</a></div>
     </div>
 
-    <div id="my-ads-modal" class="full-modal">
+    <div id="my-ads-modal" class="full-modal" style="display: none;">
         <div class="modal-header" onclick="closeModal('my-ads-modal')">
             <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Mening e'lonlarim</span>
@@ -564,7 +582,7 @@
         <div style="padding: 15px;" id="myAdsContainer"></div>
     </div>
 
-    <div id="admin-modal" class="full-modal">
+    <div id="admin-modal" class="full-modal" style="display: none;">
         <div class="modal-header" onclick="closeModal('admin-modal')">
             <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Admin Panel</span>
@@ -629,7 +647,7 @@
         </div>
     </div>
 
-    <div id="settings-modal" class="full-modal">
+    <div id="settings-modal" class="full-modal" style="display: none;">
         <div class="modal-header" onclick="closeModal('settings-modal')">
             <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Sozlamalar</span>
@@ -648,7 +666,7 @@
         </div>
     </div>
 
-    <div id="terms-modal" class="full-modal">
+    <div id="terms-modal" class="full-modal" style="display: none;">
         <div class="modal-header" onclick="closeModal('terms-modal')">
             <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> Orqaga</div>
             <span style="font-weight:bold; font-size: 18px; color: var(--text-main);">Shartlar</span>
@@ -711,7 +729,6 @@
             tgUser.username = localUser;
         }
 
-        // Subscriptions local list (Auto-follow admin)
         let myFollowing = JSON.parse(localStorage.getItem('idsavdo_following') || '[]');
         if(!myFollowing.includes("aslbek201")) myFollowing.push("aslbek201");
         localStorage.setItem('idsavdo_following', JSON.stringify(myFollowing));
@@ -755,7 +772,15 @@
             }
         });
 
-        if(ADMIN_USERS.includes(tgUser.username)) document.getElementById('adminMenuBtn').style.display = 'flex';
+        document.addEventListener("DOMContentLoaded", () => {
+            let adminBtn = document.getElementById('adminMenuBtn');
+            if (ADMIN_USERS.includes(tgUser.username)) {
+                adminBtn.style.display = 'flex';
+            } else {
+                adminBtn.style.display = 'none';
+            }
+        });
+
         document.getElementById('profName').innerText = tgUser.first_name;
         document.getElementById('profUsername').innerText = "@" + tgUser.username;
         if(tgUser.photo) document.getElementById('profAvatar').innerHTML = `<img src="${tgUser.photo}">`;
@@ -764,14 +789,15 @@
         const savedTheme = localStorage.getItem('idsavdo_theme');
         if(savedTheme === 'dark' || (tgApp.colorScheme === 'dark' && !savedTheme)) {
             document.body.classList.add('dark-theme');
+            document.documentElement.style.backgroundColor = '#0f172a'; // Tungi rejimda PC fonini qoraytirish
             document.getElementById('themeToggle').checked = true;
         }
         function toggleTheme(cb) {
             document.body.classList.toggle('dark-theme', cb.checked);
+            document.documentElement.style.backgroundColor = cb.checked ? '#0f172a' : '#cbd5e1'; // PC fon rangi o'zgarishi
             localStorage.setItem('idsavdo_theme', cb.checked ? 'dark' : 'light');
         }
 
-        // Tillar tarjimasi mantiqiy bloki
         const translations = {
             'uz': { home: 'Bosh sahifa', search: 'Qidiruv', ads: 'Reklama', prof: 'Profil', myAds: "Mening e'lonlarim", subs: 'Obunalarim', rek: 'Reklama berish', set: 'Sozlamalar', terms: 'Foydalanish shartlari', sup: 'Qo\'llab-quvvatlash' },
             'ru': { home: 'Главная', search: 'Поиск', ads: 'Реклама', prof: 'Профиль', myAds: 'Мои объявления', subs: 'Мои подписки', rek: 'Дать рекламу', set: 'Настройки', terms: 'Условия использования', sup: 'Поддержка' },
@@ -800,7 +826,6 @@
         // REAL-TIME LISTNERS
         // ==========================================
         
-        // E'LONLAR
         db.collection("elonlar").orderBy("createdAt", "desc").limit(100).onSnapshot((querySnapshot) => {
             adsList = [];
             let maxId = 0;
@@ -836,21 +861,18 @@
             }
         });
 
-        // BANNERLAR
         db.collection("banners").onSnapshot((qs) => {
             bannersList = []; qs.forEach(doc => bannersList.push({dbId: doc.id, ...doc.data()}));
             renderBanners();
             if(document.getElementById('admin-modal').style.display === 'block') loadAdminBanners();
         });
 
-        // SECTION ADS
         db.collection("sectionAds").onSnapshot((qs) => {
             sectionAdsList = []; qs.forEach(doc => sectionAdsList.push({dbId: doc.id, ...doc.data()}));
             renderSectionAds();
             if(document.getElementById('admin-modal').style.display === 'block') loadAdminSectionAds();
         });
 
-        // USERS 
         db.collection("users").onSnapshot((qs) => {
             usersList = [];
             qs.forEach(doc => usersList.push({dbId: doc.id, ...doc.data()}));
@@ -861,7 +883,6 @@
             if(document.getElementById('admin-modal').style.display === 'block') renderAdminUsers();
         });
 
-        // POPUP AD
         let globalEntryLink = "";
         setTimeout(() => {
             document.getElementById('splash').style.opacity = '0';
@@ -1000,16 +1021,12 @@
 
         function formatNumber(num) { return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
 
-        // ==========================================
-        // QIDIRUV (Users yoki Ads - Dizayn To'g'rilangan)
-        // ==========================================
         function handleSearch() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             document.getElementById('katalogBox').style.display = query.length > 0 ? 'none' : 'block';
             
             if(query.length === 0) { document.getElementById('searchResults').innerHTML = ''; return; }
             
-            // Foydalanuvchi qidirish
             if(query.startsWith('@')) {
                 let uQuery = query.replace('@','');
                 let filteredUsers = usersList.filter(u => u.username.toLowerCase().includes(uQuery));
@@ -1030,7 +1047,6 @@
                 return;
             }
 
-            // E'lon qidirish
             let filtered = adsList.filter(ad => ad.title.toLowerCase().includes(query));
             renderAdGrid(filtered, 'searchResults');
         }
@@ -1188,20 +1204,19 @@
         }
 
         // ==========================================
-        // FOYDALANUVCHI PROFILI, OBUNALAR VA BAHOLASH (Barqarorlashtirilgan)
+        // FOYDALANUVCHI PROFILI, OBUNALAR VA BAHOLASH
         // ==========================================
         function toggleFollow(targetUsername) {
-            if(targetUsername === tgUser.username) return; // O'ziga obuna bo'lolmaydi
+            if(targetUsername === tgUser.username) return; 
             if (myFollowing.includes(targetUsername)) {
                 myFollowing = myFollowing.filter(u => u !== targetUsername);
             } else {
                 myFollowing.push(targetUsername);
             }
             localStorage.setItem('idsavdo_following', JSON.stringify(myFollowing));
-            openUserProfile(targetUsername); // Update UI
+            openUserProfile(targetUsername); 
         }
 
-        // Baholash ustiga bosilganda
         document.getElementById('ratingBox').onclick = function() {
             let uName = document.getElementById('upUsername').innerText.replace('@', '');
             if(uName === tgUser.username) return alert("O'zingizni baholay olmaysiz!");
@@ -1218,23 +1233,18 @@
             document.getElementById('upAvatar').src = user.photo || 'https://via.placeholder.com/100';
             document.getElementById('upAdsCount').innerText = userAds.length;
             
-            // Obunachilar barqaror tizimi
-            // Mock bazaviy obunachi (isming uzunligi * 2) - real bazada followers field bo'lguncha turg'un qilish usuli
             let baseFollowers = username.length * 2; 
-            if(username === 'aslbek201') baseFollowers = usersList.length + 150; // Admin doim ko'p
+            if(username === 'aslbek201') baseFollowers = usersList.length + 150; 
             
-            // Agar men obuna bo'lgan bo'lsam, turg'un songa 1 qo'shiladi, obunani bossam 1 kamayadi (sakramaydi)
             if(myFollowing.includes(username) && username !== tgUser.username) baseFollowers += 1;
             document.getElementById('upFollowersCount').innerText = baseFollowers;
 
             let followBtn = document.getElementById('btnFollow');
             
-            // O'zimizning profilimizga kirgan bo'lsak
             if (username === tgUser.username) {
                 followBtn.innerText = "Edit profile";
                 followBtn.style.background = "var(--border-color)";
                 followBtn.style.color = "var(--text-main)";
-                // Telegram orqali o'zgaradi, shuning uchun bosilmaydigan qilamiz:
                 followBtn.onclick = function() { alert("Ma'lumotlaringizni o'zgartirish uchun Telegram sozlamalaridan ism yoki rasm o'zgartirib qayta kiring."); };
             } else {
                 if(myFollowing.includes(username)) {
