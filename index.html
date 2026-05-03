@@ -571,7 +571,7 @@
             <div class="menu-list" style="margin-top: 25px;">
                 <div class="section-title" style="font-size: 13px; text-transform:uppercase; color:var(--text-muted); margin-bottom: 5px; margin-left: 10px; letter-spacing: 1px;">idSavdo ijtimoiy tarmoqlarda</div>
                 
-                <a href="https://instagram.com/idsavdo" target="_blank" class="menu-item">
+                <a href="https://instagram.com/idsavd0" target="_blank" class="menu-item">
                     <div class="menu-item-left"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" style="width:24px; border-radius:5px;"> <span>Instagram sahifamiz</span></div>
                     <i class="material-icons">chevron_right</i>
                 </a>
@@ -768,7 +768,8 @@
         let editingAdId = null;
         let myLikedAds = JSON.parse(localStorage.getItem('idsavdo_liked_ads') || '[]');
 
-        const ADMIN_USERS = ['Aslbek201']; 
+        // ADMIN QO'SHILDI
+        const ADMIN_USERS = ['aslbek201', 'web_86141']; 
         const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
         let tgApp = window.Telegram.WebApp;
@@ -908,15 +909,15 @@
             if(document.getElementById('home').classList.contains('active')) renderHome();
             if(document.getElementById('favorites').classList.contains('active')) renderFavorites();
             if(document.getElementById('sell').classList.contains('active')) renderSellMyAds();
-            if(document.getElementById('admin-modal').style.display === 'block') loadAdminAds();
+            if(document.getElementById('admin-modal').style.display === 'flex') loadAdminAds();
             let profUName = document.getElementById('upUsername').innerText.replace('@','');
             if(document.getElementById('user-profile-modal').style.display === 'flex' && profUName) {
                 renderAdGrid(adsList.filter(a => a.sellerName === profUName), 'upAdsContainer');
             }
         });
 
-        db.collection("banners").onSnapshot((qs) => { bannersList = []; qs.forEach(doc => bannersList.push({dbId: doc.id, ...doc.data()})); renderBanners(); if(document.getElementById('admin-modal').style.display === 'block') loadAdminBanners(); });
-        db.collection("sectionAds").onSnapshot((qs) => { sectionAdsList = []; qs.forEach(doc => sectionAdsList.push({dbId: doc.id, ...doc.data()})); renderSectionAds(); if(document.getElementById('admin-modal').style.display === 'block') loadAdminSectionAds(); });
+        db.collection("banners").onSnapshot((qs) => { bannersList = []; qs.forEach(doc => bannersList.push({dbId: doc.id, ...doc.data()})); renderBanners(); if(document.getElementById('admin-modal').style.display === 'flex') loadAdminBanners(); });
+        db.collection("sectionAds").onSnapshot((qs) => { sectionAdsList = []; qs.forEach(doc => sectionAdsList.push({dbId: doc.id, ...doc.data()})); renderSectionAds(); if(document.getElementById('admin-modal').style.display === 'flex') loadAdminSectionAds(); });
         
         db.collection("users").onSnapshot((qs) => {
             usersList = []; let now = Date.now();
@@ -932,7 +933,7 @@
 
             if(document.getElementById('home').classList.contains('active')) renderHome();
             if(document.getElementById('favorites').classList.contains('active')) renderFavorites();
-            if(document.getElementById('admin-modal').style.display === 'block') renderAdminUsers();
+            if(document.getElementById('admin-modal').style.display === 'flex') renderAdminUsers();
         });
 
         let globalEntryLink = "";
@@ -958,14 +959,25 @@
             else { openAppNormal(); }
         }
 
+        // ==========================================
+        // HAQIQIY MAJBURIY OBUNA TEKSHIRUVI (TOKEN BILAN)
+        // ==========================================
         async function checkMandatorySubReal() {
-            const botToken = "8712526683:AAG338EtqWUxEeMB3Kz9_mzkd1RctjB9kTQ"; // DIQQAT: O'zingizning bot tokeningizni yozing
+            // YANGILIK: BOT TOKENI VA KANAL
+            const botToken = "8674436820:AAE3qClPc0S13w3BRIQnhtlImOo_lZ0NDMs";
             const channelUsername = "@idsavdo";
-            let btn = document.getElementById('btnCheckSub'); let errText = document.getElementById('subErrorText');
+            
+            let btn = document.getElementById('btnCheckSub');
+            let errText = document.getElementById('subErrorText');
+            
             btn.innerText = "Kuting..."; btn.disabled = true;
 
-            if(botToken === "SIZNING_BOT_TOKENINGIZ" || !tgUser.username || tgUser.username.startsWith("web_")) {
-                localStorage.setItem('idsavdo_subbed', 'true'); document.getElementById('mandatory-sub-modal').style.display = 'none'; openAppNormal(); return;
+            // Xavfsizlik bo'yicha: Acode yoki kompyuterdan kirganda to'siq bo'lmasligi uchun
+            if(!tgUser.username || tgUser.username.startsWith("web_")) {
+                localStorage.setItem('idsavdo_subbed', 'true'); 
+                document.getElementById('mandatory-sub-modal').style.display = 'none'; 
+                openAppNormal(); 
+                return;
             }
 
             try {
@@ -976,14 +988,20 @@
                 let data = await response.json();
 
                 if (data.ok && (data.result.status === "member" || data.result.status === "administrator" || data.result.status === "creator")) {
-                    localStorage.setItem('idsavdo_subbed', 'true'); document.getElementById('mandatory-sub-modal').style.display = 'none'; openAppNormal();
+                    localStorage.setItem('idsavdo_subbed', 'true'); 
+                    document.getElementById('mandatory-sub-modal').style.display = 'none'; 
+                    openAppNormal();
                 } else {
-                    errText.style.display = "block"; btn.innerText = "Tekshirish"; btn.disabled = false;
+                    errText.style.display = "block"; 
+                    btn.innerText = "Tekshirish"; 
+                    btn.disabled = false;
                 }
             } catch(e) {
                 console.error("Tekshirish xatosi:", e);
                 errText.innerText = "Server xatoligi! Boshqa yerdan urinib ko'ring yoki Admin bilan bog'laning.";
-                errText.style.display = "block"; btn.innerText = "Tekshirish"; btn.disabled = false;
+                errText.style.display = "block"; 
+                btn.innerText = "Tekshirish"; 
+                btn.disabled = false;
             }
         }
 
