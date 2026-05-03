@@ -40,16 +40,33 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; -webkit-tap-highlight-color: transparent; }
         
         html { background-color: #cbd5e1; display: flex; justify-content: center; }
-        body { width: 100%; max-width: 480px; min-height: 100vh; margin: 0 auto; background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; padding-bottom: 90px; transition: 0.3s; box-shadow: 0 0 25px rgba(0,0,0,0.2); position: relative; }
+        body { 
+            width: 100%; 
+            max-width: 480px; 
+            min-height: 100vh; 
+            margin: 0 auto; 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            overflow-x: hidden; 
+            padding-bottom: 90px; 
+            transition: 0.3s; 
+            box-shadow: 0 0 25px rgba(0,0,0,0.2); 
+            position: relative; 
+        }
 
         /* Splash Screen */
-        #splash { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; background: #0f172a; display: flex; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; }
+        #splash { 
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; background: #0f172a; display: flex; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; 
+        }
         .logo-text { font-size: 36px; font-weight: 900; letter-spacing: 1px; font-style: italic; }
-        .logo-text .id { color: #ffffff; } .logo-text .savdo { color: var(--primary-color); }
+        .logo-text .id { color: #ffffff; } 
+        .logo-text .savdo { color: var(--primary-color); }
         .version-text { position: absolute; bottom: 40px; font-size: 14px; font-weight: 600; color: var(--primary-color); letter-spacing: 1px; }
 
         /* Tab Bar */
-        .tab-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 430px; height: 65px; background: var(--tab-bg); backdrop-filter: blur(20px); border: 1px solid var(--border-color); border-radius: 35px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.3s; }
+        .tab-bar { 
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 430px; height: 65px; background: var(--tab-bg); backdrop-filter: blur(20px); border: 1px solid var(--border-color); border-radius: 35px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.3s; 
+        }
         .tab-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; padding: 5px 10px; border-radius: 20px; transition: 0.3s; cursor: pointer;}
         .tab-item.active { color: var(--primary-color); background: rgba(0, 102, 255, 0.1); }
         .tab-item i { font-size: 24px; margin-bottom: 2px; }
@@ -65,7 +82,8 @@
         /* Header */
         .header { display: flex; justify-content: center; align-items: center; padding: 0 0 20px 0; position: relative;}
         .header-logo { font-size: 28px; font-weight: 900; font-style: italic; }
-        .header-logo .id { color: var(--text-main); } .header-logo .savdo { color: var(--primary-color); }
+        .header-logo .id { color: var(--text-main); } 
+        .header-logo .savdo { color: var(--primary-color); }
         
         /* Search Bar */
         .fake-search-container { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; }
@@ -134,9 +152,10 @@
         .form-input:focus, .form-select:focus { border-color: var(--primary-color); }
         .btn-primary { width: 100%; padding: 15px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; margin-top: 10px; cursor: pointer; display:flex; justify-content:center; align-items:center; gap:8px;}
         .btn-success { background: #10b981; }
+        .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
         
         .img-upload-box { border: 2px dashed var(--border-color); padding: 30px; text-align: center; border-radius: 12px; margin-bottom: 15px; position: relative; }
-        .img-upload-box input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; }
+        .img-upload-box input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;}
         .preview-imgs { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; }
         .preview-imgs img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; position:relative;}
 
@@ -148,9 +167,11 @@
         
         .modal-content-scroll { flex: 1; overflow-y: auto; padding-bottom: 120px; }
 
-        /* Detail Modal (Higher Z-Index for clicking from Profile) */
+        /* Detail Modal */
         #detail-modal { z-index: 2050; }
-        #user-profile-modal { z-index: 2020; }
+        
+        /* Profil oynasining z-index darajasi detaildan ham baland bo'lishi kerak! */
+        #user-profile-modal { z-index: 3010; }
 
         /* Detail */
         .detail-img-container { position: relative; width: 100%; background: var(--bg-card); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -345,12 +366,12 @@
         <a href="https://t.me/aslbek201" target="_blank" class="btn-primary" style="margin-top:20px; width: auto; padding: 12px 25px; text-decoration: none; border-radius: 20px; font-size: 14px;" data-i18n="shikoyat">Shikoyat qilish</a>
     </div>
 
-    <div id="admin-create-alert-modal" class="full-modal" style="display: none; z-index: 3000;">
+    <div id="admin-create-alert-modal" class="full-modal" style="display: none; z-index: 3050;">
         <div class="modal-header" onclick="closeModal('admin-create-alert-modal')">
             <div class="modal-back-btn"><i class="material-icons">close</i> <span data-i18n="bekorQilish">Bekor qilish</span></div>
+            <span style="font-weight:bold; font-size: 18px; color: var(--text-main); margin-left:15px;">Xabar yuborish</span>
         </div>
         <div class="modal-content-scroll" style="padding: 20px;">
-            <h3>Xabar yuborish</h3>
             <textarea id="adminAlertText" class="form-input" rows="4" placeholder="Xabar matnini kiriting..."></textarea>
             <select id="adminAlertColor" class="form-select">
                 <option value="#0066ff">Ko'k (Oddiy)</option>
@@ -359,11 +380,11 @@
             </select>
             <p style="font-size:12px; color:var(--text-muted); margin-bottom:5px;">Rasm (Ixtiyoriy):</p>
             <input type="file" id="adminAlertFile" accept="image/*" class="form-input" style="padding: 10px;">
-            <button class="btn-primary" onclick="sendCustomAlert()">Yuborish</button>
+            <button class="btn-primary" id="btnSendAlert" onclick="sendCustomAlert()">Yuborish</button>
         </div>
     </div>
 
-    <div id="user-profile-modal" class="full-modal" style="display: none; z-index: 2020;">
+    <div id="user-profile-modal" class="full-modal" style="display: none; z-index: 3010;">
         <div class="modal-header" onclick="closeModal('user-profile-modal')">
             <div class="modal-back-btn"><i class="material-icons">arrow_back</i> <span data-i18n="orqaga">Orqaga</span></div>
         </div>
@@ -413,10 +434,18 @@
                     <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
                 </div>
                 <div class="pin-numpad">
-                    <button class="pin-btn" onclick="addPin('1')">1</button><button class="pin-btn" onclick="addPin('2')">2</button><button class="pin-btn" onclick="addPin('3')">3</button>
-                    <button class="pin-btn" onclick="addPin('4')">4</button><button class="pin-btn" onclick="addPin('5')">5</button><button class="pin-btn" onclick="addPin('6')">6</button>
-                    <button class="pin-btn" onclick="addPin('7')">7</button><button class="pin-btn" onclick="addPin('8')">8</button><button class="pin-btn" onclick="addPin('9')">9</button>
-                    <button class="pin-btn pin-btn-action"></button><button class="pin-btn" onclick="addPin('0')">0</button><button class="pin-btn pin-btn-action" onclick="deletePin()"><i class="material-icons" style="font-size:28px;">backspace</i></button>
+                    <button class="pin-btn" onclick="addPin('1')">1</button>
+                    <button class="pin-btn" onclick="addPin('2')">2</button>
+                    <button class="pin-btn" onclick="addPin('3')">3</button>
+                    <button class="pin-btn" onclick="addPin('4')">4</button>
+                    <button class="pin-btn" onclick="addPin('5')">5</button>
+                    <button class="pin-btn" onclick="addPin('6')">6</button>
+                    <button class="pin-btn" onclick="addPin('7')">7</button>
+                    <button class="pin-btn" onclick="addPin('8')">8</button>
+                    <button class="pin-btn" onclick="addPin('9')">9</button>
+                    <button class="pin-btn pin-btn-action"></button>
+                    <button class="pin-btn" onclick="addPin('0')">0</button>
+                    <button class="pin-btn pin-btn-action" onclick="deletePin()"><i class="material-icons" style="font-size:28px;">backspace</i></button>
                 </div>
             </div>
         </div>
@@ -483,9 +512,18 @@
                 </div>
 
                 <div class="stats-row">
-                    <div class="stat-card"><h4 id="myTotalAds">0</h4><p data-i18n="meningElonlarimCard">Mening e'lonlarim</p></div>
-                    <div class="stat-card"><h4 id="myTotalViews">0</h4><p data-i18n="umumiyKorishlar">Umumiy ko'rishlar</p></div>
-                    <div class="stat-card"><h4 id="myFollowersStat">0</h4><p data-i18n="obunachilarCard">Obunachilarim</p></div>
+                    <div class="stat-card">
+                        <h4 id="myTotalAds">0</h4>
+                        <p data-i18n="meningElonlarimCard">Mening e'lonlarim</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4 id="myTotalViews">0</h4>
+                        <p data-i18n="umumiyKorishlar">Umumiy ko'rishlar</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4 id="myFollowersStat">0</h4>
+                        <p data-i18n="obunachilarCard">Obunachilarim</p>
+                    </div>
                 </div>
 
                 <div class="section-title" style="margin-top: 20px; font-size:16px;" data-i18n="meningElonlarimCard">Mening e'lonlarim</div>
@@ -684,7 +722,7 @@
                 <div style="background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:20px;">
                     <input type="text" id="addBannerLink" class="form-input" placeholder="Ssilka yoki Elon ID (Masalan: #25)">
                     <input type="file" id="addBannerFile" accept="image/*" class="form-input" style="padding:10px;">
-                    <button class="btn-primary" onclick="saveBanner()">Banner Qo'shish</button>
+                    <button class="btn-primary" id="btnSaveBanner" onclick="saveBanner()">Banner Qo'shish</button>
                 </div>
                 <h3 style="margin-bottom:10px;">Joriy Bannerlar</h3>
                 <div id="adminBannersList" style="display:flex; flex-direction:column; gap:10px; margin-bottom:30px;"></div>
@@ -700,7 +738,7 @@
                     <input type="text" id="popupDesc" class="form-input" placeholder="Matn (Ixtiyoriy)">
                     <input type="text" id="popupLink" class="form-input" placeholder="Ssilka yoki #Elon_ID">
                     <input type="file" id="popupFile" accept="image/*" class="form-input" style="padding:10px;">
-                    <button class="btn-primary btn-success" onclick="savePopupAd()">Saqlash</button>
+                    <button class="btn-primary btn-success" id="btnSavePopup" onclick="savePopupAd()">Saqlash</button>
                 </div>
             </div>
 
@@ -712,7 +750,7 @@
                     <textarea id="addSecAdDesc" class="form-input" placeholder="Reklama tavsifi" rows="3"></textarea>
                     <input type="text" id="addSecAdLink" class="form-input" placeholder="Ssilka (masalan: t.me/kanal)">
                     <input type="file" id="addSecAdFile" accept="image/*" class="form-input" style="padding:10px;">
-                    <button class="btn-primary" onclick="saveSectionAd()">Qo'shish</button>
+                    <button class="btn-primary" id="btnSaveSecAd" onclick="saveSectionAd()">Qo'shish</button>
                 </div>
                 <h3 style="margin-bottom:10px;">Ads Bo'limidagi Reklamalar</h3>
                 <div id="adminSectionAdsList" style="display:flex; flex-direction:column; gap:10px; margin-bottom:30px;"></div>
@@ -720,7 +758,42 @@
         </div>
     </div>
 
+    <div id="settings-modal" class="full-modal" style="display: none;">
+        <div class="modal-header" onclick="closeModal('settings-modal')">
+            <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> <span data-i18n="orqaga">Orqaga</span></div>
+            <span style="font-weight:bold; font-size: 18px; color: var(--text-main);" data-i18n="sozlamalar">Sozlamalar</span>
+        </div>
+        <div class="modal-content-scroll" style="padding: 15px;">
+            <div class="settings-row">
+                <span style="font-weight: 500;" id="txtTheme" data-i18n="tungiRejim">Tungi rejim (Dark Theme)</span>
+                <label class="switch"><input type="checkbox" id="themeToggle" onchange="toggleTheme(this)"><span class="slider"></span></label>
+            </div>
+            <div class="settings-row">
+                <span style="font-weight: 500;" id="txtLang" data-i18n="dasturTili">Dastur tili</span>
+                <select class="form-select" style="width: auto; margin-bottom: 0; padding: 8px 15px;" id="langSelect" onchange="changeLanguage()">
+                    <option value="uz">O'zbekcha</option><option value="ru">Русский</option><option value="en">English</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="terms-modal" class="full-modal" style="display: none;">
+        <div class="modal-header" onclick="closeModal('terms-modal')">
+            <div class="modal-back-btn" style="margin-right: 15px;"><i class="material-icons">arrow_back</i> <span data-i18n="orqaga">Orqaga</span></div>
+            <span style="font-weight:bold; font-size: 18px; color: var(--text-main);" data-i18n="shartlar">Shartlar</span>
+        </div>
+        <div class="modal-content-scroll" style="padding: 20px;" class="terms-text">
+            <h2>Foydalanish shartlari va Maxfiylik siyosati (Privacy Policy)</h2><br>
+            <p>Ushbu Foydalanish shartlari ("Shartlar") sizning IDSavdo bot/ilovasidan foydalanishingizni tartibga soladi.</p>
+            <h3>1. Umumiy qoidalar</h3><p>IDSavdo - bu foydalanuvchilar virtual akkauntlari va raqamli tovarlarni sotish/sotib olish maydonchasidir.</p>
+            <h3>2. E'lon joylash qoidalari</h3><p>Yolg'on ma'lumotlar bermaslik, taqiqlangan tovarlar sotmaslik shart.</p>
+            <h3>3. Maxfiylik va Ma'lumotlar</h3><p>Biz faqat Telegram ochiq ma'lumotlaringizni aloqa uchun ishlatamiz.</p>
+            <h3>4. Firibgarlik</h3><p>Firibgarlik holati aniqlansa, e'lonni o'chirish va bloklash huquqiga egamiz.</p><br>
+        </div>
+    </div>
+
     <script>
+        // FIREBASE SOZLAMALARI
         const firebaseConfig = {
             apiKey: "AIzaSyBXIf11kLqin-dpH6A2qP0La8mwjx2yxH0",
             authDomain: "idsavdo-7dd3f.firebaseapp.com",
@@ -732,87 +805,197 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let currentTempImages = []; let adsList = []; let usersList = []; let bannersList = []; let sectionAdsList = [];
-        let globalIdCounter = 1; let editingAdId = null; let myLikedAds = JSON.parse(localStorage.getItem('idsavdo_liked_ads') || '[]');
-        const ADMIN_USERS = ['aslbek201', 'web_86141']; const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+        // GLOBAL VA TELEGRAM INIT
+        let currentTempImages = [];
+        let adsList = []; 
+        let usersList = [];
+        let bannersList = [];
+        let sectionAdsList = [];
+        let globalIdCounter = 1; 
+        let editingAdId = null;
+        let myLikedAds = JSON.parse(localStorage.getItem('idsavdo_liked_ads') || '[]');
 
-        let tgApp = window.Telegram.WebApp; tgApp.ready(); 
+        // ADMINLAR
+        const ADMIN_USERS = ['aslbek201', 'web_86141']; 
+        const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+        let tgApp = window.Telegram.WebApp;
+        tgApp.ready(); 
+
         let tgUser = { username: "", first_name: "Foydalanuvchi", photo: "" };
         
         if (tgApp.initDataUnsafe && tgApp.initDataUnsafe.user) {
-            let u = tgApp.initDataUnsafe.user; tgUser.username = u.username || ("user_" + u.id); tgUser.first_name = u.first_name || "Foydalanuvchi"; tgUser.photo = u.photo_url || "";
+            let u = tgApp.initDataUnsafe.user;
+            tgUser.username = u.username || ("user_" + u.id); 
+            tgUser.first_name = u.first_name || "Foydalanuvchi";
+            tgUser.photo = u.photo_url || "";
         } else {
             let localUser = localStorage.getItem('idsavdo_local_user');
-            if(!localUser) { localUser = "web_" + Math.floor(Math.random()*100000); localStorage.setItem('idsavdo_local_user', localUser); }
+            if(!localUser) {
+                localUser = "web_" + Math.floor(Math.random()*100000);
+                localStorage.setItem('idsavdo_local_user', localUser);
+            }
             tgUser.username = localUser;
         }
 
         let myFollowing = JSON.parse(localStorage.getItem('idsavdo_following') || '[]');
-        if(!myFollowing.includes("aslbek201")) myFollowing.push("aslbek201"); localStorage.setItem('idsavdo_following', JSON.stringify(myFollowing));
+        if(!myFollowing.includes("aslbek201")) {
+            myFollowing.push("aslbek201");
+        }
+        localStorage.setItem('idsavdo_following', JSON.stringify(myFollowing));
 
         let myDocRef = db.collection("users").doc(tgUser.username);
-        myDocRef.set({ username: tgUser.username, first_name: tgUser.first_name, photo: tgUser.photo, lastActive: Date.now(), isOnline: true }, {merge: true});
+        myDocRef.set({
+            username: tgUser.username,
+            first_name: tgUser.first_name,
+            photo: tgUser.photo,
+            lastActive: Date.now(),
+            isOnline: true
+        }, {merge: true});
 
         document.addEventListener("visibilitychange", function() {
-            if (document.visibilityState === 'visible') myDocRef.update({ isOnline: true, lastActive: Date.now() });
-            else myDocRef.update({ isOnline: false, lastActive: Date.now() });
+            if (document.visibilityState === 'visible') {
+                myDocRef.update({ isOnline: true, lastActive: Date.now() });
+            } else {
+                myDocRef.update({ isOnline: false, lastActive: Date.now() });
+            }
         });
-        window.addEventListener("beforeunload", () => myDocRef.update({ isOnline: false, lastActive: Date.now() }));
+
+        window.addEventListener("beforeunload", () => {
+            myDocRef.update({ isOnline: false, lastActive: Date.now() });
+        });
 
         myDocRef.onSnapshot(doc => {
             if(doc.exists) {
                 let data = doc.data();
-                if(data.isBlocked) { document.getElementById('app').style.display = 'none'; document.getElementById('blocked-screen').style.display = 'flex'; } 
-                else { document.getElementById('blocked-screen').style.display = 'none'; }
+                if(data.isBlocked) {
+                    document.getElementById('app').style.display = 'none';
+                    document.getElementById('blocked-screen').style.display = 'flex';
+                } else {
+                    document.getElementById('blocked-screen').style.display = 'none';
+                }
                 
                 if(data.alertMessage) {
-                    document.getElementById('user-alert-text').innerText = data.alertMessage; document.getElementById('user-alert-box').style.background = data.alertColor || '#0066ff';
-                    if(data.alertImage) { document.getElementById('user-alert-img').src = data.alertImage; document.getElementById('user-alert-img').style.display = 'block'; } 
-                    else { document.getElementById('user-alert-img').style.display = 'none'; }
+                    document.getElementById('user-alert-text').innerText = data.alertMessage;
+                    document.getElementById('user-alert-box').style.background = data.alertColor || '#0066ff';
+                    if(data.alertImage) {
+                        document.getElementById('user-alert-img').src = data.alertImage;
+                        document.getElementById('user-alert-img').style.display = 'block';
+                    } else {
+                        document.getElementById('user-alert-img').style.display = 'none';
+                    }
                     document.getElementById('user-alert-box').style.display = 'flex';
                 }
             }
         });
 
         let adminBtn = document.getElementById('adminMenuBtn');
-        if (ADMIN_USERS.includes(tgUser.username.toLowerCase())) { adminBtn.style.display = 'flex'; } else { adminBtn.style.display = 'none'; }
+        if (ADMIN_USERS.includes(tgUser.username.toLowerCase())) {
+            adminBtn.style.display = 'flex';
+        } else {
+            adminBtn.style.display = 'none';
+        }
 
-        document.getElementById('profName').innerText = tgUser.first_name; document.getElementById('profUsername').innerText = "@" + tgUser.username;
-        if(tgUser.photo) document.getElementById('profAvatar').innerHTML = `<img src="${tgUser.photo}">`;
+        document.getElementById('profName').innerText = tgUser.first_name;
+        document.getElementById('profUsername').innerText = "@" + tgUser.username;
+        if(tgUser.photo) {
+            document.getElementById('profAvatar').innerHTML = `<img src="${tgUser.photo}">`;
+        }
 
+        // Theme Init
         const savedTheme = localStorage.getItem('idsavdo_theme');
-        if(savedTheme === 'dark' || (tgApp.colorScheme === 'dark' && !savedTheme)) { document.body.classList.add('dark-theme'); document.documentElement.style.backgroundColor = '#0f172a'; document.getElementById('themeToggle').checked = true; }
-        function toggleTheme(cb) { document.body.classList.toggle('dark-theme', cb.checked); document.documentElement.style.backgroundColor = cb.checked ? '#0f172a' : '#cbd5e1'; localStorage.setItem('idsavdo_theme', cb.checked ? 'dark' : 'light'); }
+        if(savedTheme === 'dark' || (tgApp.colorScheme === 'dark' && !savedTheme)) {
+            document.body.classList.add('dark-theme');
+            document.documentElement.style.backgroundColor = '#0f172a';
+            document.getElementById('themeToggle').checked = true;
+        }
 
+        function toggleTheme(cb) {
+            document.body.classList.toggle('dark-theme', cb.checked);
+            document.documentElement.style.backgroundColor = cb.checked ? '#0f172a' : '#cbd5e1'; 
+            localStorage.setItem('idsavdo_theme', cb.checked ? 'dark' : 'light');
+        }
+
+        // ==========================================
+        // REAL-TIME LISTNERS
+        // ==========================================
         db.collection("elonlar").orderBy("createdAt", "desc").limit(100).onSnapshot((querySnapshot) => {
-            adsList = []; let maxId = 0; let now = Date.now();
+            adsList = [];
+            let maxId = 0;
+            let now = Date.now();
+            
             querySnapshot.forEach((doc) => {
-                let adData = doc.data(); adData.dbId = doc.id; 
-                if (adData.createdAt && (now - adData.createdAt > THIRTY_DAYS_MS)) { if (ADMIN_USERS.includes(tgUser.username.toLowerCase())) db.collection("elonlar").doc(doc.id).delete(); return; }
-                adsList.push(adData); if(adData.elonId && adData.elonId > maxId) maxId = adData.elonId;
+                let adData = doc.data();
+                adData.dbId = doc.id; 
+                if (adData.createdAt && (now - adData.createdAt > THIRTY_DAYS_MS)) {
+                    if (ADMIN_USERS.includes(tgUser.username.toLowerCase())) {
+                        db.collection("elonlar").doc(doc.id).delete();
+                    }
+                    return; 
+                }
+                adsList.push(adData);
+                if(adData.elonId && adData.elonId > maxId) maxId = adData.elonId;
             });
             globalIdCounter = maxId + 1; 
 
-            adsList.sort((a, b) => { let aPrem = (a.isPremium && a.premiumUntil > now) ? 1 : 0; let bPrem = (b.isPremium && b.premiumUntil > now) ? 1 : 0; if(aPrem !== bPrem) return bPrem - aPrem; return (b.createdAt || 0) - (a.createdAt || 0); });
+            adsList.sort((a, b) => {
+                let aPrem = (a.isPremium && a.premiumUntil > now) ? 1 : 0;
+                let bPrem = (b.isPremium && b.premiumUntil > now) ? 1 : 0;
+                if(aPrem !== bPrem) return bPrem - aPrem; 
+                return (b.createdAt || 0) - (a.createdAt || 0);
+            });
             
             updateSellStats(); 
+
             if(document.getElementById('home').classList.contains('active')) renderHome();
             if(document.getElementById('favorites').classList.contains('active')) renderFavorites();
             if(document.getElementById('sell').classList.contains('active')) renderSellMyAds();
             if(document.getElementById('admin-modal').style.display === 'flex') loadAdminAds();
+            
             let profUName = document.getElementById('upUsername').innerText.replace('@','');
-            if(document.getElementById('user-profile-modal').style.display === 'flex' && profUName) { renderAdGrid(adsList.filter(a => a.sellerName === profUName), 'upAdsContainer'); }
+            if(document.getElementById('user-profile-modal').style.display === 'flex' && profUName) {
+                renderAdGrid(adsList.filter(a => a.sellerName === profUName), 'upAdsContainer');
+            }
         });
 
-        db.collection("banners").onSnapshot((qs) => { bannersList = []; qs.forEach(doc => bannersList.push({dbId: doc.id, ...doc.data()})); renderBanners(); if(document.getElementById('admin-modal').style.display === 'flex') loadAdminBanners(); });
-        db.collection("sectionAds").onSnapshot((qs) => { sectionAdsList = []; qs.forEach(doc => sectionAdsList.push({dbId: doc.id, ...doc.data()})); renderSectionAds(); if(document.getElementById('admin-modal').style.display === 'flex') loadAdminSectionAds(); });
+        db.collection("banners").onSnapshot((qs) => {
+            bannersList = [];
+            qs.forEach(doc => bannersList.push({dbId: doc.id, ...doc.data()}));
+            renderBanners();
+            if(document.getElementById('admin-modal').style.display === 'flex') loadAdminBanners();
+        });
+
+        db.collection("sectionAds").onSnapshot((qs) => {
+            sectionAdsList = [];
+            qs.forEach(doc => sectionAdsList.push({dbId: doc.id, ...doc.data()}));
+            renderSectionAds();
+            if(document.getElementById('admin-modal').style.display === 'flex') loadAdminSectionAds();
+        });
         
         db.collection("users").onSnapshot((qs) => {
-            usersList = []; let now = Date.now();
-            qs.forEach(doc => { let u = doc.data(); if(u.lastActive && (now - u.lastActive > THIRTY_DAYS_MS) && !ADMIN_USERS.includes(u.username.toLowerCase())) { if(ADMIN_USERS.includes(tgUser.username.toLowerCase())) { db.collection("users").doc(doc.id).delete(); } } else { usersList.push({dbId: doc.id, ...u}); } });
-            usersList.sort((a,b) => { if(a.isOnline === b.isOnline) return (b.lastActive || 0) - (a.lastActive || 0); return a.isOnline ? -1 : 1; });
+            // Dublikatlarni oldini olish uchun Map ishlatamiz (username orqali filterlanadi)
+            let tempUsersMap = new Map();
+            let now = Date.now();
+            
+            qs.forEach(doc => {
+                let u = doc.data();
+                if(u.lastActive && (now - u.lastActive > THIRTY_DAYS_MS) && !ADMIN_USERS.includes(u.username.toLowerCase())) {
+                    if(ADMIN_USERS.includes(tgUser.username.toLowerCase())) {
+                        db.collection("users").doc(doc.id).delete();
+                    }
+                } else {
+                    tempUsersMap.set(u.username.toLowerCase(), {dbId: doc.id, ...u});
+                }
+            });
+            
+            usersList = Array.from(tempUsersMap.values());
+            usersList.sort((a,b) => {
+                if(a.isOnline === b.isOnline) return (b.lastActive || 0) - (a.lastActive || 0);
+                return a.isOnline ? -1 : 1;
+            });
             
             updateSellStats();
+
             if(document.getElementById('home').classList.contains('active')) renderHome();
             if(document.getElementById('favorites').classList.contains('active')) renderFavorites();
             if(document.getElementById('admin-modal').style.display === 'flex') renderAdminUsers();
@@ -823,196 +1006,438 @@
             document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
-                let isWelcomed = localStorage.getItem('idsavdo_welcomed'); let isSubbed = localStorage.getItem('idsavdo_subbed');
-                if(!isWelcomed) { document.getElementById('welcome-guide-modal').style.display = 'flex'; } 
-                else if (!isSubbed) { document.getElementById('mandatory-sub-modal').style.display = 'flex'; } 
-                else { openAppNormal(); }
+                
+                let isWelcomed = localStorage.getItem('idsavdo_welcomed');
+                let isSubbed = localStorage.getItem('idsavdo_subbed');
+
+                if(!isWelcomed) {
+                    document.getElementById('welcome-guide-modal').style.display = 'flex';
+                } else if (!isSubbed) {
+                    document.getElementById('mandatory-sub-modal').style.display = 'flex';
+                } else {
+                    openAppNormal();
+                }
             }, 500);
         }, 2000);
 
-        function acceptGuide() { localStorage.setItem('idsavdo_welcomed', 'true'); document.getElementById('welcome-guide-modal').style.display = 'none'; if (!localStorage.getItem('idsavdo_subbed')) { document.getElementById('mandatory-sub-modal').style.display = 'flex'; } else { openAppNormal(); } }
+        function acceptGuide() {
+            localStorage.setItem('idsavdo_welcomed', 'true');
+            document.getElementById('welcome-guide-modal').style.display = 'none';
+            if (!localStorage.getItem('idsavdo_subbed')) {
+                document.getElementById('mandatory-sub-modal').style.display = 'flex';
+            } else {
+                openAppNormal();
+            }
+        }
 
         async function checkMandatorySubReal() {
             const botToken = "8674436820:AAE3qClPc0S13w3BRIQnhtlImOo_lZ0NDMs";
             const channelUsername = "@idsavdo";
-            let btn = document.getElementById('btnCheckSub'); let errText = document.getElementById('subErrorText');
-            btn.innerText = "Kuting..."; btn.disabled = true;
+            
+            let btn = document.getElementById('btnCheckSub');
+            let errText = document.getElementById('subErrorText');
+            
+            btn.innerText = "Kuting...";
+            btn.disabled = true;
 
-            if(!tgUser.username || tgUser.username.startsWith("web_")) { localStorage.setItem('idsavdo_subbed', 'true'); document.getElementById('mandatory-sub-modal').style.display = 'none'; openAppNormal(); return; }
+            if(!tgUser.username || tgUser.username.startsWith("web_")) {
+                localStorage.setItem('idsavdo_subbed', 'true');
+                document.getElementById('mandatory-sub-modal').style.display = 'none';
+                openAppNormal();
+                return;
+            }
 
             try {
-                let userId = tgApp.initDataUnsafe?.user?.id; if(!userId) throw new Error("User ID topilmadi");
+                let userId = tgApp.initDataUnsafe?.user?.id;
+                if(!userId) throw new Error("User ID topilmadi");
+
                 let response = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${channelUsername}&user_id=${userId}`);
                 let data = await response.json();
 
                 if (data.ok && (data.result.status === "member" || data.result.status === "administrator" || data.result.status === "creator")) {
-                    localStorage.setItem('idsavdo_subbed', 'true'); document.getElementById('mandatory-sub-modal').style.display = 'none'; openAppNormal();
-                } else { errText.style.display = "block"; btn.innerText = "Tekshirish"; btn.disabled = false; }
-            } catch(e) { errText.innerText = "Server xatoligi! Boshqa yerdan urinib ko'ring yoki Admin bilan bog'laning."; errText.style.display = "block"; btn.innerText = "Tekshirish"; btn.disabled = false; }
+                    localStorage.setItem('idsavdo_subbed', 'true');
+                    document.getElementById('mandatory-sub-modal').style.display = 'none';
+                    openAppNormal();
+                } else {
+                    errText.style.display = "block";
+                    btn.innerText = "Tekshirish";
+                    btn.disabled = false;
+                }
+            } catch(e) {
+                console.error("Tekshirish xatosi:", e);
+                errText.innerText = "Server xatoligi! Boshqa yerdan urinib ko'ring yoki Admin bilan bog'laning.";
+                errText.style.display = "block";
+                btn.innerText = "Tekshirish";
+                btn.disabled = false;
+            }
         }
 
         function openAppNormal() {
             document.getElementById('app').style.display = 'block';
             db.collection("system").doc("entryAd").get().then(doc => {
                 if(doc.exists && doc.data().isActive) {
-                    let d = doc.data(); globalEntryLink = d.link || "";
-                    if(d.title || d.desc) { document.getElementById('entryTextContainer').style.display = 'block'; document.getElementById('entryAdTitle').innerText = d.title || ''; document.getElementById('entryAdDesc').innerText = d.desc || ''; }
-                    if(d.image) { document.getElementById('entryAdImg').src = d.image; document.getElementById('entryAdImg').style.display = 'block'; }
+                    let d = doc.data();
+                    globalEntryLink = d.link || "";
+                    if(d.title || d.desc) {
+                        document.getElementById('entryTextContainer').style.display = 'block';
+                        document.getElementById('entryAdTitle').innerText = d.title || '';
+                        document.getElementById('entryAdDesc').innerText = d.desc || '';
+                    }
+                    if(d.image) {
+                        document.getElementById('entryAdImg').src = d.image;
+                        document.getElementById('entryAdImg').style.display = 'block';
+                    }
                     document.getElementById('entry-ad-modal').style.display = 'flex';
                 }
             });
         }
 
-        function closeUserAlert() { document.getElementById('user-alert-box').style.display = 'none'; myDocRef.update({alertMessage: "", alertImage: ""}); }
-        function closeEntryAd() { document.getElementById('entry-ad-modal').style.display = 'none'; }
-        function triggerEntryLink() { handleLink(globalEntryLink); }
+        // ==========================================
+        // ASOSIY FUNKSIYALAR
+        // ==========================================
+        function closeUserAlert() {
+            document.getElementById('user-alert-box').style.display = 'none';
+            myDocRef.update({alertMessage: "", alertImage: ""});
+        }
+
+        function closeEntryAd() {
+            document.getElementById('entry-ad-modal').style.display = 'none';
+        }
+
+        function triggerEntryLink() {
+            handleLink(globalEntryLink);
+        }
 
         function handleLink(link) {
             if(!link) return;
-            if(link.startsWith('#')) { closeEntryAd(); let ad = adsList.find(x => String(x.elonId) === link.replace('#','')); if(ad) openDetail(ad.dbId); } 
-            else { if(!link.startsWith('http')) link = 'https://' + link; window.open(link, '_blank'); }
+            if(link.startsWith('#')) {
+                closeEntryAd();
+                let ad = adsList.find(x => String(x.elonId) === link.replace('#',''));
+                if(ad) openDetail(ad.dbId);
+            } else {
+                if(!link.startsWith('http')) link = 'https://' + link;
+                window.open(link, '_blank');
+            }
         }
 
         function switchTab(tabId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            
             document.getElementById(tabId).classList.add('active');
-            let tabBtn = document.querySelector(`.tab-item[onclick="switchTab('${tabId}')"]`); if(tabBtn) tabBtn.classList.add('active');
-            if(tabId === 'home') renderHome(); if(tabId === 'sell') { resetForm(); renderSellMyAds(); } if(tabId === 'favorites') renderFavorites();
+            let tabBtn = document.querySelector(`.tab-item[onclick="switchTab('${tabId}')"]`);
+            if(tabBtn) tabBtn.classList.add('active');
+            
+            if(tabId === 'home') renderHome();
+            if(tabId === 'sell') {
+                resetForm();
+                renderSellMyAds();
+            }
+            if(tabId === 'favorites') renderFavorites();
         }
 
         function switchFavTab(tab) {
             document.querySelectorAll('.fav-tab').forEach(t => t.classList.remove('active'));
-            if(tab === 'ads') { document.getElementById('tabFavAds').classList.add('active'); document.getElementById('favAdsContainer').style.display = 'grid'; document.getElementById('favProfilesContainer').style.display = 'none'; } 
-            else { document.getElementById('tabFavProfiles').classList.add('active'); document.getElementById('favAdsContainer').style.display = 'none'; document.getElementById('favProfilesContainer').style.display = 'flex'; }
+            if(tab === 'ads') {
+                document.getElementById('tabFavAds').classList.add('active');
+                document.getElementById('favAdsContainer').style.display = 'grid';
+                document.getElementById('favProfilesContainer').style.display = 'none';
+            } else {
+                document.getElementById('tabFavProfiles').classList.add('active');
+                document.getElementById('favAdsContainer').style.display = 'none';
+                document.getElementById('favProfilesContainer').style.display = 'flex';
+            }
             renderFavorites();
         }
 
         function toggleLikeAd(adId, event) {
             if(event) event.stopPropagation();
             const adRef = db.collection("elonlar").doc(adId);
-            if(myLikedAds.includes(adId)) { myLikedAds = myLikedAds.filter(id => id !== adId); adRef.update({ likes: firebase.firestore.FieldValue.increment(-1) }).catch(e=>{}); } 
-            else { myLikedAds.push(adId); adRef.update({ likes: firebase.firestore.FieldValue.increment(1) }).catch(e=>{}); }
+            
+            if(myLikedAds.includes(adId)) {
+                myLikedAds = myLikedAds.filter(id => id !== adId);
+                adRef.update({ likes: firebase.firestore.FieldValue.increment(-1) }).catch(e=>{});
+            } else {
+                myLikedAds.push(adId);
+                adRef.update({ likes: firebase.firestore.FieldValue.increment(1) }).catch(e=>{});
+            }
             localStorage.setItem('idsavdo_liked_ads', JSON.stringify(myLikedAds));
-            renderHome(); if(document.getElementById('favorites').classList.contains('active')) renderFavorites(); if(document.getElementById('sell').classList.contains('active')) renderSellMyAds();
+            
+            renderHome();
+            if(document.getElementById('favorites').classList.contains('active')) renderFavorites();
+            if(document.getElementById('sell').classList.contains('active')) renderSellMyAds();
         }
 
         function renderFavorites() {
-            let likedAdsObjects = adsList.filter(ad => myLikedAds.includes(ad.dbId)); renderAdGrid(likedAdsObjects, 'favAdsContainer');
-            let container = document.getElementById('favProfilesContainer'); let subsUsers = usersList.filter(u => myFollowing.includes(u.username) && u.username !== tgUser.username); let now = Date.now();
-            if(subsUsers.length === 0) { container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">Siz hech kimga obuna emassiz</p>`; } 
-            else {
+            let likedAdsObjects = adsList.filter(ad => myLikedAds.includes(ad.dbId));
+            renderAdGrid(likedAdsObjects, 'favAdsContainer');
+
+            let container = document.getElementById('favProfilesContainer');
+            let subsUsers = usersList.filter(u => myFollowing.includes(u.username) && u.username !== tgUser.username);
+            let now = Date.now();
+            
+            if(subsUsers.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">Siz hech kimga obuna emassiz</p>`;
+            } else {
                 container.innerHTML = subsUsers.map(u => {
                     let uAdsCount = adsList.filter(a => a.sellerName.toLowerCase() === u.username.toLowerCase()).length;
-                    return `<div style="background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid var(--border-color); display:flex; align-items:center; gap:15px; cursor:pointer;" onclick="openUserProfile('${u.username}')"><img src="${u.photo || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;"><div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; flex:1;"><b style="color:var(--text-main); font-size:16px;">@${u.username} ${(u.verifiedAt && now-u.verifiedAt < THIRTY_DAYS_MS)?'<i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>':''}</b><div style="font-size:13px; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis;">${uAdsCount} ta faol e'lon</div></div><i class="material-icons" style="color:var(--danger-color);" onclick="event.stopPropagation(); toggleFollow('${u.username}'); renderFavorites();">favorite</i></div>`
+                    return `
+                    <div style="background:var(--bg-card); padding:15px; border-radius:12px; border:1px solid var(--border-color); display:flex; align-items:center; gap:15px; cursor:pointer;" onclick="openUserProfile('${u.username}')">
+                        <img src="${u.photo || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+                        <div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; flex:1;">
+                            <b style="color:var(--text-main); font-size:16px;">@${u.username} ${(u.verifiedAt && now-u.verifiedAt < THIRTY_DAYS_MS)?'<i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>':''}</b>
+                            <div style="font-size:13px; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis;">${uAdsCount} ta faol e'lon</div>
+                        </div>
+                        <i class="material-icons" style="color:var(--danger-color);" onclick="event.stopPropagation(); toggleFollow('${u.username}'); renderFavorites();">favorite</i>
+                    </div>`
                 }).join('');
             }
         }
 
         function renderBanners() {
-            const track = document.getElementById('bannerTrack'); if(bannersList.length === 0) { track.innerHTML = ''; return; }
+            const track = document.getElementById('bannerTrack');
+            if(bannersList.length === 0) {
+                track.innerHTML = '';
+                return;
+            }
             track.innerHTML = bannersList.map(b => `<div class="banner-slide" style="background-image: url('${b.image}')" onclick="handleLink('${b.link}')"></div>`).join('');
         }
 
         let bannerIdx = 0;
         setInterval(() => {
             if(!document.getElementById('home').classList.contains('active') || bannersList.length === 0) return;
-            const track = document.getElementById('bannerTrack'); bannerIdx = (bannerIdx + 1) % bannersList.length; track.scrollTo({ left: track.offsetWidth * bannerIdx, behavior: 'smooth' });
+            const track = document.getElementById('bannerTrack');
+            bannerIdx = (bannerIdx + 1) % bannersList.length;
+            track.scrollTo({ left: track.offsetWidth * bannerIdx, behavior: 'smooth' });
         }, 3000);
 
         function renderHome() { 
-            let now = Date.now(); let premiumAds = adsList.filter(a => a.isPremium && a.premiumUntil > now); let normalAds = adsList.filter(a => !(a.isPremium && a.premiumUntil > now));
-            if(premiumAds.length > 0) { document.getElementById('premiumSection').style.display = 'block'; document.getElementById('premiumAdsGrid').innerHTML = premiumAds.map(ad => createAdCardHTML(ad, false, false, true)).join(''); } 
-            else { document.getElementById('premiumSection').style.display = 'none'; }
+            let now = Date.now();
+            let premiumAds = adsList.filter(a => a.isPremium && a.premiumUntil > now);
+            let normalAds = adsList.filter(a => !(a.isPremium && a.premiumUntil > now));
+
+            if(premiumAds.length > 0) {
+                document.getElementById('premiumSection').style.display = 'block';
+                document.getElementById('premiumAdsGrid').innerHTML = premiumAds.map(ad => createAdCardHTML(ad, false, false, true)).join('');
+            } else {
+                document.getElementById('premiumSection').style.display = 'none';
+            }
             renderAdGrid(normalAds, 'homeAdsGrid'); 
         }
 
         function createAdCardHTML(ad, isMyAds = false, isAdmin = false, isPremiumCard = false) {
-            let now = Date.now(); const imgHtml = (ad.images && ad.images.length > 0) ? `<img src="${ad.images[0]}">` : '<img src="https://via.placeholder.com/300x400?text=Rasm+yoq">';
-            let isPrem = (ad.isPremium && ad.premiumUntil > now); let premClass = isPrem ? 'premium-ad' : ''; let premBadge = isPrem ? `<div class="premium-badge"><i class="material-icons">bolt</i>Premium</div>` : '';
-            let userObj = usersList.find(u => u.username.toLowerCase() === (ad.sellerName || ad.contact.replace('@','')).toLowerCase());
-            let isVerifiedUser = userObj && userObj.verifiedAt && (now - userObj.verifiedAt < THIRTY_DAYS_MS); let verifyBadge = isVerifiedUser ? `<div class="verified-badge-card"><i class="material-icons">verified</i> Ishonchli</div>` : '';
-            let isLiked = myLikedAds.includes(ad.dbId); let likeIconHtml = `<div class="like-btn-card ${isLiked?'liked':''}" onclick="toggleLikeAd('${ad.dbId}', event)"><i class="material-icons">${isLiked?'favorite':'favorite_border'}</i></div>`;
-            let btns = '';
-            if(isMyAds) { btns = `<div class="action-btns"><button class="btn-small btn-edit" onclick="event.stopPropagation(); editAd('${ad.dbId}')"><i class="material-icons">edit</i></button><button class="btn-small btn-delete" onclick="event.stopPropagation(); deleteAd('${ad.dbId}')"><i class="material-icons">delete</i></button></div>`; } 
-            else if(isAdmin) { btns = `<div class="action-btns"><button class="btn-small ${isPrem ? 'btn-danger' : 'btn-premium'}" onclick="event.stopPropagation(); togglePremium('${ad.dbId}', ${isPrem})"><i class="material-icons">${isPrem?'close':'star'}</i></button><button class="btn-small btn-edit" onclick="event.stopPropagation(); editAd('${ad.dbId}')"><i class="material-icons">edit</i></button><button class="btn-small btn-delete" onclick="event.stopPropagation(); deleteAdAdmin('${ad.dbId}')"><i class="material-icons">delete</i></button></div>`; }
+            let now = Date.now();
+            const imgHtml = (ad.images && ad.images.length > 0) ? `<img src="${ad.images[0]}">` : '<img src="https://via.placeholder.com/300x400?text=Rasm+yoq">';
+            let isPrem = (ad.isPremium && ad.premiumUntil > now);
+            let premClass = isPrem ? 'premium-ad' : '';
+            let premBadge = isPrem ? `<div class="premium-badge"><i class="material-icons">bolt</i>Premium</div>` : '';
 
-            return `<div class="ad-card ${premClass}" onclick="openDetail('${ad.dbId}')">${premBadge} ${verifyBadge}<div class="ad-img-slider">${imgHtml}</div><div class="ad-info"><div class="ad-price">${formatNumber(ad.price)} so'm</div><div class="ad-title">${ad.title}</div>${likeIconHtml}${isAdmin ? `<div style="font-size:11px; color:var(--text-muted); margin-top:2px;">@${ad.sellerName || ad.contact.replace('@','')}</div>` : ''}<div class="ad-spacer"></div><div style="display:flex; justify-content:space-between; align-items:flex-end;"><div class="ad-date">${ad.date ? ad.date.split(',')[1] : ''}</div></div>${btns}</div></div>`;
+            let userObj = usersList.find(u => u.username.toLowerCase() === (ad.sellerName || ad.contact.replace('@','')).toLowerCase());
+            let isVerifiedUser = userObj && userObj.verifiedAt && (now - userObj.verifiedAt < THIRTY_DAYS_MS);
+            let verifyBadge = isVerifiedUser ? `<div class="verified-badge-card"><i class="material-icons">verified</i> Ishonchli</div>` : '';
+
+            let isLiked = myLikedAds.includes(ad.dbId);
+            let likeIconHtml = `<div class="like-btn-card ${isLiked?'liked':''}" onclick="toggleLikeAd('${ad.dbId}', event)"><i class="material-icons">${isLiked?'favorite':'favorite_border'}</i></div>`;
+
+            let btns = '';
+            if(isMyAds) {
+                btns = `<div class="action-btns"><button class="btn-small btn-edit" onclick="event.stopPropagation(); editAd('${ad.dbId}')"><i class="material-icons">edit</i></button><button class="btn-small btn-delete" onclick="event.stopPropagation(); deleteAd('${ad.dbId}')"><i class="material-icons">delete</i></button></div>`;
+            } else if(isAdmin) {
+                btns = `<div class="action-btns"><button class="btn-small ${isPrem ? 'btn-danger' : 'btn-premium'}" onclick="event.stopPropagation(); togglePremium('${ad.dbId}', ${isPrem})"><i class="material-icons">${isPrem?'close':'star'}</i></button><button class="btn-small btn-edit" onclick="event.stopPropagation(); editAd('${ad.dbId}')"><i class="material-icons">edit</i></button><button class="btn-small btn-delete" onclick="event.stopPropagation(); deleteAdAdmin('${ad.dbId}')"><i class="material-icons">delete</i></button></div>`;
+            }
+
+            return `
+                <div class="ad-card ${premClass}" onclick="openDetail('${ad.dbId}')">
+                    ${premBadge} ${verifyBadge}
+                    <div class="ad-img-slider">${imgHtml}</div>
+                    <div class="ad-info">
+                        <div class="ad-price">${formatNumber(ad.price)} so'm</div>
+                        <div class="ad-title">${ad.title}</div>
+                        ${likeIconHtml}
+                        ${isAdmin ? `<div style="font-size:11px; color:var(--text-muted); margin-top:2px;">@${ad.sellerName || ad.contact.replace('@','')}</div>` : ''}
+                        <div class="ad-spacer"></div>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                            <div class="ad-date">${ad.date ? ad.date.split(',')[1] : ''}</div>
+                        </div>
+                        ${btns}
+                    </div>
+                </div>
+            `;
         }
 
         function renderAdGrid(ads, containerId, isMyAds = false, isAdmin = false) {
-            const container = document.getElementById(containerId); if(ads.length === 0) { container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: var(--text-muted); padding: 20px;">Hech narsa topilmadi</p>`; return; }
+            const container = document.getElementById(containerId);
+            if(ads.length === 0) {
+                container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: var(--text-muted); padding: 20px;">Hech narsa topilmadi</p>`;
+                return;
+            }
             container.innerHTML = ads.map(ad => createAdCardHTML(ad, isMyAds, isAdmin)).join('');
         }
 
         function renderSectionAds(containerId = 'sectionAdsContainer', filterSeller = null) {
-            const container = document.getElementById(containerId); let listToRender = sectionAdsList;
+            const container = document.getElementById(containerId);
+            let listToRender = sectionAdsList;
             if(filterSeller) listToRender = sectionAdsList.filter(ad => ad.sellerName.toLowerCase() === filterSeller.toLowerCase());
-            if(listToRender.length === 0) { container.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--text-muted);"><i class="material-icons" style="font-size:50px;">campaign</i><br>Hozircha reklamalar yo'q</div>`; return; }
-            container.innerHTML = listToRender.map(ad => `<div class="section-ad-card"><img src="${ad.image}" class="section-ad-img"><div class="section-ad-body"><div class="section-ad-badge">Reklama</div><div class="section-ad-title">${ad.title}</div><div class="section-ad-desc">${ad.desc}</div><button class="section-ad-btn" onclick="handleLink('${ad.link}')">KO'RISH</button></div></div>`).join('');
+
+            if(listToRender.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding: 40px; color:var(--text-muted);"><i class="material-icons" style="font-size:50px;">campaign</i><br>Hozircha reklamalar yo'q</div>`;
+                return;
+            }
+            container.innerHTML = listToRender.map(ad => `
+                <div class="section-ad-card">
+                    <img src="${ad.image}" class="section-ad-img">
+                    <div class="section-ad-body">
+                        <div class="section-ad-badge">Reklama</div>
+                        <div class="section-ad-title">${ad.title}</div>
+                        <div class="section-ad-desc">${ad.desc}</div>
+                        <button class="section-ad-btn" onclick="handleLink('${ad.link}')">KO'RISH</button>
+                    </div>
+                </div>`).join('');
         }
 
-        function formatNumber(num) { return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
 
         function handleSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim(); document.getElementById('katalogBox').style.display = query.length > 0 ? 'none' : 'block';
-            if(query.length === 0) { document.getElementById('searchResults').innerHTML = ''; return; }
-            if(query.startsWith('@')) {
-                let uQuery = query.replace('@',''); let filteredUsers = usersList.filter(u => u.username.toLowerCase().includes(uQuery));
-                if(filteredUsers.length === 0) { document.getElementById('searchResults').innerHTML = `<p style="grid-column: span 2; text-align:center; color:var(--text-muted); padding:20px;">Foydalanuvchi topilmadi</p>`; } 
-                else {
-                    let now = Date.now();
-                    document.getElementById('searchResults').innerHTML = filteredUsers.map(u => `<div style="grid-column: span 2; background:var(--bg-card); padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid var(--border-color); display:flex; align-items:center; gap:15px; cursor:pointer;" onclick="openUserProfile('${u.username}')"><img src="${u.photo || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;"><div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;"><b style="color:var(--text-main); font-size:16px;">@${u.username} ${(u.verifiedAt && now-u.verifiedAt < THIRTY_DAYS_MS)?'<i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>':''}</b><div style="font-size:13px; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis;">${u.first_name}</div></div></div>`).join('');
-                } return;
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            document.getElementById('katalogBox').style.display = query.length > 0 ? 'none' : 'block';
+            
+            if(query.length === 0) {
+                document.getElementById('searchResults').innerHTML = '';
+                return;
             }
-            let filtered = adsList.filter(ad => ad.title.toLowerCase().includes(query)); renderAdGrid(filtered, 'searchResults');
+            
+            if(query.startsWith('@')) {
+                let uQuery = query.replace('@','');
+                let filteredUsers = usersList.filter(u => u.username.toLowerCase().includes(uQuery));
+                
+                if(filteredUsers.length === 0) {
+                    document.getElementById('searchResults').innerHTML = `<p style="grid-column: span 2; text-align:center; color:var(--text-muted); padding:20px;">Foydalanuvchi topilmadi</p>`;
+                } else {
+                    let now = Date.now();
+                    document.getElementById('searchResults').innerHTML = filteredUsers.map(u => `
+                        <div style="grid-column: span 2; background:var(--bg-card); padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid var(--border-color); display:flex; align-items:center; gap:15px; cursor:pointer;" onclick="openUserProfile('${u.username}')">
+                            <img src="${u.photo || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+                            <div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
+                                <b style="color:var(--text-main); font-size:16px;">@${u.username} ${(u.verifiedAt && now-u.verifiedAt < THIRTY_DAYS_MS)?'<i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>':''}</b>
+                                <div style="font-size:13px; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis;">${u.first_name}</div>
+                            </div>
+                        </div>`).join('');
+                }
+                return;
+            }
+            let filtered = adsList.filter(ad => ad.title.toLowerCase().includes(query));
+            renderAdGrid(filtered, 'searchResults');
         }
 
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function openCatalogResults(cat) { document.getElementById('catalog-modal-title').innerText = cat; renderAdGrid(adsList.filter(ad => ad.category === cat), 'catalogResultsGrid'); document.getElementById('catalog-results-modal').style.display = 'flex'; }
-        function openSettings() { document.getElementById('settings-modal').style.display='flex'; }
-        function openTerms() { document.getElementById('terms-modal').style.display='flex'; }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
 
+        function openCatalogResults(cat) {
+            document.getElementById('catalog-modal-title').innerText = cat;
+            renderAdGrid(adsList.filter(ad => ad.category === cat), 'catalogResultsGrid');
+            document.getElementById('catalog-results-modal').style.display = 'flex';
+        }
+
+        function openSettings() {
+            document.getElementById('settings-modal').style.display='flex';
+        }
+
+        function openTerms() {
+            document.getElementById('terms-modal').style.display='flex';
+        }
+
+        // ==========================================
+        // SELL BO'LIMI STATISTIKASI VA E'LONLAR
+        // ==========================================
         function updateSellStats() {
-            let myAds = adsList.filter(ad => ad.contact.replace('@','') === tgUser.username); let totalViews = myAds.reduce((sum, ad) => sum + (ad.views || 0), 0);
-            let myUser = usersList.find(u => u.username === tgUser.username); let followers = myUser ? (myUser.followers || 0) : 0;
-            document.getElementById('myTotalAds').innerText = myAds.length; document.getElementById('myTotalViews').innerText = totalViews; document.getElementById('myFollowersStat').innerText = followers;
+            let myAds = adsList.filter(ad => ad.contact.replace('@','') === tgUser.username);
+            let totalViews = myAds.reduce((sum, ad) => sum + (ad.views || 0), 0);
+            let myUser = usersList.find(u => u.username === tgUser.username);
+            let followers = myUser ? (myUser.followers || 0) : 0;
+            
+            document.getElementById('myTotalAds').innerText = myAds.length;
+            document.getElementById('myTotalViews').innerText = totalViews;
+            document.getElementById('myFollowersStat').innerText = followers;
         }
 
         function renderSellMyAds() {
-            let myAds = adsList.filter(ad => ad.contact.replace('@','') === tgUser.username); let container = document.getElementById('sellMyAdsContainer');
-            if(myAds.length === 0) { container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 20px;">E'lonlaringiz yo'q</p>`; return; }
+            let myAds = adsList.filter(ad => ad.contact.replace('@','') === tgUser.username);
+            let container = document.getElementById('sellMyAdsContainer');
+            
+            if(myAds.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:14px; padding: 20px;">E'lonlaringiz yo'q</p>`;
+                return;
+            }
+            
             container.innerHTML = myAds.map(ad => {
                 let img = (ad.images && ad.images.length > 0) ? ad.images[0] : 'https://via.placeholder.com/50';
-                return `<div style="background:var(--bg-card); padding:10px; border-radius:12px; border:1px solid var(--border-color); display:flex; align-items:center; gap:15px; cursor:pointer;" onclick="openDetail('${ad.dbId}')"><img src="${img}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;"><div style="flex:1;"><b style="font-size:14px; color:var(--text-main); display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;">${ad.title}</b><div style="font-size:13px; font-weight:bold; color:var(--text-main); margin-top:3px;">${formatNumber(ad.price)} so'm</div><div style="font-size:12px; color:var(--text-muted); display:flex; gap:15px; margin-top:5px;"><span style="display:flex; align-items:center; gap:3px;"><i class="material-icons" style="font-size:14px;">visibility</i> ${ad.views || 0}</span><span style="display:flex; align-items:center; gap:3px;"><i class="material-icons" style="font-size:14px; color:var(--danger-color);">favorite</i> ${ad.likes || 0}</span></div></div></div>`;
+                return `
+                <div style="background:var(--bg-card); padding:10px; border-radius:12px; border:1px solid var(--border-color); display:flex; align-items:center; gap:15px; cursor:pointer;" onclick="openDetail('${ad.dbId}')">
+                    <img src="${img}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;">
+                    <div style="flex:1;">
+                        <b style="font-size:14px; color:var(--text-main); display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;">${ad.title}</b>
+                        <div style="font-size:13px; font-weight:bold; color:var(--text-main); margin-top:3px;">${formatNumber(ad.price)} so'm</div>
+                        <div style="font-size:12px; color:var(--text-muted); display:flex; gap:15px; margin-top:5px;">
+                            <span style="display:flex; align-items:center; gap:3px;"><i class="material-icons" style="font-size:14px;">visibility</i> ${ad.views || 0}</span>
+                            <span style="display:flex; align-items:center; gap:3px;"><i class="material-icons" style="font-size:14px; color:var(--danger-color);">favorite</i> ${ad.likes || 0}</span>
+                        </div>
+                    </div>
+                </div>`;
             }).join('');
         }
 
+        // ==========================================
+        // E'LON JOYLASh VA TARIFLAR
+        // ==========================================
         function editAd(dbId) {
-            const ad = adsList.find(x => x.dbId === dbId); if(!ad) return;
-            editingAdId = dbId; currentTempImages = ad.images || []; document.getElementById('imagePreviewContainer').innerHTML = currentTempImages.map(img => `<img src="${img}">`).join('');
-            document.getElementById('adTitle').value = ad.title; document.getElementById('adDesc').value = ad.desc; document.getElementById('adCategory').value = ad.category; document.getElementById('adPrice').value = ad.price;
-            document.getElementById('sellTitle').innerText = "E'lonni tahrirlash"; document.getElementById('submitBtn').innerText = "Saqlash";
-            closeModal('admin-modal'); switchTab('sell'); nextStep(1);
+            const ad = adsList.find(x => x.dbId === dbId);
+            if(!ad) return;
+            
+            editingAdId = dbId;
+            currentTempImages = ad.images || [];
+            document.getElementById('imagePreviewContainer').innerHTML = currentTempImages.map(img => `<img src="${img}">`).join('');
+            document.getElementById('adTitle').value = ad.title;
+            document.getElementById('adDesc').value = ad.desc;
+            document.getElementById('adCategory').value = ad.category;
+            document.getElementById('adPrice').value = ad.price;
+            document.getElementById('sellTitle').innerText = "E'lonni tahrirlash";
+            document.getElementById('submitBtn').innerText = "Saqlash";
+            
+            closeModal('admin-modal');
+            switchTab('sell');
+            nextStep(1);
         }
 
         function nextStep(stepNum) {
-            if(stepNum === 2 && currentTempImages.length === 0) { alert("Iltimos kamida bitta rasm yuklang!"); return; }
-            if(stepNum === 3 && (!document.getElementById('adTitle').value.trim() || !document.getElementById('adDesc').value.trim())) { alert("Nomi va Tavsif shart!"); return; }
-            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active')); document.getElementById('step' + stepNum).classList.add('active');
+            if(stepNum === 2 && currentTempImages.length === 0) {
+                alert("Iltimos kamida bitta rasm yuklang!");
+                return;
+            }
+            if(stepNum === 3 && (!document.getElementById('adTitle').value.trim() || !document.getElementById('adDesc').value.trim())) {
+                alert("Nomi va Tavsif shart!");
+                return;
+            }
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step' + stepNum).classList.add('active');
         }
 
-        // Tasvirlarni siqish (kompress qilish) - KATTA RASMLAR UCHUN XATONI OLDINI OLADI
         function compressImage(file, callback) {
             let reader = new FileReader();
             reader.onload = function(e) {
                 let img = new Image();
                 img.onload = function() {
-                    let canvas = document.createElement('canvas'); let ctx = canvas.getContext('2d');
-                    let maxWidth = 800; let scale = maxWidth / img.width; if(scale > 1) scale = 1; 
-                    canvas.width = img.width * scale; canvas.height = img.height * scale;
+                    let canvas = document.createElement('canvas');
+                    let ctx = canvas.getContext('2d');
+                    let maxWidth = 800;
+                    let scale = maxWidth / img.width;
+                    if(scale > 1) scale = 1; 
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    callback(canvas.toDataURL('image/jpeg', 0.8)); // 80% sifat bilan siqadi
+                    callback(canvas.toDataURL('image/jpeg', 0.8));
                 };
                 img.src = e.target.result;
             };
@@ -1020,23 +1445,56 @@
         }
 
         function previewImages(event) {
-            const files = Array.from(event.target.files); const container = document.getElementById('imagePreviewContainer');
-            if(currentTempImages.length + files.length > 5) { alert("Maksimal 5 rasm!"); return; }
+            const files = Array.from(event.target.files);
+            const container = document.getElementById('imagePreviewContainer');
+            if(currentTempImages.length + files.length > 5) {
+                alert("Maksimal 5 rasm!");
+                return;
+            }
             files.forEach(file => {
                 if (!file.type.startsWith('image/')) return;
-                compressImage(file, (base64) => { currentTempImages.push(base64); container.innerHTML += `<img src="${base64}">`; });
+                compressImage(file, (base64) => {
+                    currentTempImages.push(base64);
+                    container.innerHTML += `<img src="${base64}">`;
+                });
             });
         }
 
         function submitAd() {
-            if(!document.getElementById('adPrice').value) { alert("Narx kiritilishi shart!"); return; }
-            document.getElementById('submitBtn').disabled = true; document.getElementById('submitBtn').innerHTML = "Kuting...";
-            let d = new Date(); let dateStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}, ${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth()+1).padStart(2, '0')}.${d.getFullYear()}`;
-            let data = { title: document.getElementById('adTitle').value, desc: document.getElementById('adDesc').value, category: document.getElementById('adCategory').value, price: document.getElementById('adPrice').value, contact: "@" + tgUser.username, sellerName: tgUser.username, sellerPhoto: tgUser.photo, images: currentTempImages };
+            if(!document.getElementById('adPrice').value) {
+                alert("Narx kiritilishi shart!");
+                return;
+            }
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').innerHTML = "Kuting...";
 
-            if(editingAdId) { db.collection("elonlar").doc(editingAdId).update(data).then(() => { alert("Saqlandi!"); switchTab('sell'); }); } 
-            else {
-                data.elonId = globalIdCounter; data.date = dateStr; data.createdAt = Date.now(); data.views = 0; data.likes = 0; data.isPremium = false;
+            let d = new Date();
+            let dateStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}, ${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth()+1).padStart(2, '0')}.${d.getFullYear()}`;
+
+            let data = {
+                title: document.getElementById('adTitle').value,
+                desc: document.getElementById('adDesc').value,
+                category: document.getElementById('adCategory').value,
+                price: document.getElementById('adPrice').value,
+                contact: "@" + tgUser.username,
+                sellerName: tgUser.username,
+                sellerPhoto: tgUser.photo,
+                images: currentTempImages,
+            };
+
+            if(editingAdId) {
+                db.collection("elonlar").doc(editingAdId).update(data).then(() => {
+                    alert("Saqlandi!");
+                    switchTab('sell');
+                });
+            } else {
+                data.elonId = globalIdCounter;
+                data.date = dateStr;
+                data.createdAt = Date.now();
+                data.views = 0;
+                data.likes = 0;
+                data.isPremium = false;
+                
                 db.collection("elonlar").add(data).then(() => { 
                     document.getElementById('buyPremiumLink').href = `https://t.me/Aslbek201?text=Assalomu%20Alekum%20E'lonimga%20Premium%20olmoqchiman,%20E'lon%20ID:%20%23${data.elonId}`;
                     document.getElementById('premium-prompt-modal').style.display = 'flex';
@@ -1044,128 +1502,516 @@
             }
         }
 
-        function closePremiumPrompt() { document.getElementById('premium-prompt-modal').style.display = 'none'; switchTab('sell'); }
-
-        function resetForm() {
-            editingAdId = null; currentTempImages = []; document.getElementById('imagePreviewContainer').innerHTML = ''; document.getElementById('adTitle').value = ''; document.getElementById('adDesc').value = ''; document.getElementById('adCategory').value = 'Boshqa toifa'; document.getElementById('adPrice').value = ''; document.getElementById('sellTitle').innerText = "E'lon joylash"; document.getElementById('submitBtn').disabled = false; document.getElementById('submitBtn').innerText = "E'lonni joylash";
-            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active')); document.getElementById('step0').classList.add('active');
+        function closePremiumPrompt() {
+            document.getElementById('premium-prompt-modal').style.display = 'none';
+            switchTab('sell');
         }
 
+        function resetForm() {
+            editingAdId = null;
+            currentTempImages = [];
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+            document.getElementById('adTitle').value = '';
+            document.getElementById('adDesc').value = '';
+            document.getElementById('adCategory').value = 'Boshqa toifa';
+            document.getElementById('adPrice').value = '';
+            document.getElementById('sellTitle').innerText = "E'lon joylash";
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').innerText = "E'lonni joylash";
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active')); 
+            document.getElementById('step0').classList.add('active');
+        }
+
+        // ==========================================
+        // DETAIL OYNASI VA VIEWS
+        // ==========================================
         function openDetail(dbId) {
-            const ad = adsList.find(x => x.dbId === dbId); if(!ad) return;
+            const ad = adsList.find(x => x.dbId === dbId);
+            if(!ad) return;
+
             let viewedAds = JSON.parse(localStorage.getItem('viewedAds') || '[]');
-            if (!viewedAds.includes(dbId)) { db.collection("elonlar").doc(dbId).update({ views: firebase.firestore.FieldValue.increment(1) }); document.getElementById('detailViews').innerText = (ad.views || 0) + 1; viewedAds.push(dbId); localStorage.setItem('viewedAds', JSON.stringify(viewedAds)); } 
-            else { document.getElementById('detailViews').innerText = (ad.views || 0); }
+            if (!viewedAds.includes(dbId)) {
+                db.collection("elonlar").doc(dbId).update({ views: firebase.firestore.FieldValue.increment(1) });
+                document.getElementById('detailViews').innerText = (ad.views || 0) + 1;
+                viewedAds.push(dbId);
+                localStorage.setItem('viewedAds', JSON.stringify(viewedAds));
+            } else {
+                document.getElementById('detailViews').innerText = (ad.views || 0);
+            }
 
-            document.getElementById('detailTitle').innerText = ad.title; document.getElementById('detailPrice').innerText = formatNumber(ad.price) + " so'm"; document.getElementById('detailCat').innerText = ad.category; document.getElementById('detailDesc').innerText = ad.desc; document.getElementById('detailId').innerText = ad.elonId || "001"; document.getElementById('detailDate').innerText = ad.date || ""; document.getElementById('btnReportAd').onclick = function() { window.open(`https://t.me/aslbek201?text=%23${ad.elonId}%20Elon%20ustidan%20shikoyat%20qilmoqchiman`, '_blank'); };
+            document.getElementById('detailTitle').innerText = ad.title;
+            document.getElementById('detailPrice').innerText = formatNumber(ad.price) + " so'm";
+            document.getElementById('detailCat').innerText = ad.category;
+            document.getElementById('detailDesc').innerText = ad.desc;
+            document.getElementById('detailId').innerText = ad.elonId || "001";
+            document.getElementById('detailDate').innerText = ad.date || "";
+            document.getElementById('btnReportAd').onclick = function() {
+                window.open(`https://t.me/aslbek201?text=%23${ad.elonId}%20Elon%20ustidan%20shikoyat%20qilmoqchiman`, '_blank');
+            };
 
-            let sName = (ad.sellerName || ad.contact.replace('@', '')); let sHtml = `@${sName}`; let userInDb = usersList.find(u => u.username.toLowerCase() === sName.toLowerCase()); let now = Date.now();
-            if(userInDb && userInDb.verifiedAt && (now - userInDb.verifiedAt < THIRTY_DAYS_MS)) { document.getElementById('sellerName').innerHTML = `${sHtml} <i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>`; } 
-            else { document.getElementById('sellerName').innerHTML = sHtml; }
+            let sName = (ad.sellerName || ad.contact.replace('@', ''));
+            let sHtml = `@${sName}`;
+            
+            let userInDb = usersList.find(u => u.username.toLowerCase() === sName.toLowerCase());
+            let now = Date.now();
+            
+            if(userInDb && userInDb.verifiedAt && (now - userInDb.verifiedAt < THIRTY_DAYS_MS)) {
+                document.getElementById('sellerName').innerHTML = `${sHtml} <i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>`;
+            } else {
+                document.getElementById('sellerName').innerHTML = sHtml;
+            }
 
             document.getElementById('sellerAvatar').innerHTML = ad.sellerPhoto ? `<img src="${ad.sellerPhoto}">` : `<i class="material-icons">person</i>`;
-            document.getElementById('detailSellerBox').onclick = () => { closeModal('detail-modal'); openUserProfile(sName); }; document.getElementById('detailBuyBtn').href = `https://t.me/${ad.contact.replace('@', '')}`;
+            
+            // XATO SHU YERDA EDI (TUZAILDI): Profilga o'tganda detail yopilib qolmasdan ustidan ochiladi
+            document.getElementById('detailSellerBox').onclick = () => {
+                closeModal('detail-modal');
+                openUserProfile(sName);
+            };
+            document.getElementById('detailBuyBtn').href = `https://t.me/${ad.contact.replace('@', '')}`;
 
-            let sliderElem = document.getElementById('detailSlider'); let dotsElem = document.getElementById('detailDots');
-            if(ad.images && ad.images.length > 0) { sliderElem.innerHTML = ad.images.map(img => `<img src="${img}">`).join(''); dotsElem.innerHTML = ad.images.map((img, i) => `<div class="dot ${i===0?'active':''}"></div>`).join(''); } 
-            else { sliderElem.innerHTML = `<img src="https://via.placeholder.com/600x600?text=Rasm+yoq">`; dotsElem.innerHTML = ''; }
+            let sliderElem = document.getElementById('detailSlider');
+            let dotsElem = document.getElementById('detailDots');
+            
+            if(ad.images && ad.images.length > 0) {
+                sliderElem.innerHTML = ad.images.map(img => `<img src="${img}">`).join('');
+                dotsElem.innerHTML = ad.images.map((img, i) => `<div class="dot ${i===0?'active':''}"></div>`).join('');
+            } else {
+                sliderElem.innerHTML = `<img src="https://via.placeholder.com/600x600?text=Rasm+yoq">`;
+                dotsElem.innerHTML = '';
+            }
+
             document.getElementById('detail-modal').style.display = 'flex';
         }
 
-        function updateDots() { let sliderElem = document.getElementById('detailSlider'); let dotsElem = document.getElementById('detailDots'); if(!sliderElem || !dotsElem) return; const index = Math.round(sliderElem.scrollLeft / sliderElem.offsetWidth); dotsElem.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === index)); }
-
-        function toggleFollow(targetUsername) { if(targetUsername === tgUser.username) return; if (myFollowing.includes(targetUsername)) myFollowing = myFollowing.filter(u => u !== targetUsername); else myFollowing.push(targetUsername); localStorage.setItem('idsavdo_following', JSON.stringify(myFollowing)); openUserProfile(targetUsername); }
-
-        document.getElementById('ratingBox').onclick = function() { let uName = document.getElementById('upUsername').innerText.replace('@', ''); if(uName === tgUser.username) return alert("O'zingizni baholay olmaysiz!"); alert("Baholash tizimi tez kunda to'liq ishga tushadi!"); };
-
-        function openUserProfile(username) {
-            let user = usersList.find(u => u.username.toLowerCase() === username.toLowerCase()) || {username: username, first_name: username, photo: '', followers: 0}; let userAds = adsList.filter(a => a.sellerName.toLowerCase() === username.toLowerCase()); let now = Date.now();
-            let verifyIcon = (user.verifiedAt && now - user.verifiedAt < THIRTY_DAYS_MS) ? `<i class="material-icons" style="color:#3b82f6; font-size:20px; vertical-align:middle;">verified</i>` : '';
-            document.getElementById('upName').innerHTML = `${user.first_name} ${verifyIcon}`; document.getElementById('upUsername').innerText = "@" + user.username; document.getElementById('upAvatar').src = user.photo || 'https://via.placeholder.com/100'; document.getElementById('upAdsCount').innerText = userAds.length;
-            let baseFollowers = user.followers || 0; if(myFollowing.includes(username) && username !== tgUser.username) baseFollowers += 1; document.getElementById('upFollowersCount').innerText = baseFollowers;
-            let followBtn = document.getElementById('btnFollow');
-            if (username.toLowerCase() === tgUser.username.toLowerCase()) { followBtn.innerText = "Edit profile"; followBtn.style.background = "var(--border-color)"; followBtn.style.color = "var(--text-main)"; followBtn.onclick = function() { alert("Ma'lumotlaringizni o'zgartirish uchun Telegram sozlamalaridan ism yoki rasm o'zgartirib qayta kiring."); }; } 
-            else { if(myFollowing.includes(username)) { followBtn.innerText = "Obunani bekor qilish"; followBtn.style.background = "var(--border-color)"; followBtn.style.color = "var(--text-main)"; } else { followBtn.innerText = "Obuna bo'lish"; followBtn.style.background = "#c026d3"; followBtn.style.color = "white"; } followBtn.onclick = () => toggleFollow(username); }
-            renderAdGrid(userAds, 'upAdsContainer'); renderSectionAds('upReklamaContainer', username); switchUpTab('ads'); document.getElementById('user-profile-modal').style.display = 'flex'; 
+        function updateDots() {
+            let sliderElem = document.getElementById('detailSlider');
+            let dotsElem = document.getElementById('detailDots');
+            if(!sliderElem || !dotsElem) return;
+            const index = Math.round(sliderElem.scrollLeft / sliderElem.offsetWidth);
+            dotsElem.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
         }
 
-        function switchUpTab(tab) { document.querySelectorAll('.up-tab').forEach(t => t.classList.remove('active')); if(tab === 'ads') { document.getElementById('tabUpAds').classList.add('active'); document.getElementById('upAdsContainer').style.display = 'grid'; document.getElementById('upReklamaContainer').style.display = 'none'; } else { document.getElementById('tabUpReklama').classList.add('active'); document.getElementById('upAdsContainer').style.display = 'none'; document.getElementById('upReklamaContainer').style.display = 'block'; } }
+        // ==========================================
+        // FOYDALANUVCHI PROFILI
+        // ==========================================
+        function toggleFollow(targetUsername) {
+            if(targetUsername === tgUser.username) return; 
+            if (myFollowing.includes(targetUsername)) {
+                myFollowing = myFollowing.filter(u => u !== targetUsername);
+            } else {
+                myFollowing.push(targetUsername);
+            }
+            localStorage.setItem('idsavdo_following', JSON.stringify(myFollowing));
+            openUserProfile(targetUsername); 
+        }
 
+        document.getElementById('ratingBox').onclick = function() {
+            let uName = document.getElementById('upUsername').innerText.replace('@', '');
+            if(uName === tgUser.username) {
+                return alert("O'zingizni baholay olmaysiz!");
+            }
+            alert("Baholash tizimi tez kunda to'liq ishga tushadi!");
+        };
+
+        function openUserProfile(username) {
+            let user = usersList.find(u => u.username.toLowerCase() === username.toLowerCase()) || {username: username, first_name: username, photo: '', followers: 0};
+            let userAds = adsList.filter(a => a.sellerName.toLowerCase() === username.toLowerCase());
+            let now = Date.now();
+            
+            let verifyIcon = (user.verifiedAt && now - user.verifiedAt < THIRTY_DAYS_MS) ? `<i class="material-icons" style="color:#3b82f6; font-size:20px; vertical-align:middle;">verified</i>` : '';
+            document.getElementById('upName').innerHTML = `${user.first_name} ${verifyIcon}`;
+            document.getElementById('upUsername').innerText = "@" + user.username;
+            document.getElementById('upAvatar').src = user.photo || 'https://via.placeholder.com/100';
+            document.getElementById('upAdsCount').innerText = userAds.length;
+            
+            let baseFollowers = user.followers || 0; 
+            if(myFollowing.includes(username) && username !== tgUser.username) {
+                baseFollowers += 1;
+            }
+            document.getElementById('upFollowersCount').innerText = baseFollowers;
+
+            let followBtn = document.getElementById('btnFollow');
+            if (username.toLowerCase() === tgUser.username.toLowerCase()) {
+                followBtn.innerText = "Edit profile";
+                followBtn.style.background = "var(--border-color)";
+                followBtn.style.color = "var(--text-main)";
+                followBtn.onclick = function() { alert("Ma'lumotlaringizni o'zgartirish uchun Telegram sozlamalaridan ism yoki rasm o'zgartirib qayta kiring."); };
+            } else {
+                if(myFollowing.includes(username)) {
+                    followBtn.innerText = "Obunani bekor qilish";
+                    followBtn.style.background = "var(--border-color)";
+                    followBtn.style.color = "var(--text-main)";
+                } else {
+                    followBtn.innerText = "Obuna bo'lish";
+                    followBtn.style.background = "#c026d3";
+                    followBtn.style.color = "white";
+                }
+                followBtn.onclick = () => toggleFollow(username);
+            }
+
+            renderAdGrid(userAds, 'upAdsContainer');
+            renderSectionAds('upReklamaContainer', username);
+            switchUpTab('ads');
+            document.getElementById('user-profile-modal').style.display = 'flex'; 
+        }
+
+        function switchUpTab(tab) {
+            document.querySelectorAll('.up-tab').forEach(t => t.classList.remove('active'));
+            if(tab === 'ads') {
+                document.getElementById('tabUpAds').classList.add('active');
+                document.getElementById('upAdsContainer').style.display = 'grid';
+                document.getElementById('upReklamaContainer').style.display = 'none';
+            } else {
+                document.getElementById('tabUpReklama').classList.add('active');
+                document.getElementById('upAdsContainer').style.display = 'none';
+                document.getElementById('upReklamaContainer').style.display = 'block';
+            }
+        }
+
+        // ==========================================
+        // ADMIN PANEL
+        // ==========================================
         let adminPinInput = "t.me/aslbek201";
-        function openAdminPin() { adminPinInput = ""; updatePinDots(); document.getElementById('pin-modal').style.display = 'flex'; }
-        function closePinModal() { document.getElementById('pin-modal').style.display = 'none'; }
-        function addPin(num) { if(adminPinInput.length < 4) adminPinInput += num; updatePinDots(); if(adminPinInput.length === 4) setTimeout(checkPin, 300); }
-        function deletePin() { if(adminPinInput.length > 0) adminPinInput = adminPinInput.slice(0, -1); updatePinDots(); }
-        function updatePinDots() { let dots = document.querySelectorAll('.pin-dot'); dots.forEach((dot, index) => { if(index < adminPinInput.length) dot.classList.add('filled'); else dot.classList.remove('filled'); }); }
         
-        function checkPin() { if(adminPinInput === "2580") { closePinModal(); renderAdminUsers(); document.getElementById('admin-modal').style.display = 'flex'; } else { alert("Parol noto'g'ri!"); adminPinInput = ""; updatePinDots(); } }
-        function switchAdminTab(tab, el) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); el.classList.add('active'); ['users','ads','banners','popup','sectionads'].forEach(t => document.getElementById(`admin-${t}`).style.display = tab===t?'block':'none'); if(tab==='users') renderAdminUsers(); if(tab==='ads') loadAdminAds(); if(tab==='banners') loadAdminBanners(); if(tab==='sectionads') loadAdminSectionAds(); }
+        function openAdminPin() {
+            adminPinInput = "";
+            updatePinDots();
+            document.getElementById('pin-modal').style.display = 'flex';
+        }
 
-        function filterAdminUsers() { let q = document.getElementById('searchAdminUsersInput').value.toLowerCase(); let filtered = usersList.filter(u => u.username.toLowerCase().includes(q) || u.first_name.toLowerCase().includes(q)); renderUsersToList(filtered); }
-        function renderAdminUsers() { document.getElementById('statTotalUsers').innerText = usersList.length; document.getElementById('statOnlineUsers').innerText = usersList.filter(u=>u.isOnline).length; renderUsersToList(usersList); }
+        function closePinModal() {
+            document.getElementById('pin-modal').style.display = 'none';
+        }
+
+        function addPin(num) {
+            if(adminPinInput.length < 4) adminPinInput += num;
+            updatePinDots();
+            if(adminPinInput.length === 4) setTimeout(checkPin, 300);
+        }
+
+        function deletePin() {
+            if(adminPinInput.length > 0) adminPinInput = adminPinInput.slice(0, -1);
+            updatePinDots();
+        }
+
+        function updatePinDots() {
+            let dots = document.querySelectorAll('.pin-dot');
+            dots.forEach((dot, index) => {
+                if(index < adminPinInput.length) dot.classList.add('filled');
+                else dot.classList.remove('filled');
+            });
+        }
+        
+        function checkPin() {
+            if(adminPinInput === "2580") {
+                closePinModal();
+                renderAdminUsers();
+                document.getElementById('admin-modal').style.display = 'flex';
+            } else {
+                alert("Parol noto'g'ri!");
+                adminPinInput = "";
+                updatePinDots();
+            }
+        }
+
+        function switchAdminTab(tab, el) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            
+            ['users','ads','banners','popup','sectionads'].forEach(t => {
+                document.getElementById(`admin-${t}`).style.display = (tab === t) ? 'block' : 'none';
+            });
+            
+            if(tab==='users') renderAdminUsers();
+            if(tab==='ads') loadAdminAds();
+            if(tab==='banners') loadAdminBanners();
+            if(tab==='sectionads') loadAdminSectionAds();
+        }
+
+        function filterAdminUsers() {
+            let q = document.getElementById('searchAdminUsersInput').value.toLowerCase();
+            let filtered = usersList.filter(u => u.username.toLowerCase().includes(q) || u.first_name.toLowerCase().includes(q));
+            renderUsersToList(filtered);
+        }
+
+        function renderAdminUsers() {
+            document.getElementById('statTotalUsers').innerText = usersList.length;
+            document.getElementById('statOnlineUsers').innerText = usersList.filter(u=>u.isOnline).length;
+            renderUsersToList(usersList);
+        }
 
         function renderUsersToList(list) {
             let now = Date.now();
             document.getElementById('adminUsersList').innerHTML = list.map(u => {
                 let status = u.isOnline ? `<div class="user-status online"></div> Online` : `<div class="user-status offline"></div> Offline`;
-                let blockButton = ADMIN_USERS.includes(u.username.toLowerCase()) ? `<button class="btn-small" style="background:#94a3b8; cursor:not-allowed;">Daxlsiz</button>` : `<button class="btn-small ${u.isBlocked ? 'btn-unblock' : 'btn-block'}" onclick="toggleBlock('${u.dbId}', ${u.isBlocked})">${u.isBlocked ? 'Unblock' : 'Block'}</button>`;
-                let isVer = u.verifiedAt && (now - u.verifiedAt < THIRTY_DAYS_MS); let verifyIcon = isVer ? `<i class="material-icons" style="color:#3b82f6; font-size:16px;">verified</i>` : '';
-                return `<div class="user-card"><div class="user-card-header"><div style="font-weight:bold; font-size:15px; color:var(--text-main); display:flex; align-items:center; gap:4px;">@${u.username} ${verifyIcon}</div><div style="font-size:12px; color:var(--text-muted);">${status} | ${u.first_name}</div></div><div style="display:flex; gap:5px; flex-wrap:wrap;"><button class="btn-small btn-alert" onclick="openAlertModal('${u.dbId}')"><i class="material-icons">notifications</i> Alert</button><button class="btn-small btn-verified" onclick="toggleVerify('${u.dbId}', ${isVer})"><i class="material-icons">${isVer?'close':'verified'}</i> ${isVer?'Olish':'Galochka'}</button>${blockButton}</div></div>`;
+                
+                let blockButton = ADMIN_USERS.includes(u.username.toLowerCase()) 
+                    ? `<button class="btn-small" style="background:#94a3b8; cursor:not-allowed;">Daxlsiz</button>` 
+                    : `<button class="btn-small ${u.isBlocked ? 'btn-unblock' : 'btn-block'}" onclick="toggleBlock('${u.dbId}', ${u.isBlocked})">${u.isBlocked ? 'Unblock' : 'Block'}</button>`;
+                
+                let isVer = u.verifiedAt && (now - u.verifiedAt < THIRTY_DAYS_MS);
+                let verifyIcon = isVer ? `<i class="material-icons" style="color:#3b82f6; font-size:16px;">verified</i>` : '';
+
+                return `
+                <div class="user-card">
+                    <div class="user-card-header">
+                        <div style="font-weight:bold; font-size:15px; color:var(--text-main); display:flex; align-items:center; gap:4px;">@${u.username} ${verifyIcon}</div>
+                        <div style="font-size:12px; color:var(--text-muted);">${status} | ${u.first_name}</div>
+                    </div>
+                    <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                        <button class="btn-small btn-alert" onclick="openAlertModal('${u.dbId}')"><i class="material-icons">notifications</i> Alert</button>
+                        <button class="btn-small btn-verified" onclick="toggleVerify('${u.dbId}', ${isVer})"><i class="material-icons">${isVer?'close':'verified'}</i> ${isVer?'Olish':'Galochka'}</button>
+                        ${blockButton}
+                    </div>
+                </div>`;
             }).join('');
         }
 
-        function toggleBlock(uid, isBlocked) { let targetUser = usersList.find(u => u.dbId === uid); if (targetUser && ADMIN_USERS.includes(targetUser.username.toLowerCase())) { alert("O'zingizni bloklay olmaysiz!"); return; } db.collection("users").doc(uid).update({isBlocked: !isBlocked}); }
-        function toggleVerify(uid, isCurrentlyVerified) { if (isCurrentlyVerified) { db.collection("users").doc(uid).update({verifiedAt: null}); } else { db.collection("users").doc(uid).update({verifiedAt: Date.now()}); } }
-
-        let currentAlertTarget = null; let tempAlertBase64 = null;
-        document.getElementById('adminAlertFile').addEventListener('change', function(e) { compressImage(e.target.files[0], (base64) => { tempAlertBase64 = base64; }); });
-
-        function openAlertModal(uid) { currentAlertTarget = uid; tempAlertBase64 = null; document.getElementById('adminAlertText').value = ''; document.getElementById('adminAlertFile').value = ''; document.getElementById('admin-create-alert-modal').style.display = 'flex'; }
-        
-        function sendCustomAlert() {
-            let text = document.getElementById('adminAlertText').value; let color = document.getElementById('adminAlertColor').value;
-            if(!text && !tempAlertBase64) return alert("Matn yoki Rasm kiriting!");
-            let payload = { alertMessage: text || "Xabar!", alertColor: color }; if(tempAlertBase64) payload.alertImage = tempAlertBase64;
-            
-            if (currentAlertTarget === 'ALL') {
-                // HAMMAGA YUBORISH UCHUN MAXSUS BATCH (QOTIB QOLMASLIGI UCHUN)
-                let batch = db.batch();
-                usersList.forEach(u => { let ref = db.collection("users").doc(u.dbId); batch.update(ref, payload); });
-                batch.commit().then(() => { alert("Barcha foydalanuvchilarga xabar yuborildi!"); closeModal('admin-create-alert-modal'); });
-            } 
-            else { db.collection("users").doc(currentAlertTarget).update(payload).then(() => { alert("Xabar yuborildi!"); closeModal('admin-create-alert-modal'); }); }
+        function toggleBlock(uid, isBlocked) {
+            let targetUser = usersList.find(u => u.dbId === uid);
+            if (targetUser && ADMIN_USERS.includes(targetUser.username.toLowerCase())) {
+                alert("O'zingizni bloklay olmaysiz!");
+                return;
+            }
+            db.collection("users").doc(uid).update({isBlocked: !isBlocked});
         }
 
-        function filterAdminAds() { let q = document.getElementById('searchAdminAdsInput').value.toLowerCase(); let filtered = adsList.filter(ad => String(ad.elonId).includes(q.replace('#','')) || ad.title.toLowerCase().includes(q)); renderAdGrid(filtered, 'adminAdsList', false, true); }
-        function loadAdminAds() { renderAdGrid(adsList, 'adminAdsList', false, true); }
-        function deleteAdAdmin(dbId) { if(confirm("ADMIN: E'lonni butunlay o'chirasizmi?")) db.collection("elonlar").doc(dbId).delete(); }
-        function togglePremium(dbId, isPremium) { if(isPremium) { db.collection("elonlar").doc(dbId).update({isPremium: false}); } else { db.collection("elonlar").doc(dbId).update({isPremium: true, premiumUntil: Date.now() + (7 * 24 * 60 * 60 * 1000)}); } }
+        function toggleVerify(uid, isCurrentlyVerified) {
+            if (isCurrentlyVerified) {
+                db.collection("users").doc(uid).update({verifiedAt: null});
+            } else {
+                db.collection("users").doc(uid).update({verifiedAt: Date.now()});
+            }
+        }
+
+        let currentAlertTarget = null;
+        let tempAlertBase64 = null;
+        
+        document.getElementById('adminAlertFile').addEventListener('change', function(e) {
+            if(!e.target.files || e.target.files.length === 0) return;
+            compressImage(e.target.files[0], (base64) => { tempAlertBase64 = base64; });
+        });
+
+        function openAlertModal(uid) {
+            currentAlertTarget = uid;
+            tempAlertBase64 = null;
+            document.getElementById('adminAlertText').value = '';
+            document.getElementById('adminAlertFile').value = '';
+            document.getElementById('admin-create-alert-modal').style.display = 'flex';
+        }
+        
+        // HAMMAGA XABAR UCHUN MAXSUS TUZATILGAN FUNKSIYA
+        function sendCustomAlert() {
+            let btn = document.getElementById('btnSendAlert');
+            let text = document.getElementById('adminAlertText').value;
+            let color = document.getElementById('adminAlertColor').value;
+            
+            if(!text && !tempAlertBase64) {
+                alert("Matn yoki Rasm kiriting!");
+                return;
+            }
+
+            btn.innerText = "Yuborilmoqda...";
+            btn.disabled = true;
+            
+            let payload = { alertMessage: text || "Xabar!", alertColor: color };
+            if(tempAlertBase64) payload.alertImage = tempAlertBase64;
+            
+            if (currentAlertTarget === 'ALL') {
+                let batch = db.batch();
+                usersList.forEach(u => {
+                    let ref = db.collection("users").doc(u.dbId);
+                    batch.update(ref, payload);
+                });
+                batch.commit().then(() => {
+                    alert("Barcha foydalanuvchilarga xabar yuborildi!");
+                    closeModal('admin-create-alert-modal');
+                    btn.innerText = "Yuborish";
+                    btn.disabled = false;
+                }).catch(e => {
+                    alert("Xato: " + e.message);
+                    btn.innerText = "Yuborish";
+                    btn.disabled = false;
+                });
+            } else {
+                db.collection("users").doc(currentAlertTarget).update(payload).then(() => {
+                    alert("Xabar yuborildi!");
+                    closeModal('admin-create-alert-modal');
+                    btn.innerText = "Yuborish";
+                    btn.disabled = false;
+                }).catch(e => {
+                    alert("Xato: " + e.message);
+                    btn.innerText = "Yuborish";
+                    btn.disabled = false;
+                });
+            }
+        }
+
+        function filterAdminAds() {
+            let q = document.getElementById('searchAdminAdsInput').value.toLowerCase();
+            let filtered = adsList.filter(ad => String(ad.elonId).includes(q.replace('#','')) || ad.title.toLowerCase().includes(q));
+            renderAdGrid(filtered, 'adminAdsList', false, true);
+        }
+
+        function loadAdminAds() {
+            renderAdGrid(adsList, 'adminAdsList', false, true);
+        }
+
+        function deleteAdAdmin(dbId) {
+            if(confirm("ADMIN: E'lonni butunlay o'chirasizmi?")) {
+                db.collection("elonlar").doc(dbId).delete();
+            }
+        }
+
+        function togglePremium(dbId, isPremium) {
+            if(isPremium) {
+                db.collection("elonlar").doc(dbId).update({isPremium: false});
+            } else {
+                db.collection("elonlar").doc(dbId).update({isPremium: true, premiumUntil: Date.now() + (7 * 24 * 60 * 60 * 1000)});
+            }
+        }
 
         let tempBannerBase64 = null;
-        document.getElementById('addBannerFile').addEventListener('change', function(e) { compressImage(e.target.files[0], (base64) => { tempBannerBase64 = base64; }); });
-        function saveBanner() { let link = document.getElementById('addBannerLink').value; if(!tempBannerBase64) return alert("Rasm tanlang!"); db.collection("banners").add({ image: tempBannerBase64, link: link }).then(() => { alert("Banner qo'shildi!"); tempBannerBase64=null; document.getElementById('addBannerLink').value=''; }); }
+        document.getElementById('addBannerFile').addEventListener('change', function(e) {
+            if(!e.target.files || e.target.files.length === 0) return;
+            compressImage(e.target.files[0], (base64) => { tempBannerBase64 = base64; });
+        });
+
+        // BANNER QO'SHISH TUZATILDI
+        function saveBanner() {
+            let btn = document.getElementById('btnSaveBanner');
+            let link = document.getElementById('addBannerLink').value;
+            if(!tempBannerBase64) {
+                alert("Rasm tanlang!");
+                return;
+            }
+
+            btn.innerText = "Joylanmoqda...";
+            btn.disabled = true;
+
+            db.collection("banners").add({ image: tempBannerBase64, link: link }).then(() => {
+                alert("Banner qo'shildi!");
+                tempBannerBase64 = null;
+                document.getElementById('addBannerLink').value = '';
+                btn.innerText = "Banner Qo'shish";
+                btn.disabled = false;
+            }).catch(e => {
+                alert("Xato: " + e.message);
+                btn.innerText = "Banner Qo'shish";
+                btn.disabled = false;
+            });
+        }
+
         function loadAdminBanners() {
-            document.getElementById('adminBannersList').innerHTML = bannersList.map(b => `<div class="user-card" style="flex-direction:column; align-items:flex-start;"><img src="${b.image}" style="width:100%; height:80px; object-fit:cover; border-radius:8px;"><div style="margin-top:10px; width:100%; display:flex; justify-content:space-between;"><span style="font-size:12px;">URL: ${b.link}</span><button class="btn-small btn-delete" onclick="db.collection('banners').doc('${b.dbId}').delete()">O'chirish</button></div></div>`).join('');
-            db.collection("system").doc("entryAd").get().then(doc => { if(doc.exists) { let d = doc.data(); document.getElementById('popupActiveToggle').checked = d.isActive; document.getElementById('popupTitle').value = d.title || ''; document.getElementById('popupDesc').value = d.desc || ''; document.getElementById('popupLink').value = d.link || ''; } });
+            document.getElementById('adminBannersList').innerHTML = bannersList.map(b => `
+                <div class="user-card" style="flex-direction:column; align-items:flex-start;">
+                    <img src="${b.image}" style="width:100%; height:80px; object-fit:cover; border-radius:8px;">
+                    <div style="margin-top:10px; width:100%; display:flex; justify-content:space-between;">
+                        <span style="font-size:12px;">URL: ${b.link}</span>
+                        <button class="btn-small btn-delete" onclick="db.collection('banners').doc('${b.dbId}').delete()">O'chirish</button>
+                    </div>
+                </div>`).join('');
+                
+            db.collection("system").doc("entryAd").get().then(doc => {
+                if(doc.exists) {
+                    let d = doc.data();
+                    document.getElementById('popupActiveToggle').checked = d.isActive;
+                    document.getElementById('popupTitle').value = d.title || '';
+                    document.getElementById('popupDesc').value = d.desc || '';
+                    document.getElementById('popupLink').value = d.link || '';
+                }
+            });
         }
 
         let tempPopupBase64 = null;
-        document.getElementById('popupFile').addEventListener('change', function(e) { compressImage(e.target.files[0], (base64) => { tempPopupBase64 = base64; }); });
+        document.getElementById('popupFile').addEventListener('change', function(e) {
+            if(!e.target.files || e.target.files.length === 0) return;
+            compressImage(e.target.files[0], (base64) => { tempPopupBase64 = base64; });
+        });
+
+        // POP-UP QO'SHISH TUZATILDI
         function savePopupAd() {
-            let data = { isActive: document.getElementById('popupActiveToggle').checked, title: document.getElementById('popupTitle').value, desc: document.getElementById('popupDesc').value, link: document.getElementById('popupLink').value };
+            let btn = document.getElementById('btnSavePopup');
+            btn.innerText = "Saqlanmoqda...";
+            btn.disabled = true;
+
+            let data = {
+                isActive: document.getElementById('popupActiveToggle').checked,
+                title: document.getElementById('popupTitle').value,
+                desc: document.getElementById('popupDesc').value,
+                link: document.getElementById('popupLink').value
+            };
             if(tempPopupBase64) data.image = tempPopupBase64;
-            db.collection("system").doc("entryAd").set(data, {merge:true}).then(()=>alert("Pop-up saqlandi!"));
+            
+            db.collection("system").doc("entryAd").set(data, {merge:true}).then(()=> {
+                alert("Pop-up saqlandi!");
+                btn.innerText = "Saqlash";
+                btn.disabled = false;
+            }).catch(e => {
+                alert("Xato: " + e.message);
+                btn.innerText = "Saqlash";
+                btn.disabled = false;
+            });
         }
 
         let tempSecAdBase64 = null;
-        document.getElementById('addSecAdFile').addEventListener('change', function(e) { compressImage(e.target.files[0], (base64) => { tempSecAdBase64 = base64; }); });
+        document.getElementById('addSecAdFile').addEventListener('change', function(e) {
+            if(!e.target.files || e.target.files.length === 0) return;
+            compressImage(e.target.files[0], (base64) => { tempSecAdBase64 = base64; });
+        });
+
+        // ADS BO'LIMIGA REKLAMA QO'SHISH TUZATILDI
         function saveSectionAd() {
-            let owner = document.getElementById('addSecAdOwner').value.replace('@',''); let title = document.getElementById('addSecAdTitle').value; let desc = document.getElementById('addSecAdDesc').value; let link = document.getElementById('addSecAdLink').value;
-            if(!title || !tempSecAdBase64 || !owner) return alert("Nom, Rasm va Egasi kiritilishi shart!");
-            db.collection("sectionAds").add({ title: title, desc: desc, link: link, image: tempSecAdBase64, sellerName: owner }).then(() => { alert("Ads bo'limiga reklama qo'shildi!"); tempSecAdBase64 = null; document.getElementById('addSecAdOwner').value = ''; document.getElementById('addSecAdTitle').value = ''; document.getElementById('addSecAdDesc').value = ''; document.getElementById('addSecAdLink').value = ''; });
+            let btn = document.getElementById('btnSaveSecAd');
+            let owner = document.getElementById('addSecAdOwner').value.replace('@','');
+            let title = document.getElementById('addSecAdTitle').value;
+            let desc = document.getElementById('addSecAdDesc').value;
+            let link = document.getElementById('addSecAdLink').value;
+            
+            if(!title || !tempSecAdBase64 || !owner) {
+                alert("Nom, Rasm va Egasi kiritilishi shart!");
+                return;
+            }
+            
+            btn.innerText = "Joylanmoqda...";
+            btn.disabled = true;
+
+            db.collection("sectionAds").add({
+                title: title,
+                desc: desc,
+                link: link,
+                image: tempSecAdBase64,
+                sellerName: owner
+            }).then(() => {
+                alert("Ads bo'limiga reklama qo'shildi!");
+                tempSecAdBase64 = null;
+                document.getElementById('addSecAdOwner').value = '';
+                document.getElementById('addSecAdTitle').value = '';
+                document.getElementById('addSecAdDesc').value = '';
+                document.getElementById('addSecAdLink').value = '';
+                btn.innerText = "Qo'shish";
+                btn.disabled = false;
+            }).catch(e => {
+                alert("Xato: " + e.message);
+                btn.innerText = "Qo'shish";
+                btn.disabled = false;
+            });
         }
+
         function loadAdminSectionAds() {
-            document.getElementById('adminSectionAdsList').innerHTML = sectionAdsList.map(ad => `<div class="user-card" style="flex-direction:column; align-items:flex-start;"><img src="${ad.image}" style="width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:8px;"><div style="margin-top:10px; width:100%;"><b>${ad.title}</b> <span style="color:var(--primary-color); font-size:12px;">(@${ad.sellerName})</span><div style="font-size:12px; color:var(--text-muted);">${ad.desc}</div><div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;"><span style="font-size:11px;">URL: ${ad.link}</span><button class="btn-small btn-delete" onclick="db.collection('sectionAds').doc('${ad.dbId}').delete()">O'chirish</button></div></div></div>`).join('');
+            document.getElementById('adminSectionAdsList').innerHTML = sectionAdsList.map(ad => `
+                <div class="user-card" style="flex-direction:column; align-items:flex-start;">
+                    <img src="${ad.image}" style="width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:8px;">
+                    <div style="margin-top:10px; width:100%;">
+                        <b>${ad.title}</b> <span style="color:var(--primary-color); font-size:12px;">(@${ad.sellerName})</span>
+                        <div style="font-size:12px; color:var(--text-muted);">${ad.desc}</div>
+                        <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:11px;">URL: ${ad.link}</span>
+                            <button class="btn-small btn-delete" onclick="db.collection('sectionAds').doc('${ad.dbId}').delete()">O'chirish</button>
+                        </div>
+                    </div>
+                </div>`).join('');
         }
 
     </script>
