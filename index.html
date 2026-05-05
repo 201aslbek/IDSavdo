@@ -65,7 +65,7 @@
 
         /* Tab Bar */
         .tab-bar { 
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 430px; height: 65px; background: var(--tab-bg); backdrop-filter: blur(20px); border: 1px solid var(--border-color); border-radius: 35px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.3s; 
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 430px; height: 65px; background:rgba(0, 102, 255, 0.1); backdrop-filter: blur(3px); border: 1px solid var(--border-color); border: 1px solid var(--border-color); border-radius: 35px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.3s; 
         }
         .tab-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; padding: 5px 10px; border-radius: 20px; transition: 0.3s; cursor: pointer;}
         .tab-item.active { color: var(--primary-color); background: rgba(0, 102, 255, 0.1); }
@@ -87,9 +87,9 @@
         
         /* Search Bar */
         .fake-search-container { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; }
-        .fake-search { flex: 1; background: var(--bg-card); padding: 14px 15px; border-radius: 12px; display: flex; align-items: center; color: var(--text-muted); box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid var(--border-color); cursor:pointer;}
+        .fake-search { flex: 1; background:rgba(0, 102, 255, 0.1); backdrop-filter: blur(3px); border: 1px solid var(--border-color); padding: 14px 15px; border-radius: 30px; display: flex; align-items: center; color: var(--text-muted); box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid var(--border-color); cursor:pointer;}
         .fake-search i { margin-right: 10px; }
-        .fav-btn-search { background: var(--bg-card); width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 12px; border: 1px solid var(--border-color); color: var(--danger-color); font-size: 24px; cursor:pointer;}
+        .fav-btn-search { background:rgba(0, 102, 255, 0.1); backdrop-filter: blur(3px); border: 1px solid var(--border-color); width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; border-radius: 30px; border: 1px solid var(--border-color); color: var(--danger-color); font-size: 24px; cursor:pointer;}
         
         .real-search { width: 100%; padding: 14px 15px; border-radius: 12px; border: 1px solid var(--border-color); outline: none; margin-bottom: 20px; font-size: 16px; background: var(--bg-card); color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
 
@@ -313,7 +313,7 @@
 
     <div id="splash">
         <div class="logo-text"><span class="id">ID</span><span class="savdo">Savdo</span></div>
-        <div class="version-text">1.0.0</div>
+        <div class="version-text">1.0.1</div>
     </div>
 
     <div id="mandatory-sub-modal" class="overlay-modal" style="background: rgba(0,0,0,0.9);">
@@ -458,7 +458,7 @@
                 <div class="header-logo"><span class="id">ID</span><span class="savdo">Savdo</span></div>
             </div>
             <div class="fake-search-container">
-                <div class="fake-search" onclick="switchTab('search')"><i class="material-icons">search</i> <span id="txtFakeSearch" data-i18n="qidiruvPlaceholder">@username yoki e'lon qidiring...</span></div>
+                <div class="fake-search" onclick="switchTab('search')"><i class="material-icons">search</i> <span id="txtFakeSearch" data-i18n="qidiruvPlaceholder">E'lon qidiring...</span></div>
                 <div class="fav-btn-search" onclick="switchTab('favorites')"><i class="material-icons">favorite_border</i></div>
             </div>
             
