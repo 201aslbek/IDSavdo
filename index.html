@@ -311,7 +311,7 @@
 
     <div id="splash">
         <div class="logo-text"><span class="id">ID</span><span class="savdo">Savdo</span></div>
-        <div class="version-text">1.1.1</div>
+        <div class="version-text">1.1.0</div>
     </div>
 
     <div id="mandatory-sub-modal" class="overlay-modal" style="background: rgba(0,0,0,0.9);">
@@ -782,7 +782,7 @@
         </div>
     </div>
 
-    <script>
+       <script>
         // FIREBASE SOZLAMALARI
         const firebaseConfig = {
             apiKey: "AIzaSyBXIf11kLqin-dpH6A2qP0La8mwjx2yxH0",
@@ -932,7 +932,7 @@
         // ==========================================
         // REAL-TIME LISTNERS
         // ==========================================
-        db.collection("elonlar").orderBy("createdAt", "desc").limit(100).onSnapshot((querySnapshot) => {
+        db.collection("elonlar").orderBy("createdAt", "desc").limit(20).onSnapshot((querySnapshot) => {
             adsList = [];
             let maxId = 0;
             let now = Date.now();
@@ -960,16 +960,18 @@
             
             updateSellStats(); 
 
-            if(document.getElementById('home').classList.contains('active')) renderHome();
-            if(document.getElementById('favorites').classList.contains('active')) renderFavorites();
-            if(document.getElementById('sell').classList.contains('active')) renderSellMyAds();
-            if(document.getElementById('admin-modal').style.display === 'flex') loadAdminAds();
-            
-            // Profil ochiq bo'lsa yangilash
-            let profUNameRaw = document.getElementById('upUsername').getAttribute('data-raw-username');
-            if(document.getElementById('user-profile-modal').style.display === 'flex' && profUNameRaw) {
-                renderAdGrid(adsList.filter(a => a.sellerName === profUNameRaw), 'upAdsContainer');
-            }
+            // Brauzerni qotirib qo'ymaslik uchun darhol ekranga beramiz
+            requestAnimationFrame(() => {
+                if(document.getElementById('home').classList.contains('active')) renderHome();
+                if(document.getElementById('favorites').classList.contains('active')) renderFavorites();
+                if(document.getElementById('sell').classList.contains('active')) renderSellMyAds();
+                if(document.getElementById('admin-modal').style.display === 'flex') loadAdminAds();
+                
+                let profUNameRaw = document.getElementById('upUsername').getAttribute('data-raw-username');
+                if(document.getElementById('user-profile-modal').style.display === 'flex' && profUNameRaw) {
+                    renderAdGrid(adsList.filter(a => a.sellerName === profUNameRaw), 'upAdsContainer');
+                }
+            });
         });
 
         db.collection("banners").onSnapshot((qs) => {
@@ -1330,7 +1332,16 @@
                 container.innerHTML = `<p style="grid-column: span 2; text-align: center; color: var(--text-muted); padding: 20px;">Hech narsa topilmadi</p>`;
                 return;
             }
-            container.innerHTML = ads.map(ad => createAdCardHTML(ad, isMyAds, isAdmin)).join('');
+
+            // Skeleton loadingni darhol o'chiramiz
+            container.innerHTML = ''; 
+
+            // E'lonlarni hammasini kutmasdan, bittalab ketma-ket ekranga chiqaramiz
+            ads.forEach((ad, index) => {
+                setTimeout(() => {
+                    container.insertAdjacentHTML('beforeend', createAdCardHTML(ad, isMyAds, isAdmin));
+                }, index * 40); // Har 40 millisekundda keyingi e'lon chiqadi
+            });
         }
 
         function renderSectionAds(containerId = 'sectionAdsContainer', filterSeller = null) {
@@ -2069,5 +2080,6 @@
         }
 
     </script>
+
 </body>
 </html>
