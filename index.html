@@ -121,7 +121,7 @@
 
         /* Ad Grid & Cards */
         .ad-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .ad-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.04); position: relative; border: 1px solid var(--border-color); display:flex; flex-direction:column;}
+        .ad-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.04); position: relative; border: 1px solid var(--border-color); display:flex; flex-direction:column; animation: fadeIn 0.3s ease;}
         .ad-card.premium-ad { background: var(--premium-bg); border-color: var(--premium-border); }
         
         .premium-badge { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; display: flex; align-items: center; z-index: 10;}
@@ -162,6 +162,11 @@
         .preview-imgs { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; }
         .preview-imgs img { width: 60px; height: 80px; object-fit: cover; border-radius: 6px; position:relative;}
 
+        /* Contact Type Buttons */
+        .contact-type-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .contact-type-btn { flex: 1; padding: 12px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main); border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 5px; transition: 0.2s;}
+        .contact-type-btn.active { border-color: var(--primary-color); background: rgba(0, 102, 255, 0.1); color: var(--primary-color); }
+
         /* Modals */
         .full-modal { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 100%; background: var(--bg-main); z-index: 2000; display: flex; flex-direction: column; overflow: hidden; }
         .modal-header { padding: max(45px, env(safe-area-inset-top)) 15px 15px 15px; display: flex; align-items: center; background: var(--tab-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); flex-shrink: 0; z-index: 2010; }
@@ -199,9 +204,9 @@
         
         .buy-btn-container { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; padding: 8px; background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(20px); border-radius: 35px; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 3000; }
         body.dark-theme .buy-btn-container { background: rgba(30, 41, 59, 0.55); }
-        .btn-buy { display: block; text-align: center; text-decoration: none; width: 100%; padding: 15px; background: var(--primary-color); color: white; border-radius: 25px; font-size: 16px; font-weight: bold; }
+        .btn-buy { display: block; text-align: center; text-decoration: none; width: 100%; padding: 15px; background: var(--primary-color); color: white; border-radius: 25px; font-size: 16px; font-weight: bold; cursor: pointer; border:none;}
 
-        /* Public Profile Page (YANGILANGAN) */
+        /* Public Profile Page */
         .up-header-box { background: var(--bg-card); padding: 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
         .up-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; border: 2px solid var(--border-color); }
         .up-name { font-size: 20px; font-weight: bold; color: var(--text-main); display: flex; justify-content: center; align-items: center; gap: 5px;}
@@ -309,9 +314,234 @@
 </head>
 <body>
 
+    <script>
+        const translations = {
+            uz: {
+                majburiyObuna: "Majburiy Obuna",
+                obunaText: "Davom etish uchun idSavdo rasmiy kanaliga obuna bo'ling.",
+                kanalgaOtish: "Kanalga o'tish",
+                tekshirish: "Tekshirish",
+                haliObunaEmassiz: "Siz hali obuna bo'lmagansiz!",
+                xushKelibsiz: "Xush kelibsiz!",
+                qoidalarText: "IDSavdo botidan foydalanishda qoidalarga rioya qiling. Yolg'on ma'lumotlar berish, birovning akkauntini o'zlashtirish taqiqlanadi. Platforma faqatgina sotuvchi va xaridorni bog'lab beradi.",
+                tushunarli: "OK, tushunarli",
+                muvaffaqiyatli: "Muvaffaqiyatli!",
+                premiumTaklif: "E'loningiz joylandi! E'loningizga premium tarif sotib olasizmi?",
+                haPremium: "Ha (10 000 so'm)",
+                yoq: "Yo'q",
+                premiumNima: "Premium tarif nima?",
+                bloklangansiz: "Siz bloklangansiz",
+                kirishImkonsiz: "Kirish imkonsiz.",
+                shikoyat: "Shikoyat qilish",
+                bekorQilish: "Bekor qilish",
+                orqaga: "Orqaga",
+                elonlar: "E'lonlar",
+                reklamalar: "Reklamalar",
+                obunachilar: "Obunachilar",
+                baholash: "Baholash",
+                sevimlilarTitle: "Sevimlilar",
+                profillar: "Profillar",
+                home: "Asosiy",
+                search: "Qidiruv",
+                ads: "Reklama",
+                profile: "Profil",
+                qidiruvPlaceholder: "E'lon qidiring...",
+                topElonlar: "Top E'lonlar",
+                tavsiyaQilamiz: "Tavsiya qilamiz ✨",
+                kataloglar: "#Kataloglar",
+                elonJoylashTitle: "E'lon joylash",
+                yangiElon: "Yangi e'lon yaratish",
+                sotuvgaQoyish: "O'z virtual buyumingizni yoki akkauntingizni sotuvga qo'ying.",
+                elonJoylashBtn: "E'lon joylash",
+                meningElonlarimCard: "Mening e'lonlarim",
+                umumiyKorishlar: "Umumiy ko'rishlar",
+                obunachilarCard: "Obunachilarim",
+                qadam1: "1. Rasmlar qo'shish",
+                maksimalRasm: "Maksimal 5 ta rasm",
+                rasmTanlang: "Rasmlarni tanlang",
+                keyingiQadam: "Keyingi qadam",
+                qadam2: "2. Asosiy ma'lumotlar",
+                qadam3: "3. Toifa, Narx va Aloqa",
+                elonNomi: "E'lon nomi",
+                batafsilTavsif: "Batafsil tavsif",
+                narxi: "Narxi (so'm)",
+                sevimlilarMenu: "Sevimlilar",
+                meningElonlarim: "Mening e'lonlarim",
+                tasdiqlashNishoni: "Tasdiqlash nishoni olish",
+                reklamaBerish: "Reklama berish",
+                sozlamalar: "Sozlamalar",
+                shartlar: "Foydalanish shartlari",
+                qollabQuvvatlash: "Support",
+                tgBoglanish: "Sotuvchi profiliga o'tish",
+                xususiyatlar: "Xususiyatlar",
+                toifa: "Toifa",
+                tavsif: "Tavsif",
+                korishlarSoni: "Ko'rishlar soni:",
+                raqam: "Raqam:",
+                nashrVaqti: "Nashr vaqti:",
+                sotibOlish: "Bog'lanish",
+                tungiRejim: "Tungi rejim (Dark Theme)",
+                dasturTili: "Dastur tili"
+            },
+            ru: {
+                majburiyObuna: "Обязательная подписка",
+                obunaText: "Подпишитесь на официальный канал idSavdo, чтобы продолжить.",
+                kanalgaOtish: "Перейти в канал",
+                tekshirish: "Проверить",
+                haliObunaEmassiz: "Вы еще не подписаны!",
+                xushKelibsiz: "Добро пожаловать!",
+                qoidalarText: "Соблюдайте правила при использовании бота IDSavdo. Предоставление ложной информации и присвоение чужих аккаунтов запрещено. Платформа только связывает продавца и покупателя.",
+                tushunarli: "ОК, понятно",
+                muvaffaqiyatli: "Успешно!",
+                premiumTaklif: "Ваше объявление размещено! Хотите купить премиум тариф для объявления?",
+                haPremium: "Да (10 000 сум)",
+                yoq: "Нет",
+                premiumNima: "Что такое премиум тариф?",
+                bloklangansiz: "Вы заблокированы",
+                kirishImkonsiz: "Вход невозможен.",
+                shikoyat: "Пожаловаться",
+                bekorQilish: "Отмена",
+                orqaga: "Назад",
+                elonlar: "Объявления",
+                reklamalar: "Реклама",
+                obunachilar: "Подписчики",
+                baholash: "Оценка",
+                sevimlilarTitle: "Избранное",
+                profillar: "Профили",
+                home: "Главная",
+                search: "Поиск",
+                ads: "Реклама",
+                profile: "Профиль",
+                qidiruvPlaceholder: "Поиск объявлений...",
+                topElonlar: "Топ Объявления",
+                tavsiyaQilamiz: "Рекомендуем ✨",
+                kataloglar: "#Каталоги",
+                elonJoylashTitle: "Подать объявление",
+                yangiElon: "Создать новое объявление",
+                sotuvgaQoyish: "Выставите на продажу свой виртуальный предмет или аккаунт.",
+                elonJoylashBtn: "Разместить",
+                meningElonlarimCard: "Мои объявления",
+                umumiyKorishlar: "Общие просмотры",
+                obunachilarCard: "Мои подписчики",
+                qadam1: "1. Добавить фото",
+                maksimalRasm: "Максимум 5 фото",
+                rasmTanlang: "Выберите фото",
+                keyingiQadam: "Следующий шаг",
+                qadam2: "2. Основная информация",
+                qadam3: "3. Категория, Цена и Связь",
+                elonNomi: "Название",
+                batafsilTavsif: "Подробное описание",
+                narxi: "Цена (сум)",
+                sevimlilarMenu: "Избранное",
+                meningElonlarim: "Мои объявления",
+                tasdiqlashNishoni: "Получить галочку",
+                reklamaBerish: "Дать рекламу",
+                sozlamalar: "Настройки",
+                shartlar: "Условия использования",
+                qollabQuvvatlash: "Поддержка",
+                tgBoglanish: "Перейти в профиль продавца",
+                xususiyatlar: "Характеристики",
+                toifa: "Категория",
+                tavsif: "Описание",
+                korishlarSoni: "Количество просмотров:",
+                raqam: "Номер:",
+                nashrVaqti: "Время публикации:",
+                sotibOlish: "Связаться",
+                tungiRejim: "Темная тема",
+                dasturTili: "Язык приложения"
+            },
+            en: {
+                majburiyObuna: "Mandatory Subscription",
+                obunaText: "Subscribe to the official idSavdo channel to continue.",
+                kanalgaOtish: "Go to channel",
+                tekshirish: "Check",
+                haliObunaEmassiz: "You haven't subscribed yet!",
+                xushKelibsiz: "Welcome!",
+                qoidalarText: "Please follow the rules when using the IDSavdo bot. Providing false information or stealing someone else's account is prohibited. The platform only connects the seller and the buyer.",
+                tushunarli: "OK, got it",
+                muvaffaqiyatli: "Successful!",
+                premiumTaklif: "Your ad has been posted! Would you like to buy a premium plan for your ad?",
+                haPremium: "Yes (10,000 UZS)",
+                yoq: "No",
+                premiumNima: "What is a premium plan?",
+                bloklangansiz: "You are blocked",
+                kirishImkonsiz: "Access denied.",
+                shikoyat: "Report",
+                bekorQilish: "Cancel",
+                orqaga: "Back",
+                elonlar: "Ads",
+                reklamalar: "Promotions",
+                obunachilar: "Followers",
+                baholash: "Rating",
+                sevimlilarTitle: "Favorites",
+                profillar: "Profiles",
+                home: "Home",
+                search: "Search",
+                ads: "Ads",
+                profile: "Profile",
+                qidiruvPlaceholder: "Search ads...",
+                topElonlar: "Top Ads",
+                tavsiyaQilamiz: "Recommended ✨",
+                kataloglar: "#Catalogs",
+                elonJoylashTitle: "Post an Ad",
+                yangiElon: "Create a new ad",
+                sotuvgaQoyish: "Put your virtual item or account up for sale.",
+                elonJoylashBtn: "Post Ad",
+                meningElonlarimCard: "My Ads",
+                umumiyKorishlar: "Total views",
+                obunachilarCard: "My Followers",
+                qadam1: "1. Add photos",
+                maksimalRasm: "Maximum 5 photos",
+                rasmTanlang: "Select photos",
+                keyingiQadam: "Next step",
+                qadam2: "2. Basic information",
+                qadam3: "3. Category, Price & Contact",
+                elonNomi: "Ad title",
+                batafsilTavsif: "Detailed description",
+                narxi: "Price (UZS)",
+                sevimlilarMenu: "Favorites",
+                meningElonlarim: "My Ads",
+                tasdiqlashNishoni: "Get verified badge",
+                reklamaBerish: "Advertise",
+                sozlamalar: "Settings",
+                shartlar: "Terms of Use",
+                qollabQuvvatlash: "Support",
+                tgBoglanish: "Go to seller profile",
+                xususiyatlar: "Features",
+                toifa: "Category",
+                tavsif: "Description",
+                korishlarSoni: "Views:",
+                raqam: "ID:",
+                nashrVaqti: "Published:",
+                sotibOlish: "Contact",
+                tungiRejim: "Dark Theme",
+                dasturTili: "App Language"
+            }
+        };
+
+        function applyLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translations[lang][key];
+                    } else {
+                        el.innerHTML = translations[lang][key];
+                    }
+                }
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+        }
+    </script>
+
     <div id="splash">
         <div class="logo-text"><span class="id">ID</span><span class="savdo">Savdo</span></div>
-        <div class="version-text">1.1.0</div>
+        <div class="version-text">1.2.0</div>
     </div>
 
     <div id="mandatory-sub-modal" class="overlay-modal" style="background: rgba(0,0,0,0.9);">
@@ -544,7 +774,7 @@
             </div>
 
             <div class="form-step" id="step3">
-                <h3 id="txtStep3" data-i18n="qadam3">3. Toifa va Narx</h3>
+                <h3 id="txtStep3" data-i18n="qadam3">3. Toifa, Narx va Aloqa</h3>
                 <select id="adCategory" class="form-select" style="margin-top: 15px;">
                     <option value="Boshqa toifa">Toifani tanlang...</option>
                     <option value="O'yin akkauntlar">O'yin akkauntlar</option>
@@ -554,8 +784,18 @@
                     <option value="Premium usernamelar">Premium usernamelar</option>
                     <option value="Boshqa toifa">Boshqa toifa</option>
                 </select>
-                <input type="number" id="adPrice" class="form-input" placeholder="Narxi (so'm)" data-i18n-placeholder="narxi">
-                <button class="btn-primary btn-success" id="submitBtn" onclick="submitAd()" data-i18n="elonJoylashBtn">E'lonni joylash</button>
+                
+                <input type="text" id="adPrice" class="form-input" placeholder="Narxi (so'm)" data-i18n-placeholder="narxi" oninput="formatPriceInput(this)">
+                
+                <h4 style="margin-top: 15px; margin-bottom: 10px; font-size: 14px; color: var(--text-muted);">Bog'lanish turi:</h4>
+                <div class="contact-type-group">
+                    <div class="contact-type-btn active" id="btnTgContact" onclick="selectContactType('tg')"><i class="material-icons">telegram</i> Telegram</div>
+                    <div class="contact-type-btn" id="btnPhoneContact" onclick="selectContactType('phone')"><i class="material-icons">call</i> Telefon</div>
+                </div>
+                
+                <input type="text" id="adContactInput" class="form-input" placeholder="Username (@ bilan)" value="@">
+                
+                <button class="btn-primary btn-success" id="submitBtn" onclick="submitAd()" data-i18n="elonJoylashBtn" style="margin-top: 20px;">E'lonni joylash</button>
             </div>
         </div>
 
@@ -761,7 +1001,9 @@
             <div class="settings-row">
                 <span style="font-weight: 500;" id="txtLang" data-i18n="dasturTili">Dastur tili</span>
                 <select class="form-select" style="width: auto; margin-bottom: 0; padding: 8px 15px;" id="langSelect" onchange="changeLanguage()">
-                    <option value="uz">O'zbekcha</option><option value="ru">Русский</option><option value="en">English</option>
+                    <option value="uz">O'zbekcha</option>
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
                 </select>
             </div>
         </div>
@@ -782,7 +1024,7 @@
         </div>
     </div>
 
-       <script>
+    <script>
         // FIREBASE SOZLAMALARI
         const firebaseConfig = {
             apiKey: "AIzaSyBXIf11kLqin-dpH6A2qP0La8mwjx2yxH0",
@@ -804,6 +1046,8 @@
         let globalIdCounter = 1; 
         let editingAdId = null;
         let myLikedAds = JSON.parse(localStorage.getItem('idsavdo_liked_ads') || '[]');
+        
+        let currentContactType = 'tg'; // tg or phone
 
         // ADMINLAR VA VAQT
         const ADMIN_USERS = ['aslbek201', 'web_86141']; 
@@ -812,13 +1056,12 @@
         let tgApp = window.Telegram.WebApp;
         tgApp.ready(); 
 
-        // USERNAME VA ID XAVFSIZLIGI (YANGILANGAN)
+        // USERNAME VA ID XAVFSIZLIGI
         let tgUser = { id: "", username: "", first_name: "Foydalanuvchi", photo: "" };
         
         if (tgApp.initDataUnsafe && tgApp.initDataUnsafe.user) {
             let u = tgApp.initDataUnsafe.user;
             tgUser.id = u.id;
-            // Agar username bo'lmasa, uni maxfiy id_ bilan saqlaymiz, lekin faqat @user deb ko'rsatamiz
             tgUser.username = u.username ? u.username : ("id_" + u.id); 
             tgUser.first_name = u.first_name || "Foydalanuvchi";
             tgUser.photo = u.photo_url || "";
@@ -831,15 +1074,16 @@
             tgUser.username = localUser;
         }
 
-        // Tizimda Username qanday ko'rinishi kerakligi (id_ bo'lsa @user)
         function getDisplayUsername(username) {
             if(!username) return "@user";
             return username.startsWith('id_') ? '@user' : '@' + username;
         }
         
-        function getContactLink(username) {
-            if(!username) return "#";
-            return username.startsWith('id_') ? `tg://user?id=${username.replace('id_','')}` : `https://t.me/${username}`;
+        function getContactLink(contact) {
+            if(!contact) return "#";
+            if(contact.startsWith('+')) return `tel:${contact.replace(/\s/g, '')}`; // Telefon raqam bo'lsa
+            let cleanUsername = contact.replace('@', '');
+            return cleanUsername.startsWith('id_') ? `tg://user?id=${cleanUsername.replace('id_','')}` : `https://t.me/${cleanUsername}`;
         }
 
         let myFollowing = JSON.parse(localStorage.getItem('idsavdo_following') || '[]');
@@ -896,7 +1140,7 @@
             adminBtn.style.display = 'none';
         }
 
-        // Tungi rejim Init
+        // Tungi rejim va Til Sozlamalari
         const savedTheme = localStorage.getItem('idsavdo_theme');
         if(savedTheme === 'dark' || (tgApp.colorScheme === 'dark' && !savedTheme)) {
             document.body.classList.add('dark-theme');
@@ -908,6 +1152,19 @@
             document.body.classList.toggle('dark-theme', cb.checked);
             document.documentElement.style.backgroundColor = cb.checked ? '#0f172a' : '#cbd5e1'; 
             localStorage.setItem('idsavdo_theme', cb.checked ? 'dark' : 'light');
+        }
+
+        // TILNI O'ZGARTIRISH FUNKSIYASI (ISHGA TUSHIRILDI)
+        let currentLang = localStorage.getItem('idsavdo_lang') || 'uz';
+        document.getElementById('langSelect').value = currentLang;
+        applyLanguage(currentLang);
+
+        function changeLanguage() {
+            let selectedLang = document.getElementById('langSelect').value;
+            localStorage.setItem('idsavdo_lang', selectedLang);
+            applyLanguage(selectedLang);
+            // Sahifani to'liq yangilab yuborish orqali JS ichidagi textlarni ham tiliga moslash
+            window.location.reload(); 
         }
 
         // SKELETON FUNKSIYASI
@@ -925,12 +1182,11 @@
             container.innerHTML = html;
         }
 
-        // BOSH SKELETONLARNI YOQISH
         renderSkeleton('homeAdsGrid', 6);
         renderSkeleton('premiumAdsGrid', 2);
 
         // ==========================================
-        // REAL-TIME LISTNERS
+        // REAL-TIME LISTNERS (QOTISHNI OLDI OLINDI)
         // ==========================================
         db.collection("elonlar").orderBy("createdAt", "desc").limit(20).onSnapshot((querySnapshot) => {
             adsList = [];
@@ -960,7 +1216,6 @@
             
             updateSellStats(); 
 
-            // Brauzerni qotirib qo'ymaslik uchun darhol ekranga beramiz
             requestAnimationFrame(() => {
                 if(document.getElementById('home').classList.contains('active')) renderHome();
                 if(document.getElementById('favorites').classList.contains('active')) renderFavorites();
@@ -1011,7 +1266,6 @@
             
             updateSellStats();
 
-            // Profil rasmi va ismini yangilash
             let myLiveUser = usersList.find(u => u.username === tgUser.username);
             if(myLiveUser) {
                 let isVer = myLiveUser.verifiedAt && (now - myLiveUser.verifiedAt < THIRTY_DAYS_MS);
@@ -1026,9 +1280,6 @@
             if(document.getElementById('admin-modal').style.display === 'flex') renderAdminUsers();
         });
 
-        // ==========================================
-        // FIREBASE ASOSIDA KIRISH (0 GA TUSHISHNI OLDI OLINDI)
-        // ==========================================
         let globalEntryLink = "";
         
         myDocRef.get().then((doc) => {
@@ -1082,7 +1333,7 @@
             let btn = document.getElementById('btnCheckSub');
             let errText = document.getElementById('subErrorText');
             
-            btn.innerText = "Kuting...";
+            btn.innerText = translations[currentLang]?.kuting || "Kuting...";
             btn.disabled = true;
 
             let userId = tgApp.initDataUnsafe?.user?.id;
@@ -1105,15 +1356,14 @@
                     document.getElementById('mandatory-sub-modal').style.display = 'none';
                     openAppNormal();
                 } else {
-                    errText.innerText = "Obuna tasdiqlanmadi. Iltimos kanalga a'zo bo'lib, qayta bosing!";
                     errText.style.display = "block";
-                    btn.innerText = "Tekshirish";
+                    btn.innerText = translations[currentLang]?.tekshirish || "Tekshirish";
                     btn.disabled = false;
                 }
             } catch(e) {
-                errText.innerText = "Tarmoq xatosi yoki bot kanalda admin emas! Qayta urinib ko'ring.";
+                errText.innerText = "Tarmoq xatosi yoki bot kanalda admin emas!";
                 errText.style.display = "block";
-                btn.innerText = "Tekshirish";
+                btn.innerText = translations[currentLang]?.tekshirish || "Tekshirish";
                 btn.disabled = false;
             }
         }
@@ -1276,7 +1526,10 @@
 
         function createAdCardHTML(ad, isMyAds = false, isAdmin = false, isPremiumCard = false) {
             let now = Date.now();
-            const imgHtml = (ad.images && ad.images.length > 0) ? `<img src="${ad.images[0]}">` : '<img src="https://via.placeholder.com/300x400?text=Rasm+yoq">';
+            // MA'LUMOTLAR OLINIB RASM OXIRIDA LOAD BO'LISHI UCHUN YENGIL PLACEHOLDER BERAMIZ
+            let imgSrc = (ad.images && ad.images.length > 0) ? ad.images[0] : 'https://via.placeholder.com/300x400?text=Rasm+yoq';
+            const imgHtml = `<img src="${imgSrc}" loading="lazy">`;
+            
             let isPrem = (ad.isPremium && ad.premiumUntil > now);
             let premClass = isPrem ? 'premium-ad' : '';
             let premBadge = isPrem ? `<div class="premium-badge"><i class="material-icons">bolt</i>Premium</div>` : '';
@@ -1291,16 +1544,11 @@
             let likeIconHtml = `<div class="like-btn-card ${isLiked?'liked':''}" onclick="toggleLikeAd('${ad.dbId}', event)"><i class="material-icons">${isLiked?'favorite':'favorite_border'}</i></div>`;
 
             let btns = '';
-            if(isMyAds) {
-                // Menung elonlarimda tugmalar Modalda ochiladi. Shuning uchun bu yerdagi action-btns o'chirildi.
-            } else if(isAdmin) {
+            if(isAdmin) {
                 btns = `<div class="action-btns"><button class="btn-small ${isPrem ? 'btn-danger' : 'btn-premium'}" onclick="event.stopPropagation(); togglePremium('${ad.dbId}', ${isPrem})"><i class="material-icons">${isPrem?'close':'star'}</i></button><button class="btn-small btn-edit" onclick="event.stopPropagation(); editAd('${ad.dbId}')"><i class="material-icons">edit</i></button><button class="btn-small btn-delete" onclick="event.stopPropagation(); deleteAdAdmin('${ad.dbId}')"><i class="material-icons">delete</i></button></div>`;
             }
             
-            // Xavfsiz Ism va Username
             let displayName = userObj ? userObj.first_name : sNameRaw;
-
-            // Qayerga bosganda nima ochilishi (Mening e'lonlarim bo'lsa Manage modal ochiladi)
             let clickAction = isMyAds ? `openManageAd('${ad.dbId}')` : `openDetail('${ad.dbId}')`;
 
             return `
@@ -1326,6 +1574,7 @@
             `;
         }
 
+        // BITTALAB ANIMATSIYALI YUKLANISH (QOTISHNI OLDI OLADI)
         function renderAdGrid(ads, containerId, isMyAds = false, isAdmin = false) {
             const container = document.getElementById(containerId);
             if(ads.length === 0) {
@@ -1333,14 +1582,11 @@
                 return;
             }
 
-            // Skeleton loadingni darhol o'chiramiz
             container.innerHTML = ''; 
-
-            // E'lonlarni hammasini kutmasdan, bittalab ketma-ket ekranga chiqaramiz
             ads.forEach((ad, index) => {
                 setTimeout(() => {
                     container.insertAdjacentHTML('beforeend', createAdCardHTML(ad, isMyAds, isAdmin));
-                }, index * 40); // Har 40 millisekundda keyingi e'lon chiqadi
+                }, index * 40); 
             });
         }
 
@@ -1359,7 +1605,7 @@
                 
                 return `
                 <div class="section-ad-card">
-                    <img src="${ad.image}" class="section-ad-img">
+                    <img src="${ad.image}" class="section-ad-img" loading="lazy">
                     <div class="section-ad-body">
                         <div class="section-ad-badge">Reklama</div>
                         <div class="section-ad-title">${ad.title}</div>
@@ -1373,8 +1619,15 @@
             }).join('');
         }
 
+        // NARX VA RAQAMLAR UCHUN PRO FORMATTER (BO'SHLIQ TASHLOVCHI)
         function formatNumber(num) {
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+            if(!num) return "";
+            return num.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        function formatPriceInput(input) {
+            let val = input.value.replace(/\D/g, "");
+            input.value = val ? formatNumber(val) : "";
         }
 
         function handleSearch() {
@@ -1386,7 +1639,6 @@
                 return;
             }
             
-            // Foydalanuvchi qidiruvi
             let filteredUsers = usersList.filter(u => u.first_name.toLowerCase().includes(query) || u.username.toLowerCase().includes(query.replace('@','')));
             let userHtml = "";
             let now = Date.now();
@@ -1434,7 +1686,7 @@
         }
 
         // ==========================================
-        // SELL BO'LIMI STATISTIKASI VA E'LONLAR (YANGILANGAN)
+        // SELL BO'LIMI STATISTIKASI VA E'LONLAR 
         // ==========================================
         function updateSellStats() {
             let myAds = adsList.filter(ad => ad.sellerName === tgUser.username);
@@ -1443,14 +1695,13 @@
             document.getElementById('myTotalAds').innerText = myAds.length;
             document.getElementById('myTotalViews').innerText = totalViews;
             
-            // Xotiradan emas, bazadan olamiz. (Agar bazada obunachilar hisobi bo'lmasa 0)
             let myLiveUser = usersList.find(u => u.username === tgUser.username);
             document.getElementById('myFollowersStat').innerText = myLiveUser ? (myLiveUser.followers || 0) : 0;
         }
 
         function renderSellMyAds() {
             let myAds = adsList.filter(ad => ad.sellerName === tgUser.username);
-            renderAdGrid(myAds, 'sellMyAdsContainer', true, false); // isMyAds = true qilamiz
+            renderAdGrid(myAds, 'sellMyAdsContainer', true, false); 
         }
 
         function openManageAd(dbId) {
@@ -1477,8 +1728,50 @@
         }
 
         // ==========================================
-        // E'LON JOYLASh VA TARIFLAR
+        // E'LON JOYLASh (YANGILANGAN BOG'LANISH TURI)
         // ==========================================
+        
+        // Bog'lanish turini tanlash
+        function selectContactType(type) {
+            currentContactType = type;
+            document.getElementById('btnTgContact').classList.toggle('active', type === 'tg');
+            document.getElementById('btnPhoneContact').classList.toggle('active', type === 'phone');
+            
+            let input = document.getElementById('adContactInput');
+            if(type === 'tg') {
+                input.value = "@";
+                input.placeholder = "Username (@ bilan)";
+                input.setAttribute("maxlength", "33"); // @ + 32
+                input.oninput = function() {
+                    let val = this.value;
+                    if(!val.startsWith('@')) val = '@' + val.replace(/@/g, '');
+                    // Faqat harf, raqam va _ (max 32 belgi)
+                    val = '@' + val.substring(1).replace(/[^a-zA-Z0-9_]/g, '').substring(0, 32);
+                    this.value = val;
+                };
+            } else {
+                input.value = "+998 ";
+                input.placeholder = "+998 XX XXX XX XX";
+                input.setAttribute("maxlength", "17"); 
+                input.oninput = function() {
+                    let val = this.value.replace(/\D/g, ""); 
+                    if (!val.startsWith("998")) val = "998" + val;
+                    val = val.substring(0, 12); 
+                    
+                    let formatted = "+998 ";
+                    if (val.length > 3) formatted += val.substring(3, 5) + " ";
+                    if (val.length > 5) formatted += val.substring(5, 8) + " ";
+                    if (val.length > 8) formatted += val.substring(8, 10) + " ";
+                    if (val.length > 10) formatted += val.substring(10, 12);
+                    
+                    this.value = formatted.trim();
+                };
+            }
+        }
+        
+        // Boshlang'ich qiymat
+        selectContactType('tg');
+
         function editAd(dbId) {
             const ad = adsList.find(x => x.dbId === dbId);
             if(!ad) return;
@@ -1489,7 +1782,17 @@
             document.getElementById('adTitle').value = ad.title;
             document.getElementById('adDesc').value = ad.desc;
             document.getElementById('adCategory').value = ad.category;
-            document.getElementById('adPrice').value = ad.price;
+            document.getElementById('adPrice').value = formatNumber(ad.price);
+            
+            let contactInfo = ad.contact || "";
+            if(contactInfo.startsWith('+')) {
+                selectContactType('phone');
+                document.getElementById('adContactInput').value = contactInfo;
+            } else {
+                selectContactType('tg');
+                document.getElementById('adContactInput').value = contactInfo.startsWith('@') ? contactInfo : '@' + contactInfo;
+            }
+
             document.getElementById('sellTitle').innerText = "E'lonni tahrirlash";
             document.getElementById('submitBtn').innerText = "Saqlash";
             
@@ -1547,10 +1850,22 @@
         }
 
         function submitAd() {
-            if(!document.getElementById('adPrice').value) {
+            let cleanPrice = document.getElementById('adPrice').value.replace(/\D/g, "");
+            let contactVal = document.getElementById('adContactInput').value.trim();
+
+            if(!cleanPrice) {
                 alert("Narx kiritilishi shart!");
                 return;
             }
+            if(currentContactType === 'tg' && contactVal.length < 5) {
+                alert("Username juda qisqa!");
+                return;
+            }
+            if(currentContactType === 'phone' && contactVal.length < 17) {
+                alert("Telefon raqamni to'liq kiriting!");
+                return;
+            }
+
             document.getElementById('submitBtn').disabled = true;
             document.getElementById('submitBtn').innerHTML = "Kuting...";
 
@@ -1561,8 +1876,8 @@
                 title: document.getElementById('adTitle').value,
                 desc: document.getElementById('adDesc').value,
                 category: document.getElementById('adCategory').value,
-                price: document.getElementById('adPrice').value,
-                contact: tgUser.username, 
+                price: Number(cleanPrice), // Toza raqam saqlanadi
+                contact: contactVal, // tg yoki phone
                 sellerName: tgUser.username,
                 sellerPhoto: tgUser.photo,
                 images: currentTempImages,
@@ -1601,6 +1916,8 @@
             document.getElementById('adDesc').value = '';
             document.getElementById('adCategory').value = 'Boshqa toifa';
             document.getElementById('adPrice').value = '';
+            selectContactType('tg');
+            
             document.getElementById('sellTitle').innerText = "E'lon joylash";
             document.getElementById('submitBtn').disabled = false;
             document.getElementById('submitBtn').innerText = "E'lonni joylash";
@@ -1635,7 +1952,7 @@
                 window.open(`https://t.me/aslbek201?text=%23${ad.elonId}%20Elon%20ustidan%20shikoyat%20qilmoqchiman`, '_blank');
             };
 
-            let sNameRaw = (ad.sellerName || ad.contact.replace('@', ''));
+            let sNameRaw = ad.sellerName || ad.contact.replace('@', '');
             let userInDb = usersList.find(u => u.username.toLowerCase() === sNameRaw.toLowerCase());
             let now = Date.now();
             
@@ -1645,19 +1962,27 @@
             document.getElementById('sellerName').innerHTML = `${dispName} ${isVer ? '<i class="material-icons" style="color:#3b82f6; font-size:16px; vertical-align:middle;">verified</i>' : ''}`;
             document.getElementById('sellerAvatar').innerHTML = ad.sellerPhoto ? `<img src="${ad.sellerPhoto}">` : `<i class="material-icons">person</i>`;
             
-            // XATO SHU YERDA EDI (TUZAILDI): Profilga o'tganda detail yopilib qolmasdan ustidan ochiladi
             document.getElementById('detailSellerBox').onclick = () => {
                 closeModal('detail-modal');
                 openUserProfile(sNameRaw);
             };
             
-            document.getElementById('detailBuyBtn').href = getContactLink(sNameRaw);
+            // Xavfsiz havola (Tel bo'lsa telga, tg bo'lsa tg ga)
+            let detailBtn = document.getElementById('detailBuyBtn');
+            detailBtn.href = getContactLink(ad.contact);
+            if(ad.contact && ad.contact.startsWith('+')) {
+                detailBtn.innerHTML = `<i class="material-icons" style="vertical-align:middle;">call</i> Qo'ng'iroq qilish`;
+                detailBtn.style.background = "#10b981";
+            } else {
+                detailBtn.innerHTML = `<i class="material-icons" style="vertical-align:middle;">send</i> Telegram orqali`;
+                detailBtn.style.background = "var(--primary-color)";
+            }
 
             let sliderElem = document.getElementById('detailSlider');
             let dotsElem = document.getElementById('detailDots');
             
             if(ad.images && ad.images.length > 0) {
-                sliderElem.innerHTML = ad.images.map(img => `<img src="${img}">`).join('');
+                sliderElem.innerHTML = ad.images.map(img => `<img src="${img}" loading="lazy">`).join('');
                 dotsElem.innerHTML = ad.images.map((img, i) => `<div class="dot ${i===0?'active':''}"></div>`).join('');
             } else {
                 sliderElem.innerHTML = `<img src="https://via.placeholder.com/600x600?text=Rasm+yoq">`;
@@ -1676,16 +2001,8 @@
         }
 
         // ==========================================
-        // FOYDALANUVCHI PROFILI (YANGILANGAN)
+        // FOYDALANUVCHI PROFILI
         // ==========================================
-        document.getElementById('ratingBox').onclick = function() {
-            let uName = document.getElementById('upUsername').getAttribute('data-raw-username');
-            if(uName === tgUser.username) {
-                return alert("O'zingizni baholay olmaysiz!");
-            }
-            alert("Baholash tizimi tez kunda to'liq ishga tushadi!");
-        };
-
         function openUserProfile(username) {
             let user = usersList.find(u => u.username.toLowerCase() === username.toLowerCase()) || {username: username, first_name: "Foydalanuvchi", photo: '', followers: 0};
             let userAds = adsList.filter(a => a.sellerName.toLowerCase() === username.toLowerCase());
@@ -1693,13 +2010,11 @@
             
             let verifyIcon = (user.verifiedAt && now - user.verifiedAt < THIRTY_DAYS_MS) ? `<i class="material-icons" style="color:#3b82f6; font-size:20px; vertical-align:middle;">verified</i>` : '';
             
-            // Xavfsiz ism va logotip
             document.getElementById('upName').innerHTML = `${user.first_name} ${verifyIcon}`;
             document.getElementById('upUsername').innerText = getDisplayUsername(user.username);
             document.getElementById('upUsername').setAttribute('data-raw-username', user.username);
             document.getElementById('upAvatar').src = user.photo || 'https://via.placeholder.com/100';
             
-            // Statistikalar
             document.getElementById('upAdsCount').innerText = userAds.length;
             let totalViewsUser = userAds.reduce((sum, ad) => sum + (ad.views || 0), 0);
             document.getElementById('upTotalViews').innerText = totalViewsUser;
@@ -2080,6 +2395,5 @@
         }
 
     </script>
-
 </body>
 </html>
